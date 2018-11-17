@@ -19,21 +19,21 @@ public class LoginServlet extends HttpServlet{
 		System.out.println("Login Servlet: doGet");
 		req.getRequestDispatcher("/login.jsp").forward(req, resp);
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		System.out.println("Login Servlet: doPost");
-		
+
 		String errorMessage = null;
 		String email = null;
 		String password = null;
 		ArrayList<User> user = null;
-		
+
 		UserController uc = new UserController();
-		
+
 		email = req.getParameter("email");
 		password = req.getParameter("password");
-		
+
 		if(email == null || password == null || email.equals("") || password.equals("")) {
 			errorMessage = "Please specify both email and password"; 
 		}else{
