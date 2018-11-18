@@ -19,19 +19,31 @@
 			</form>
 		</div>
 	</div>
+	<c:if test="${!empty error}">
 	<div class="row">
-		<div class = "col text-center">
+		<div class="col text-center">
+			<p class="alert alert-danger">${error}</p>
+		</div>
+	</div>
+	</c:if>
+	<c:if test="${!empty success}">
+	<div class="row">
+		<div class="col text-center">
+			<p class="alert alert-success">${success}</p>
+		</div>
+	</div>
+	</c:if>
+	<div class="row">
+		<div class="col text-center">
 				<a href="edit_position" class = "btn btn-info btn-block" role = "button">Edit Position</a>
 		</div>
 		<div class="col text-center">
 				<a href="account_settings" class="btn btn-info btn-block" role="button">Account Settings</a>
 		</div>
-	
 		<div class="col">
 				<a href="edit_sop" class = "btn btn-info btn-block" role = "button">Edit SOP</a>
 		</div>
 	</div>
-	
 	<div class="row">
 		<div class="col text-center">
 			<a href="create_account" class="btn btn-info btn-block" role="button">Create Account</a>
@@ -52,6 +64,11 @@
 		</div>
 		<div class="col">
 			<a href="search_sops" class="btn btn-info btn-block" role="button">Search SOPs</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col text-center">
+			<a href="search_system" class="btn btn-info btn-block" role="button">Seinor Swiffer</a>
 		</div>
 	</div>
 </div>

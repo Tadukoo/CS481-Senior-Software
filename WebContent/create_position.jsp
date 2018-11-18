@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <html>
 <head>
 	<title>CTM mkii - Create Position</title>
@@ -25,14 +24,14 @@
 		<div class="row">
 			<div class="col">
 				<div class="form-group row">
-					<label for="title" class="control-label col-2">Position Title:</label>
+					<label for="title" class="control-label col-2">Title:</label>
 					<input type="text" class="form-control col-10" id="title" name="title" value="${title}">
 				</div>
 			</div>
 			<div class="col">
 				<br>
 				<div class="form-group row">
-					<label for="description" class="control-label col-2">Position Description:</label>
+					<label for="description" class="control-label col-2">Description:</label>
 					<textarea rows = "4" cols = "50" name = "description"></textarea>
 				<br>
 				</div>
@@ -40,8 +39,8 @@
 		</div>
 		<div class="row">
 			<div class="col">
-				<c:if test="${! empty priError}">
-					<p class="alert alert-warning">${priError}</p>
+				<c:if test="${! empty priorityError}">
+					<p class="alert alert-warning">${priorityError}</p>
 				</c:if>
 			</div>
 		</div>
@@ -49,7 +48,7 @@
 			<div class="col">
 				<div class="form-group row">
 					<label for="priority" class="form-label col-2">Priority (1-10):</label>
-					<input type="priority" class="form-control col-10" id="priority" name="priority" value="${priority}">
+					<input type="number" class="form-control col-10" id="priority" name="priority" value="${priority}">
 				</div>
 			</div>
 		</div>
@@ -62,5 +61,4 @@
 	</form>
 </div>
 <p class="note">Want to return to the Homepage? <a href="./user_home">Home</a></p>
-
 </body></html>	

@@ -1,3 +1,4 @@
+
 package edu.ycp.cs481.servlets;
 
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class VerifyEmailServlet extends HttpServlet{
 		if(email == null || pin == null || email.equals("") || pin.equals("")) {
 			errorMessage = "Please specify both email and pin"; 
 		}else{
-			userID = uc.verifyUser(email, Integer.parseInt(pin));
+			userID = uc.verifyUser(email,pin);
 		}
 		if(errorMessage != null){
 			req.setAttribute("errorMessage", errorMessage);
@@ -48,3 +49,4 @@ public class VerifyEmailServlet extends HttpServlet{
 		}	
 	}
 }
+

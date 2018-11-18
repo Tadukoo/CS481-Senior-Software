@@ -20,6 +20,14 @@ public class UserHomeServlet extends HttpServlet{
 		}else{
 			// TODO: Check for admin/privileges check
 			// Plan is to put attribute in so that user_home.jsp can check that for what to display and not display
+			if(session.getAttribute("error") != null){
+				req.setAttribute("error", session.getAttribute("error"));
+				session.setAttribute("error", null);
+			}
+			if(session.getAttribute("success") != null){
+				req.setAttribute("success", session.getAttribute("success"));
+				session.setAttribute("success", null);
+			}
 			req.getRequestDispatcher("/user_home.jsp").forward(req, resp);
 		}
 	}
