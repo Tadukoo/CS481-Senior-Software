@@ -72,7 +72,7 @@ public class UserController{
 		} else {
 			db.insert("Quarantine", 
 					new String[] {"email", "password", "first_name", "last_name", "verification"}, 
-					new String[] {email, password, firstName, lastName, verificationString});
+					new String[] {email, password, firstName, lastName, hashPassword(verificationString)});
 			
 			// Send email with messenger
 			Messenger.main(new String[] {email, "CTM Verification Pin", "Thank you for registering " + firstName + " " + lastName + ". Your pin is:   " + verificationString +
@@ -99,15 +99,18 @@ public class UserController{
 		boolean verify = false;
 		int newUserID = 0;
 		ArrayList<String> user = new ArrayList<String>();
+		String hashedVerifString = null;
 
 		System.out.println(email);
 		try{
 			String name = "Verifying User";
-			String sql = "select * from Quarantine where email = '" + email + "' and verification = '" + verificationString + "'";
-			verify = db.executeQuery(name, sql, DBFormat.getCheckResFormat());
+			String sql = "select verification from Quarantine where email = '" + email + "'";
+			hashedVerifString = db.executeQuery(name, sql, DBFormat.getStringResFormat()).get(0);
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
+		
+		verify = BCrypt.checkpw(verificationString, hashedVerifString);
 		
 		if(verify) {
 			// Move information from Quarantine -> User
@@ -268,9 +271,9 @@ public class UserController{
 	public void changePosition(User user, int positionID){
 		db.executeUpdate(
 				"Change User " + user.getFirstName() + " " + user.getLastName() + " Position to id " + positionID,
-				"update User set position_id = " + positionID + " where user_id = " + user.getUserID());
+				"update User set position_id = " + positionID + " where user_id = " + user.getID());
 		PositionController pc = new PositionController();
-		user.setPosition(pc.getPositionByUser(user.getUserID()));
+		user.setPosition(pc.getPositionByUser(user.getID()));
 	}
 	
 	public void changeEmployeeID(int userID, int employeeID){
