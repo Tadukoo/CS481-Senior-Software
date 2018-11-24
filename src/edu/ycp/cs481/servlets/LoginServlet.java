@@ -51,7 +51,7 @@ public class LoginServlet extends HttpServlet{
 			if(quarantineExists) {
 				errorMessage = "Please verify your account before logging in";
 			}
-			if(uc.isLockedOut(user.get(0).getID())) {
+			if(user.size() > 0 && uc.isLockedOut(user.get(0).getID())) {
 				errorMessage = "This account is currently locked out";
 			}
 		}
