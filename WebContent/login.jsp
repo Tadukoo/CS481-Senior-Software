@@ -17,6 +17,13 @@
 				</div>
 			</div>
 		</c:if>
+		<c:if test="${! empty emailVerifyFail}">
+			<div class="row">
+				<div class="col">
+					<p class="alert alert-warning">${emailVerifyFail}</p>
+				</div>
+			</div>
+		</c:if>
 		<c:if test="${! empty successMessage}">
 			<div class="row">
 				<div class="col">

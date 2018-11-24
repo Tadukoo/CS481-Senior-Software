@@ -32,9 +32,6 @@
 	<br>
 	<form  class="form-horizontal" method="post">
 		<c:if test ="${!empty good_token}">
-			<c:when test="${! empty changePasswordSuccess}">
-						<p class="alert alert-success">${changePasswordSuccess}</p>
-			</c:when>
 			<div class="form-group row">
 						<label for="newPassword" class="control-label col-2">New Password:</label>
 						<input type="password" class="form-control col-10" id="newPassword" name="newPassword" value="${newPassword}">

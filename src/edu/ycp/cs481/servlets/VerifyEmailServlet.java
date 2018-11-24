@@ -27,7 +27,7 @@ public class VerifyEmailServlet extends HttpServlet{
 		HttpSession session = req.getSession();
 		
 		if(!verify) {
-			session.setAttribute("errorMessage", "Email verification failed");
+			session.setAttribute("emailVerifyFail", "Email verification failed");
 		} else {
 			session.setAttribute("successMessage", "Email successfully verified");
 		}

@@ -23,10 +23,12 @@ public class ResetPasswordServlet extends HttpServlet{
 		boolean verify = false;
 		UserController uc = new UserController();
 		
-		if(!uc.resetPassword(email, token)) {
-			req.setAttribute("errorMessage", "Incorrect token");
-		} else {
-			req.setAttribute("goodToken", true);
+		if(email != null && token != null) {
+			if(!uc.resetPassword(email, token)) {
+				req.setAttribute("errorMessage", "Incorrect token");
+			} else {
+				req.setAttribute("goodToken", true);
+			}
 		}
 		
 		req.getRequestDispatcher("/reset_password.jsp").forward(req, resp);

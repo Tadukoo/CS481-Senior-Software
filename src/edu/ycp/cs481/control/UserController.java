@@ -69,7 +69,7 @@ public class UserController{
 					new String[] {email, password, firstName, lastName, hashPassword(verificationString)});
 			
 			// Send email with messenger
-			Messenger.main(new String[] {email, "CTM Verification Pin", "Please visit the following URL to verify your account: "
+			Messenger.main(new String[] {email, "CTM Verification Pin", "Please visit the following URL to verify your account: <br><br>"
 					+ "<a href=\"http://localhost:8081/CS481-Senior-Software/verify_email?"
 					+ "email=" + email
 					+ "&token=" + verificationString 
@@ -88,7 +88,7 @@ public class UserController{
 		}
 		
 		// Send email with messenger
-		Messenger.main(new String[] {email, "CTM Verification Pin", "Please visit the following URL and enter your email and pin: "
+		Messenger.main(new String[] {email, "CTM Verification Pin", "Please visit the following URL to verify your account: <br><br>"
 				+ "<a href=\"http://localhost:8081/CS481-Senior-Software/verify_email?"
 				+ "email=" + email
 				+ "&token=" + pin 
@@ -174,15 +174,16 @@ public class UserController{
 	}
 	
 	public void changeUserPassword(String email, String newPass){
+		db.executeUpdate("Delete ResetPassword entry", "delete from ResetPassword where email = '" + email + "'");
 		db.executeUpdate("Change User Password",
 				"update User set password = '" + hashPassword(newPass) + "' where " + "email = '" + email + "'");
 	}
 	
 	public String generateString() {
 		int leftLimit = 65;
-		int rightLimit = 122;
+		int rightLimit = 90;
 		Random random = new Random();
-		StringBuilder buffer = new StringBuilder(10);
+		StringBuilder buffer = new StringBuilder(20);
 		for (int i = 0; i < 20; i++) {
 		    int randomLimitedInt = leftLimit + (int) 
 		      (random.nextFloat() * (rightLimit - leftLimit + 1));
@@ -195,10 +196,6 @@ public class UserController{
 	public void resetPasswordEmail(String email) {
 		String token = generateString();
 		
-		// Insert user into the ResetPassword table and generate their pin
-		db.insert("ResetPassword", new String[] {"email", "verification"}, 
-				new String[] {email, token});
-		
 		// Send out email with token
 		Messenger.main(new String[] {email, "CTM Password Reset", "Please visit the following URL to reset your password: <br><br> "
 				+ "<a href=\"http://localhost:8081/CS481-Senior-Software/reset_password?"
@@ -206,6 +203,9 @@ public class UserController{
 				+ "&token=" + token 
 				+ "\">Reset Password</a>"});
 		
+		// Insert user into the ResetPassword table and generate their pin
+		db.insert("ResetPassword", new String[] {"email", "verification"}, 
+				new String[] {email, hashPassword(token)});
 	}
 	
 	public boolean resetPassword(String email, String token) {
@@ -214,7 +214,7 @@ public class UserController{
 		
 		try {
 			String name = "Get Hashed Token from ResetPassword";
-			String sql = "select verification from ResetPassword email = " + email;
+			String sql = "select verification from ResetPassword where email = '" + email + "'";
 			hashedToken = db.executeQuery(name, sql, DBFormat.getStringResFormat()).get(0);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -222,7 +222,6 @@ public class UserController{
 		
 		if(authenticate(hashedToken, token)) {
 			verify = true;
-			db.executeUpdate("Delete ResetPassword entry", "delete from ResetPassword where email = '" + email + "'");
 		}
 		
 		return verify;
