@@ -17,6 +17,13 @@
 				</div>
 			</div>
 		</c:if>
+		<c:if test="${! empty changePasswordSuccess}">
+			<div class="row">
+				<div class="col">
+					<p class="alert alert-success">${changePasswordSuccess}</p>
+				</div>
+			</div>
+		</c:if>
 		<c:if test="${! empty successMessage}">
 			<div class="row">
 				<div class="col">

@@ -17,6 +17,21 @@ public class ResetPasswordServlet extends HttpServlet{
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		System.out.println("Reset Password Servlet: doGet");
+
+		String email = req.getParameter("email");
+		String token = req.getParameter("token");
+		boolean verify = false;
+		UserController uc = new UserController();
+		
+		if(email != null && token != null) {
+			if(!uc.resetPassword(email, token)) {
+				req.setAttribute("errorMessage", "Incorrect token");
+			} else {
+				req.setAttribute("goodToken", "true");
+				System.out.println("Good token");
+			}
+		}
+		
 		req.getRequestDispatcher("/reset_password.jsp").forward(req, resp);
 	}
 	
@@ -46,7 +61,7 @@ public class ResetPasswordServlet extends HttpServlet{
 					errorMessage = "No account exists with this email!";
 				}
 				else {
-					uc.resetPassword(email);
+					uc.resetPasswordEmail(email);
 				}
 			}
 			if(errorMessage != null){
@@ -56,6 +71,17 @@ public class ResetPasswordServlet extends HttpServlet{
 				HttpSession session = req.getSession();
 				resp.sendRedirect(req.getContextPath() + "/reset_password");
 			}	
+		} else if(action.equalsIgnoreCase("changePassword")) {
+			String newPassword = req.getParameter("newPassword");
+			String newPasswordConfirm = req.getParameter("newPasswordConfirm");
+			
+			if(!newPassword.equals(newPasswordConfirm)){
+				req.setAttribute("errorMessage", "Passwords don't match!");
+			}else{
+				uc.changeUserPassword(email, newPassword);
+				req.setAttribute("changePasswordSuccess", "Changed password");
+			}
+			resp.sendRedirect(req.getContextPath() + "/login");
 		}
 	}
 }
