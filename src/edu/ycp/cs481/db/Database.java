@@ -369,6 +369,12 @@ public class Database{
 				   "CONSTRAINT FOREIGN KEY (sop_id) REFERENCES SOP (sop_id) " +
 				   ");");
 		
+		names.add("Create ResetPassword table");
+		sqls.add("CREATE TABLE IF NOT EXISTS ResetPassword (" +
+				   "email VARCHAR(255) NOT NULL," +
+				   "verification VARCHAR(60) NOT NULL" +
+				   ");");
+		
 		executeUpdates(names, sqls);
 	}
 	
