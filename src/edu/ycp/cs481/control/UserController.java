@@ -3,7 +3,6 @@ package edu.ycp.cs481.control;
 import edu.ycp.cs481.db.DBFormat;
 import edu.ycp.cs481.db.Database;
 import edu.ycp.cs481.model.EnumPermission;
-import edu.ycp.cs481.model.Messenger;
 import edu.ycp.cs481.model.User;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -69,11 +68,11 @@ public class UserController{
 					new String[] {email, password, firstName, lastName, hashPassword(verificationString)});
 			
 			// Send email with messenger
-			Messenger.main(new String[] {email, "CTM Verification Pin", "Please visit the following URL to verify your account: <br><br>"
+			Messenger.send(email, "CTM Verification Pin", "Please visit the following URL to verify your account: <br><br>"
 					+ "<a href=\"http://localhost:8081/CS481-Senior-Software/verify_email?"
 					+ "email=" + email
 					+ "&token=" + verificationString 
-					+ "\">Verify Email</a>"});
+					+ "\">Verify Email</a>");
 		}
 	}
 	
@@ -88,11 +87,11 @@ public class UserController{
 		}
 		
 		// Send email with messenger
-		Messenger.main(new String[] {email, "CTM Verification Pin", "Please visit the following URL to verify your account: <br><br>"
+		Messenger.send(email, "CTM Verification Pin", "Please visit the following URL to verify your account: <br><br>"
 				+ "<a href=\"http://localhost:8081/CS481-Senior-Software/verify_email?"
 				+ "email=" + email
 				+ "&token=" + pin 
-				+ "\">Verify Email</a>"});
+				+ "\">Verify Email</a>");
 	}
 	
 	public boolean verifyUser(String email, String verificationString) {
@@ -196,16 +195,45 @@ public class UserController{
 	public void resetPasswordEmail(String email) {
 		String token = generateString();
 		
-		// Send out email with token
-		Messenger.main(new String[] {email, "CTM Password Reset", "Please visit the following URL to reset your password: <br><br> "
-				+ "<a href=\"http://localhost:8081/CS481-Senior-Software/reset_password?"
-				+ "email=" + email
-				+ "&token=" + token 
-				+ "\">Reset Password</a>"});
+		// Fresh insert
+		if(!duplicateResetRequest(email)) {
+			// Send out email with token
+			Messenger.send(email, "CTM Password Reset", "Please visit the following URL to reset your password: <br><br> "
+					+ "<a href=\"http://localhost:8081/CS481-Senior-Software/reset_password?"
+					+ "email=" + email
+					+ "&token=" + token 
+					+ "\">Reset Password</a>");
+			
+			// Insert user into the ResetPassword table and generate their pin
+			db.insert("ResetPassword", new String[] {"email", "verification"}, 
+					new String[] {email, hashPassword(token)});
+		} else {
+			// Send out email with a new token
+			Messenger.send(email, "CTM Password Reset", "Please visit the following URL to reset your password: <br><br> "
+					+ "<a href=\"http://localhost:8081/CS481-Senior-Software/reset_password?"
+					+ "email=" + email
+					+ "&token=" + token 
+					+ "\">Reset Password</a>");
+			
+			// Update ResetPassword with new token
+			db.executeUpdate("Generate new ResetPassword token", "update ResetPassword set verification = '" 
+					+ hashPassword(token) + "' where email = '" + email + "'");
+		}
+	}
+	
+	// Called when there's already a request in the ResetPassword table
+	public boolean duplicateResetRequest(String email) {
+		boolean duplicate = false;
 		
-		// Insert user into the ResetPassword table and generate their pin
-		db.insert("ResetPassword", new String[] {"email", "verification"}, 
-				new String[] {email, hashPassword(token)});
+		try {
+			String name = "Check if User already requested a reset";
+			String sql = "select * from ResetPassword where email = '" + email + "'";
+			duplicate = db.executeQuery(name, sql, DBFormat.getCheckResFormat());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return duplicate;
 	}
 	
 	public boolean resetPassword(String email, String token) {
