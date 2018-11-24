@@ -17,10 +17,10 @@
 				</div>
 			</div>
 		</c:if>
-		<c:if test="${! empty emailVerifyFail}">
+		<c:if test="${! empty changePasswordSuccess}">
 			<div class="row">
 				<div class="col">
-					<p class="alert alert-warning">${emailVerifyFail}</p>
+					<p class="alert alert-success">${changePasswordSuccess}</p>
 				</div>
 			</div>
 		</c:if>

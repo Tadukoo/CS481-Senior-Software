@@ -27,7 +27,8 @@ public class ResetPasswordServlet extends HttpServlet{
 			if(!uc.resetPassword(email, token)) {
 				req.setAttribute("errorMessage", "Incorrect token");
 			} else {
-				req.setAttribute("goodToken", true);
+				req.setAttribute("goodToken", "true");
+				System.out.println("Good token");
 			}
 		}
 		
@@ -80,7 +81,7 @@ public class ResetPasswordServlet extends HttpServlet{
 				uc.changeUserPassword(email, newPassword);
 				req.setAttribute("changePasswordSuccess", "Changed password");
 			}
-			req.getRequestDispatcher("/account_settings.jsp").forward(req, resp);
+			resp.sendRedirect(req.getContextPath() + "/login");
 		}
 	}
 }

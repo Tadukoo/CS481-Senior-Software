@@ -10,7 +10,7 @@
 <h1>Reset Password</h1>
 <div class="fluid-container">
 	<form  class="form-horizontal" method="post">
-		<c:if test ="${empty good_token}">
+		<c:if test ="${empty goodToken}">
 			<c:if test="${! empty errorMessage}">
 				<div class="row">
 					<div class="col">
@@ -31,7 +31,7 @@
 	</form>
 	<br>
 	<form  class="form-horizontal" method="post">
-		<c:if test ="${!empty good_token}">
+		<c:if test ="${!empty goodToken}">
 			<div class="form-group row">
 						<label for="newPassword" class="control-label col-2">New Password:</label>
 						<input type="password" class="form-control col-10" id="newPassword" name="newPassword" value="${newPassword}">
