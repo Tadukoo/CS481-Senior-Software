@@ -24,6 +24,10 @@ public class LoginServlet extends HttpServlet{
 			session.setAttribute("error", "You're already logged in!");
 			resp.sendRedirect(req.getContextPath() + "/user_home");
 		}
+		// remove these on redirect so they don't stay persistent forever
+		session.removeAttribute("resetPasswordSuccess");
+		session.removeAttribute("verifyEmailSuccess");
+		session.removeAttribute("verifyEmailFail");
 	}
 	
 	@Override
@@ -51,6 +55,9 @@ public class LoginServlet extends HttpServlet{
 				errorMessage = "Incorrect email or password";
 			}else{
 				id = userSearch.get(0).getID();
+			}
+			if(user.size() > 0 && uc.isLockedOut(user.get(0).getID())) {
+				errorMessage = "This account is currently locked out";
 			}
 		}
 		

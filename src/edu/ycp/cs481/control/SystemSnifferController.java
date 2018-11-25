@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import edu.ycp.cs481.control.UserController;
 import edu.ycp.cs481.db.Database;
 import edu.ycp.cs481.control.SOPController;
-
-import edu.ycp.cs481.model.Messenger;
 import edu.ycp.cs481.model.Position;
 import edu.ycp.cs481.model.SOP;
 
@@ -84,8 +82,8 @@ public class SystemSnifferController {
 					setAndshowDoneList(p);
 				}
 				else {
-					Messenger.main(new String[] {u.getEmail(), "Incomplete Training", u.getFirstName() + ", you have incomplete SOPs in your training"
-							+ "	history, please complete these as soon as possible. A message will also be sent to your manager. Have a great day."});
+					Messenger.send(u.getEmail(), "Incomplete Training", u.getFirstName() + ", you have incomplete SOPs in your training"
+							+ "	history, please complete these as soon as possible. A message will also be sent to your manager. Have a great day.");
 					
 					
 					//Display the List
