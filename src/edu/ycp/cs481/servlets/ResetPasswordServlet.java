@@ -20,8 +20,8 @@ public class ResetPasswordServlet extends HttpServlet{
 
 		String email = req.getParameter("email");
 		String token = req.getParameter("token");
-		boolean verify = false;
 		UserController uc = new UserController();
+		HttpSession session = req.getSession();
 		
 		if(email != null && token != null) {
 			if(!uc.resetPassword(email, token)) {
@@ -33,6 +33,7 @@ public class ResetPasswordServlet extends HttpServlet{
 		}
 		
 		req.getRequestDispatcher("/reset_password.jsp").forward(req, resp);
+		session.removeAttribute("sendEmailSuccess");
 	}
 	
 	@Override
@@ -69,6 +70,7 @@ public class ResetPasswordServlet extends HttpServlet{
 				req.getRequestDispatcher("/reset_password.jsp").forward(req, resp);
 			}else{
 				HttpSession session = req.getSession();
+				session.setAttribute("sendEmailSuccess", "Please check your email for a link to reset your password");
 				resp.sendRedirect(req.getContextPath() + "/reset_password");
 			}	
 		} else if(action.equalsIgnoreCase("changePassword")) {
@@ -78,8 +80,9 @@ public class ResetPasswordServlet extends HttpServlet{
 			if(!newPassword.equals(newPasswordConfirm)){
 				req.setAttribute("errorMessage", "Passwords don't match!");
 			}else{
+				HttpSession session = req.getSession();
 				uc.changeUserPassword(email, newPassword);
-				req.setAttribute("changePasswordSuccess", "Changed password");
+				session.setAttribute("resetPasswordSuccess", "Successfully changed password!");
 			}
 			resp.sendRedirect(req.getContextPath() + "/login");
 		}
