@@ -17,17 +17,31 @@
 				</div>
 			</div>
 		</c:if>
-		<c:if test="${! empty changePasswordSuccess}">
-			<div class="row">
-				<div class="col">
-					<p class="alert alert-success">${changePasswordSuccess}</p>
-				</div>
-			</div>
-		</c:if>
 		<c:if test="${! empty successMessage}">
 			<div class="row">
 				<div class="col">
 					<p class="alert alert-success">${successMessage}</p>
+				</div>
+			</div>
+		</c:if>
+		<c:if test="${! empty resetPasswordSuccess}">
+			<div class="row">
+				<div class="col">
+					<p class="alert alert-success">${resetPasswordSuccess}</p>
+				</div>
+			</div>
+		</c:if>
+		<c:if test="${! empty verifyEmailFail}">
+			<div class="row">
+				<div class="col">
+					<p class="alert alert-success">${verifyEmailFail}</p>
+				</div>
+			</div>
+		</c:if>
+		<c:if test="${! empty verifyEmailSuccess}">
+			<div class="row">
+				<div class="col">
+					<p class="alert alert-success">${verifyEmailSuccess}</p>
 				</div>
 			</div>
 		</c:if>

@@ -18,6 +18,13 @@
 					</div>
 				</div>
 			</c:if>
+			<c:if test = "${!empty sendEmailSuccess}">
+				<div class="row">
+					<div class="col">
+						<p class="alert alert-success">${sendEmailSuccess}</p>
+					</div>
+				</div>
+			</c:if>
 			<div class="form-group row">
 						<label for="email" class="control-label col-2">Email:</label>
 						<input type="text" class="form-control col-2" id="email" name="email" value="${email}">
