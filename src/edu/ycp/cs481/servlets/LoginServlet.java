@@ -19,15 +19,18 @@ public class LoginServlet extends HttpServlet{
 		System.out.println("Login Servlet: doGet");
 		HttpSession session = req.getSession();
 		if(session.getAttribute("user_id") == null){
+			// Grab success message from session data, put into request, and clear it
+			req.setAttribute("successMessage", session.getAttribute("successMessage"));
+			session.removeAttribute("successMessage");
+			// Grab error message from session data, put into request, and clear it
+			req.setAttribute("errorMessage", session.getAttribute("errorMessage"));
+			session.removeAttribute("errorMessage");
+			
 			req.getRequestDispatcher("/login.jsp").forward(req, resp);
 		}else{
 			session.setAttribute("error", "You're already logged in!");
 			resp.sendRedirect(req.getContextPath() + "/user_home");
 		}
-		// remove these on redirect so they don't stay persistent forever
-		session.removeAttribute("resetPasswordSuccess");
-		session.removeAttribute("verifyEmailSuccess");
-		session.removeAttribute("verifyEmailFail");
 	}
 	
 	@Override
@@ -52,12 +55,12 @@ public class LoginServlet extends HttpServlet{
 		}else{
 			userSearch = uc.searchForUsers(-1, -1, false, email, false, null, false, null, -1, -1);
 			if(userSearch == null || userSearch.size() == 0 || !uc.authenticate(userSearch.get(0), password)){
-				errorMessage = "Incorrect email or password";
+				errorMessage = "Incorrect email or password!";
 			}else{
 				id = userSearch.get(0).getID();
-			}
-			if(user.size() > 0 && uc.isLockedOut(user.get(0).getID())) {
-				errorMessage = "This account is currently locked out";
+				if(uc.isLockedOut(id)){
+					errorMessage = "This account is currently locked out!";
+				}
 			}
 		}
 		

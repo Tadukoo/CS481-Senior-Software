@@ -1,7 +1,6 @@
 package edu.ycp.cs481.servlets;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.ycp.cs481.control.UserController;
-import edu.ycp.cs481.model.User;
 
 @SuppressWarnings("serial")
 public class VerifyEmailServlet extends HttpServlet{
@@ -20,16 +18,15 @@ public class VerifyEmailServlet extends HttpServlet{
 		
 		String email = req.getParameter("email");
 		String token = req.getParameter("token");
-		boolean verify = false;
 		UserController uc = new UserController();
 		
-		verify = uc.verifyUser(email, token);
+		boolean verify = uc.verifyUser(email, token);
 		HttpSession session = req.getSession();
 		
-		if(!verify) {
-			session.setAttribute("verifyEmailFail", "Email verification failed");
-		} else {
-			session.setAttribute("verifyEmailSuccess", "Email successfully verified");
+		if(!verify){
+			session.setAttribute("errorMessage", "Email verification failed");
+		}else{
+			session.setAttribute("successMessage", "Email successfully verified");
 		}
         resp.sendRedirect(req.getContextPath() + "/login");
 	}

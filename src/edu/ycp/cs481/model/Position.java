@@ -3,9 +3,18 @@ package edu.ycp.cs481.model;
 import java.util.ArrayList;
 
 public class Position{
+	private int ID;
 	private String title, description;
-	private int ID, priority;
+	private int priority;
 	private ArrayList<SOP> requirements;
+	
+	public int getID(){
+		return ID;
+	}
+
+	public void setID(int ID){
+		this.ID = ID;
+	}
 
 	public String getTitle(){
 		return title;
@@ -21,14 +30,6 @@ public class Position{
 
 	public void setDescription(String description){
 		this.description = description;
-	}
-	
-	public int getID(){
-		return this.ID;
-	}
-
-	public void setID(int ID){
-		this.ID = ID;
 	}
 	
 	public int getPriority(){
@@ -47,9 +48,9 @@ public class Position{
 		this.requirements = requirements;
 	}
 
-	public ArrayList<SOP> getCompletedSOPs(Position p){
+	public ArrayList<SOP> getCompletedSOPs(){
 		ArrayList<SOP> completedSOPs = new ArrayList<SOP>();
-		for(SOP s: p.getRequirements()){
+		for(SOP s: requirements){
 			if(s.isComplete()){
 				completedSOPs.add(s);
 			}
@@ -58,9 +59,9 @@ public class Position{
 		return completedSOPs;
 	}
 
-	public ArrayList<SOP> getIncompleteSOPs(Position p){
+	public ArrayList<SOP> getIncompleteSOPs(){
 		ArrayList<SOP> IncompleteSOPs = new ArrayList<SOP>();
-		for(SOP s: p.getRequirements()){
+		for(SOP s: requirements){
 			if(!s.isComplete()){
 				IncompleteSOPs.add(s);
 			}
@@ -68,5 +69,4 @@ public class Position{
 
 		return IncompleteSOPs;
 	}
-
 }

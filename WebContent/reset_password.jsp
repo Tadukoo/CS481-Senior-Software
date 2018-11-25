@@ -9,8 +9,8 @@
 <body>
 <h1>Reset Password</h1>
 <div class="fluid-container">
-	<form  class="form-horizontal" method="post">
-		<c:if test ="${empty goodToken}">
+	<c:if test ="${empty goodToken}">
+		<form  class="form-horizontal" method="post">
 			<c:if test="${! empty errorMessage}">
 				<div class="row">
 					<div class="col">
@@ -34,11 +34,10 @@
 					<button type="submit" name="doThings" value="sendEmail" class="btn btn-info">Submit</button>
 				</div>
 			</div>
-		</c:if>
-	</form>
-	<br>
-	<form  class="form-horizontal" method="post">
-		<c:if test ="${!empty goodToken}">
+		</form>
+	</c:if>
+	<c:if test ="${!empty goodToken}">
+		<form  class="form-horizontal" method="post">
 			<div class="form-group row">
 						<label for="newPassword" class="control-label col-2">New Password:</label>
 						<input type="password" class="form-control col-10" id="newPassword" name="newPassword" value="${newPassword}">
@@ -52,7 +51,7 @@
 					<button type="submit" name="doThings" value="changePassword" class="btn btn-info">Submit</button>
 				</div>
 			</div>
-		</c:if>
-	</form>
+		</form>
+	</c:if>
 </div>
 </body></html>

@@ -3,7 +3,7 @@ package edu.ycp.cs481.model;
 public class SOP{
 	private int ID;
 	private String title, description;
-	private int priority, version,  authorID;
+	private int priority, version, authorID;
 	private boolean archived;
 	private boolean isComplete;
 	
