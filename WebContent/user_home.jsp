@@ -36,48 +36,99 @@
 	
 	<div class="row">
 		<div class="col text-center">
-				<a href="edit_position" class = "btn btn-info btn-block" role = "button">Edit Position</a>
+			<h2>My Account</h2>
 		</div>
+	</div>
+	<div class="row">
 		<div class="col text-center">
+		
+		</div>
+		<div class="col-3 text-center">
 				<a href="account_settings" class="btn btn-info btn-block" role="button">Account Settings</a>
 		</div>
 		<div class="col">
-				<a href="edit_sop" class = "btn btn-info btn-block" role = "button">Edit SOP</a>
+		
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col text-center">
+			<h2>Users</h2>
 		</div>
 	</div>
 	
 	<div class="row">
+		<div class="col">
+		
+		</div>
 		<div class="col text-center">
 			<a href="create_account" class="btn btn-info btn-block" role="button">Create Account</a>
+		</div>
+		<div class="col text-center">
+			<a href="search_users" class="btn btn-info btn-block" role="button">Search Users</a>
+		</div>
+		<div class="col">
+		
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col text-center">
+			<h2>Positions</h2>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col">
+			
 		</div>
 		<div class="col text-center">
 			<a href="create_position" class="btn btn-info btn-block" role="button">Create Position</a>
 		</div>
 		<div class="col text-center">
-			<a href="create_sop" class="btn btn-info btn-block" role="button">Create SOP</a>
-		</div>
-	</div>
-	
-	<div class="row">
-		<div class="col">
-			<a href="search_users" class="btn btn-info btn-block" role="button">Search Users</a>
-		</div>
-		<div class="col">
 			<a href="search_positions" class="btn btn-info btn-block" role="button">Search Positions</a>
 		</div>
 		<div class="col">
-			<a href="search_sops" class="btn btn-info btn-block" role="button">Search SOPs</a>
+		
 		</div>
 	</div>
-	
+	<br>
+	<div class="row">
+		<div class="col text-center">
+			<h2>SOPs</h2>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col">
+		
+		</div>
+		<div class="col text-center">
+			<a href="create_sop" class="btn btn-info btn-block" role="button">Create SOP</a>
+		</div>
+		<div class="col text-center">
+			<a href="search_sops" class="btn btn-info btn-block" role="button">Search SOPs</a>
+		</div>
+		<div class="col">
+		
+		</div>
+	</div>
+
+	<br>
+	<div class="row">
+		<div class="col text-center">
+			<h2>Admin Stuff</h2>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+		
+		</div>
+		<div class="col text-center">
 			<a href="search_system" class="btn btn-info btn-block" role="button">Seinor Swiffer</a>
 		</div>
-		<div class="col ">
-			<form method="post">
-				<button type="submit" name="ClockIn" class="btn btn-danger" value="clockin">Logout</button>
-			</form>
+		<div class="col">
+		
+
 		</div>
 	</div>
 </div>

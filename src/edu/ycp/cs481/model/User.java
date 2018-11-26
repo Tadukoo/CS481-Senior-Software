@@ -1,18 +1,18 @@
 package edu.ycp.cs481.model;
 
 public class User{
-	private int userID, employeeID;
+	private int ID, employeeID;
 	private String email, password;
 	private String firstName, lastName;
 	private Position position;
 	private boolean lockedOut, archived;
 	
-	public int getUserID(){
-		return userID;	
+	public int getID(){
+		return ID;	
 	}
 	
-	public void setUserID(int userID){
-		this.userID = userID;
+	public void setID(int ID){
+		this.ID = ID;
 	}
 	
 	public int getEmployeeID(){
@@ -62,6 +62,14 @@ public class User{
 	public void setPosition(Position position){
 		this.position = position;
 	}
+	
+	public boolean isLockedOut(){
+		return lockedOut;
+	}
+
+	public void setLockedOut(boolean lockedOut){
+		this.lockedOut = lockedOut;
+	}
 
 	public boolean isArchived(){
 		return archived;
@@ -70,13 +78,4 @@ public class User{
 	public void setArchived(boolean archived){
 		this.archived = archived;
 	}
-
-	public boolean isLockedOut(){
-		return lockedOut;
-	}
-
-	public void setLockedOut(boolean lockedOut){
-		this.lockedOut = lockedOut;
-	}
-	
 }

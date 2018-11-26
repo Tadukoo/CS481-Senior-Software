@@ -26,7 +26,7 @@ public class AccountSettingsServlet extends HttpServlet{
 			UserController uc = new UserController();
 			ArrayList<User> user = uc.searchForUsers((int) session.getAttribute("user_id"), -1, false, null, false, null, 
 					false, null, -1, -1);
-			session.setAttribute("email", user.get(0).getEmail());
+			req.setAttribute("email", user.get(0).getEmail());
 			req.getRequestDispatcher("/account_settings.jsp").forward(req, resp);
 		}
 	}
@@ -58,7 +58,7 @@ public class AccountSettingsServlet extends HttpServlet{
 				req.setAttribute("changeEmailError", "Incorrect password!");
 				error = true;
 			}else{
-				uc.changeUserEmail(user.getUserID(), email, newEmail);
+				uc.changeUserEmail(user.getID(), email, newEmail);
 				req.setAttribute("email", newEmail);
 				req.setAttribute("changeEmailSuccess", "Changed email to " + newEmail);
 			}
@@ -78,7 +78,7 @@ public class AccountSettingsServlet extends HttpServlet{
 			}else if(!uc.authenticate(user, password)){
 				req.setAttribute("changePasswordError", "Incorrect password!");
 			}else{
-				uc.changeUserPassword(user.getUserID(), newPassword);
+				uc.changeUserPassword(user.getID(), newPassword);
 				req.setAttribute("changePasswordSuccess", "Changed password");
 			}
 			req.getRequestDispatcher("/account_settings.jsp").forward(req, resp);

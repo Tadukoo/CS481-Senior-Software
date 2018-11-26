@@ -1,6 +1,6 @@
 package edu.ycp.cs481.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,50 +13,24 @@ public class SOPTest{
 	@Before
 	public void setup(){
 		sop = new SOP();
-		sop.setTitle("How to Avoid Sexual Harassment");
-		sop.setDescription("A how-to guide for men on avoiding sexually harassing women in the workplace environment.");
-		sop.setPriority(1);
+	}
+	
+	@Test
+	public void testSetID(){
 		sop.setID(5);
-		sop.setAuthorID(70);
-		sop.setVersion(2);
-		sop.setComplete(false);
-	}
-	
-	@Test
-	public void testGetTitle(){
-		assertEquals("How to Avoid Sexual Harassment", sop.getTitle());
-	}
-	
-	@Test
-	public void testGetDescription(){
-		assertEquals("A how-to guide for men on avoiding sexually harassing women in the workplace environment.", 
-				sop.getDescription());
-	}
-	
-	@Test
-	public void testGetPriority(){
-		assertEquals(1, sop.getPriority());
-	}
-	
-	@Test
-	public void testGetID(){
 		assertEquals(5, sop.getID());
-	}
-	
-	@Test
-	public void testGetAuthorID(){
-		assertEquals(70, sop.getAuthorID());
-	}
-	
-	@Test
-	public void testGetVersion(){
-		assertEquals(2, sop.getVersion());
+		
+		// Change ID
+		sop.setID(1);
+		
+		// Test new ID
+		assertEquals(1, sop.getID());
 	}
 	
 	@Test
 	public void testSetTitle(){
-		// Ensure that name was set correctly in constructor.
-		testGetTitle();
+		sop.setTitle("How to Avoid Sexual Harassment");
+		assertEquals("How to Avoid Sexual Harassment", sop.getTitle());
 		
 		// Change name
 		sop.setTitle("How to Avoid Sexual Harassment (For Men)");
@@ -67,8 +41,9 @@ public class SOPTest{
 	
 	@Test
 	public void testSetDescription(){
-		// Ensure that description was set correctly in constructor.
-		testGetDescription();
+		sop.setDescription("A how-to guide for men on avoiding sexually harassing women in the workplace environment.");
+		assertEquals("A how-to guide for men on avoiding sexually harassing women in the workplace environment.", 
+				sop.getDescription());
 		
 		// Change description
 		sop.setDescription("A how-to guide for men on avoiding sexually harassing women in the workplace environment, "
@@ -81,8 +56,8 @@ public class SOPTest{
 	
 	@Test
 	public void testSetPriority(){
-		// Ensure that priority was set correctly in constructor.
-		testGetPriority();
+		sop.setPriority(1);
+		assertEquals(1, sop.getPriority());
 		
 		// Change priority
 		sop.setPriority(100);
@@ -92,33 +67,9 @@ public class SOPTest{
 	}
 	
 	@Test
-	public void testSetID(){
-		// Ensure that ID was set correctly in constructor.
-		testGetID();
-		
-		// Change ID
-		sop.setID(1);
-		
-		// Test new ID
-		assertEquals(1, sop.getID());
-	}
-	
-	@Test
-	public void testSetAuthorID(){
-		// Ensure that Author ID was set correctly in constructor.
-		testGetAuthorID();
-		
-		// Change Author ID
-		sop.setAuthorID(25);
-		
-		// Test new Author ID
-		assertEquals(25, sop.getAuthorID());
-	}
-	
-	@Test
 	public void testSetVersion(){
-		//Ensure SOP version was set correctly in the constructor 
-		//testSetVersion(); 
+		sop.setVersion(2);
+		assertEquals(2, sop.getVersion());
 		
 		//set a new revision
 		sop.setVersion(4);
@@ -129,14 +80,39 @@ public class SOPTest{
 	}
 	
 	@Test
-	public void testComplete() {
-		assertFalse(sop.isComplete());
+	public void testSetAuthorID(){
+		sop.setAuthorID(70);
+		assertEquals(70, sop.getAuthorID());
+		
+		// Change Author ID
+		sop.setAuthorID(25);
+		
+		// Test new Author ID
+		assertEquals(25, sop.getAuthorID());
 	}
 	
 	@Test
-	public void testSetAsComplete() {
+	public void testSetArchived(){
+		sop.setArchived(false);
+		assertEquals(false, sop.isArchived());
+		
+		sop.setArchived(false);
+		assertEquals(false, sop.isArchived());
+		
+		sop.setArchived(true);
+		assertEquals(true, sop.isArchived());
+	}
+	
+	@Test
+	public void testSetComplete(){
+		sop.setComplete(false);
+		assertEquals(false, sop.isComplete());
+		
+		sop.setComplete(false);
+		assertEquals(false, sop.isComplete());
+		
 		sop.setComplete(true);
-		assertTrue(sop.isComplete());
+		assertEquals(true, sop.isComplete());
 	}
 	
 }

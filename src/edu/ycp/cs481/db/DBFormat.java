@@ -53,17 +53,19 @@ public class DBFormat{
 		}
 	};
 	
-	private static QueryResultFormat<ArrayList<String>> quarantineResFormat = new QueryResultFormat<ArrayList<String>>(){
+	private static QueryResultFormat<ArrayList<User>> quarantineResFormat = new QueryResultFormat<ArrayList<User>>(){
 		@Override
-		public ArrayList<String> convertFromResultSet(ResultSet resultSet) throws SQLException{
-			ArrayList<String> values = new ArrayList<String>();
-			if(resultSet.next()) {
-				values.add(resultSet.getString(1));
-				values.add(resultSet.getString(2));
-				values.add(resultSet.getString(3));
-				values.add(resultSet.getString(4));
+		public ArrayList<User> convertFromResultSet(ResultSet resultSet) throws SQLException{
+			ArrayList<User> users = new ArrayList<User>();
+			if(resultSet.next()){
+				User user = new User();
+				user.setEmail(resultSet.getString(1));
+				user.setPassword(resultSet.getString(2));
+				user.setFirstName(resultSet.getString(3));
+				user.setLastName(resultSet.getString(4));
+				users.add(user);
 			}
-			return values;
+			return users;
 		}
 	};
 	
@@ -82,7 +84,7 @@ public class DBFormat{
 			while(resultSet.next()){
 				User u = new User();
 				
-				u.setUserID(resultSet.getInt(1));
+				u.setID(resultSet.getInt(1));
 				u.setEmployeeID(resultSet.getInt(2));
 				u.setEmail(resultSet.getString(3));
 				u.setPassword(resultSet.getString(4));
@@ -178,7 +180,7 @@ public class DBFormat{
 		return sopPieces;
 	}
 	
-	public static String getQuarantinePieces() {
+	public static String getQuarantinePieces(){
 		return quarantinePieces;
 	}
 	
@@ -194,7 +196,7 @@ public class DBFormat{
 		return stringResFormat;
 	}
 	
-	public static QueryResultFormat<ArrayList<String>> getQuarantineResFormat(){
+	public static QueryResultFormat<ArrayList<User>> getQuarantineResFormat(){
 		return quarantineResFormat;
 	}
 	
