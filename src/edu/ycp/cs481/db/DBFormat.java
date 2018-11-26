@@ -180,7 +180,7 @@ public class DBFormat{
 		return sopPieces;
 	}
 	
-	public static String getQuarantinePieces() {
+	public static String getQuarantinePieces(){
 		return quarantinePieces;
 	}
 	
