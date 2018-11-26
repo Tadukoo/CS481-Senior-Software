@@ -26,7 +26,7 @@ public class AccountSettingsServlet extends HttpServlet{
 			UserController uc = new UserController();
 			ArrayList<User> user = uc.searchForUsers((int) session.getAttribute("user_id"), -1, false, null, false, null, 
 					false, null, -1, -1);
-			session.setAttribute("email", user.get(0).getEmail());
+			req.setAttribute("email", user.get(0).getEmail());
 			req.getRequestDispatcher("/account_settings.jsp").forward(req, resp);
 		}
 	}

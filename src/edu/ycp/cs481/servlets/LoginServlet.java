@@ -19,6 +19,13 @@ public class LoginServlet extends HttpServlet{
 		System.out.println("Login Servlet: doGet");
 		HttpSession session = req.getSession();
 		if(session.getAttribute("user_id") == null){
+			// Grab success message from session data, put into request, and clear it
+			req.setAttribute("successMessage", session.getAttribute("successMessage"));
+			session.removeAttribute("successMessage");
+			// Grab error message from session data, put into request, and clear it
+			req.setAttribute("errorMessage", session.getAttribute("errorMessage"));
+			session.removeAttribute("errorMessage");
+			
 			req.getRequestDispatcher("/login.jsp").forward(req, resp);
 		}else{
 			session.setAttribute("error", "You're already logged in!");
@@ -33,8 +40,10 @@ public class LoginServlet extends HttpServlet{
 		String errorMessage = null;
 		String email = null;
 		String password = null;
-		ArrayList<User> user = null;
 
+		ArrayList<User> userSearch = null;
+		int id = -1;
+		
 		UserController uc = new UserController();
 
 		email = req.getParameter("email");
@@ -42,23 +51,26 @@ public class LoginServlet extends HttpServlet{
 
 		if(email == null || password == null || email.equals("") || password.equals("")) {
 			errorMessage = "Please specify both email and password"; 
+		}else if(uc.findQuarantineUser(email)){
+				errorMessage = "Account hasn't been verified!";
 		}else{
-			user = uc.searchForUsers(-1, -1, false, email, false, null, false, null, -1, -1);
-			boolean quarantineExists = uc.findQuarantineUser(email);
-			if(user == null || user.size() == 0 || !uc.authenticate(user.get(0), password)){
-				errorMessage = "Incorrect email or password";
-			}
-			if(quarantineExists) {
-				errorMessage = "Please verify your account before logging in";
+			userSearch = uc.searchForUsers(-1, -1, false, email, false, null, false, null, -1, -1);
+			if(userSearch == null || userSearch.size() == 0 || !uc.authenticate(userSearch.get(0), password)){
+				errorMessage = "Incorrect email or password!";
+			}else{
+				id = userSearch.get(0).getID();
+				if(uc.isLockedOut(id)){
+					errorMessage = "This account is currently locked out!";
+				}
 			}
 		}
+		
 		if(errorMessage != null){
 			req.setAttribute("errorMessage", errorMessage);
 			req.getRequestDispatcher("/login.jsp").forward(req, resp);
 		}else{
-			User u = user.get(0);
 			HttpSession session = req.getSession();
-			session.setAttribute("user_id", u.getID());
+			session.setAttribute("user_id", id);
 			resp.sendRedirect(req.getContextPath() + "/user_home");
 		}	
 	}

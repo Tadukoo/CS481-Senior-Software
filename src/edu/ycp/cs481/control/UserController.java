@@ -3,7 +3,6 @@ package edu.ycp.cs481.control;
 import edu.ycp.cs481.db.DBFormat;
 import edu.ycp.cs481.db.Database;
 import edu.ycp.cs481.model.EnumPermission;
-import edu.ycp.cs481.model.Messenger;
 import edu.ycp.cs481.model.User;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -19,6 +18,10 @@ public class UserController{
 
 	public boolean authenticate(User u, String pswd){
 		return BCrypt.checkpw(pswd, u.getPassword());
+	}
+	
+	public boolean authenticate(String hashedPswd, String pswd){
+		return BCrypt.checkpw(pswd, hashedPswd);
 	}
 
 	public static String hashPassword(String password){
@@ -50,17 +53,7 @@ public class UserController{
 	}
 	
 	public void insertQuarantineUser(String email, String password, String firstName, String lastName) {
-		// Generate a 10 digit string
-		int leftLimit = 33;
-	    int rightLimit = 126;
-	    Random random = new Random();
-	    StringBuilder buffer = new StringBuilder(10);
-	    for (int i = 0; i < 10; i++) {
-	        int randomLimitedInt = leftLimit + (int) 
-	          (random.nextFloat() * (rightLimit - leftLimit + 1));
-	        buffer.append((char) randomLimitedInt);
-	    }
-	    String verificationString = buffer.toString();
+	    String verificationString = generateString();
 	    
 		// Hash the password. We assure this is only called once by only hashing the password
 		// in insertUser if it's being called with a positionID different than 2
@@ -75,31 +68,36 @@ public class UserController{
 					new String[] {email, password, firstName, lastName, hashPassword(verificationString)});
 			
 			// Send email with messenger
-			Messenger.main(new String[] {email, "CTM Verification Pin", "Thank you for registering " + firstName + " " + lastName + ". Your pin is:   " + verificationString +
-					"<br>Please visit the following URL and enter your email and pin: \n\n<a href=\"http://localhost:8081/CS481-Senior-Software/verify_email\">Verify Email</a>"});
+			Messenger.send(email, "CTM Verification Pin", "Please visit the following URL to verify your account: <br><br>"
+					+ "<a href=\"http://localhost:8081/CS481-Senior-Software/verify_email?"
+					+ "email=" + email
+					+ "&token=" + verificationString 
+					+ "\">Verify Email</a>");
 		}
 	}
 	
 	public void retrySendEmail(String email) {
-		String verificationString = "";
+		String pin = generateString();
 		try {
 			String name = "Get Quarantine User";
 			String sql = "select verification from Quarantine where email = " + email;
-			verificationString = db.executeQuery(name, sql, DBFormat.getStringResFormat()).get(0);
+			pin = db.executeQuery(name, sql, DBFormat.getStringResFormat()).get(0);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
 		// Send email with messenger
-		Messenger.main(new String[] {email, "CTM Verification Pin", "Your pin is " + verificationString +
-				"<br>Please visit the following URL and enter your email and pin: \n\n<a href=\"http://localhost:8081/CS481-Senior-Software/verify_email\">Verify Email</a>"});
+		Messenger.send(email, "CTM Verification Pin", "Please visit the following URL to verify your account: <br><br>"
+				+ "<a href=\"http://localhost:8081/CS481-Senior-Software/verify_email?"
+				+ "email=" + email
+				+ "&token=" + pin 
+				+ "\">Verify Email</a>");
 	}
 	
-	public Integer verifyUser(String email, String verificationString) {
+	public boolean verifyUser(String email, String verificationString) {
 		boolean verify = false;
-		int newUserID = 0;
-		ArrayList<String> user = new ArrayList<String>();
 		String hashedVerifString = null;
+		User user = null;
 
 		System.out.println(email);
 		try{
@@ -117,19 +115,18 @@ public class UserController{
 			try {
 				String name = "Migrating to User table";
 				String sql = "select " + DBFormat.getQuarantinePieces() + " from Quarantine where email = '" + email + "'";
-				user = db.executeQuery(name, sql, DBFormat.getQuarantineResFormat());
+				ArrayList<User> userSearch = db.executeQuery(name, sql, DBFormat.getQuarantineResFormat());
+				user = userSearch.get(0);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 			// Delete entry in Quarantine
 			db.executeUpdate("Deleting Quarantine User", "delete from Quarantine where email = '" + email + "'");
 			
-			newUserID = insertUser(user.get(0), user.get(1), user.get(2), user.get(3),  false, false, 2);
-		} else {
-			return -1;
-		}
+			insertUser(user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName(), false, false, 2);
+		} 
 		
-		return newUserID;
+		return verify;
 	}
 
 	public ArrayList<User> searchForUsers(int userID, int employeeID, boolean emailPartial, String email, 
@@ -176,24 +173,87 @@ public class UserController{
 				"update User set password = '" + hashPassword(newPass) + "' where " + "user_id = " + userID);
 	}
 	
-	public void resetPassword(String email) {
-		// Generate a 10 digit string
-				int leftLimit = 33;
-			    int rightLimit = 126;
-			    Random random = new Random();
-			    StringBuilder buffer = new StringBuilder(10);
-			    for (int i = 0; i < 10; i++) {
-			        int randomLimitedInt = leftLimit + (int) 
-			          (random.nextFloat() * (rightLimit - leftLimit + 1));
-			        buffer.append((char) randomLimitedInt);
-			    }
-			    String password = buffer.toString();
+	public void changeUserPassword(String email, String newPass){
+		db.executeUpdate("Delete ResetPassword entry", "delete from ResetPassword where email = '" + email + "'");
+		db.executeUpdate("Change User Password",
+				"update User set password = '" + hashPassword(newPass) + "' where " + "email = '" + email + "'");
+	}
+	
+	public String generateString() {
+		int leftLimit = 65;
+		int rightLimit = 90;
+		Random random = new Random();
+		StringBuilder buffer = new StringBuilder(20);
+		for (int i = 0; i < 20; i++) {
+		    int randomLimitedInt = leftLimit + (int) 
+		      (random.nextFloat() * (rightLimit - leftLimit + 1));
+		    buffer.append((char) randomLimitedInt);
+		}
+		String password = buffer.toString();
+		return password;
+	}
+	
+	public void resetPasswordEmail(String email) {
+		String token = generateString();
 		
-		db.executeUpdate("Reset User Password", 
-				"update User set password = '" + hashPassword(password) + "' where email = '" + email + "'");
+		// Fresh insert
+		if(!duplicateResetRequest(email)) {
+			// Send out email with token
+			Messenger.send(email, "CTM Password Reset", "Please visit the following URL to reset your password: <br><br> "
+					+ "<a href=\"http://localhost:8081/CS481-Senior-Software/reset_password?"
+					+ "email=" + email
+					+ "&token=" + token 
+					+ "\">Reset Password</a>");
+			
+			// Insert user into the ResetPassword table and generate their pin
+			db.insert("ResetPassword", new String[] {"email", "verification"}, 
+					new String[] {email, hashPassword(token)});
+		} else {
+			// Send out email with a new token
+			Messenger.send(email, "CTM Password Reset", "Please visit the following URL to reset your password: <br><br> "
+					+ "<a href=\"http://localhost:8081/CS481-Senior-Software/reset_password?"
+					+ "email=" + email
+					+ "&token=" + token 
+					+ "\">Reset Password</a>");
+			
+			// Update ResetPassword with new token
+			db.executeUpdate("Generate new ResetPassword token", "update ResetPassword set verification = '" 
+					+ hashPassword(token) + "' where email = '" + email + "'");
+		}
+	}
+	
+	// Called when there's already a request in the ResetPassword table
+	public boolean duplicateResetRequest(String email) {
+		boolean duplicate = false;
 		
-		Messenger.main(new String[] {email, "CTM Password Reset", "Your new password is:   " + password + 
-				"<br>Please visit the following URL to sign in: <a href=\"http://localhost:8081/CS481-Senior-Software/login\">CTM MKii Login</a>"});
+		try {
+			String name = "Check if User already requested a reset";
+			String sql = "select * from ResetPassword where email = '" + email + "'";
+			duplicate = db.executeQuery(name, sql, DBFormat.getCheckResFormat());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return duplicate;
+	}
+	
+	public boolean resetPassword(String email, String token) {
+		String hashedToken = "";
+		boolean verify = false;
+		
+		try {
+			String name = "Get Hashed Token from ResetPassword";
+			String sql = "select verification from ResetPassword where email = '" + email + "'";
+			hashedToken = db.executeQuery(name, sql, DBFormat.getStringResFormat()).get(0);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		if(authenticate(hashedToken, token)) {
+			verify = true;
+		}
+		
+		return verify;
 	}
 	
 	public boolean userHasPermission(int userID, EnumPermission perm){

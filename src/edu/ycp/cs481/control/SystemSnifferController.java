@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import edu.ycp.cs481.control.UserController;
 import edu.ycp.cs481.db.Database;
 import edu.ycp.cs481.control.SOPController;
-
-import edu.ycp.cs481.model.Messenger;
 import edu.ycp.cs481.model.Position;
 import edu.ycp.cs481.model.SOP;
 
@@ -41,14 +39,14 @@ public class SystemSnifferController {
 	}
 	
 	public void setAndShowToDoList(Position p) {
-		List<SOP> displayList = p.getIncompleteSOPs(p);
+		List<SOP> displayList = p.getIncompleteSOPs();
 		for(SOP s: displayList) {
 			System.out.println(s.getID() + " | " + s.getTitle() + " | " + s.getDescription());
 		}
 	}
 	
 	public void setAndshowDoneList(Position p) {
-		List<SOP> displayList = p.getCompletedSOPs(p);
+		List<SOP> displayList = p.getCompletedSOPs();
 		
 		for(SOP s: displayList) {
 			System.out.println(s.getID() + " | " + s.getTitle() + " | " + s.getDescription());
@@ -59,7 +57,7 @@ public class SystemSnifferController {
 		//set the initial condition to false and change it if need be
 		boolean areGaps = false;
 		
-		if(p.getIncompleteSOPs(p).isEmpty()) {
+		if(p.getIncompleteSOPs().isEmpty()) {
 			System.out.println("There is no incomplete SOPs");
 			areGaps = false; 
 		} else {
@@ -84,8 +82,8 @@ public class SystemSnifferController {
 					setAndshowDoneList(p);
 				}
 				else {
-					Messenger.main(new String[] {u.getEmail(), "Incomplete Training", u.getFirstName() + ", you have incomplete SOPs in your training"
-							+ "	history, please complete these as soon as possible. A message will also be sent to your manager. Have a great day."});
+					Messenger.send(u.getEmail(), "Incomplete Training", u.getFirstName() + ", you have incomplete SOPs in your training"
+							+ "	history, please complete these as soon as possible. A message will also be sent to your manager. Have a great day.");
 					
 					
 					//Display the List
