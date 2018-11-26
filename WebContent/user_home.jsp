@@ -33,6 +33,7 @@
 		</div>
 	</div>
 	</c:if>
+	
 	<div class="row">
 		<div class="col text-center">
 				<a href="edit_position" class = "btn btn-info btn-block" role = "button">Edit Position</a>
@@ -44,6 +45,7 @@
 				<a href="edit_sop" class = "btn btn-info btn-block" role = "button">Edit SOP</a>
 		</div>
 	</div>
+	
 	<div class="row">
 		<div class="col text-center">
 			<a href="create_account" class="btn btn-info btn-block" role="button">Create Account</a>
@@ -55,6 +57,7 @@
 			<a href="create_sop" class="btn btn-info btn-block" role="button">Create SOP</a>
 		</div>
 	</div>
+	
 	<div class="row">
 		<div class="col">
 			<a href="search_users" class="btn btn-info btn-block" role="button">Search Users</a>
@@ -66,9 +69,15 @@
 			<a href="search_sops" class="btn btn-info btn-block" role="button">Search SOPs</a>
 		</div>
 	</div>
+	
 	<div class="row">
 		<div class="col text-center">
 			<a href="search_system" class="btn btn-info btn-block" role="button">Seinor Swiffer</a>
+		</div>
+		<div class="col text-center">
+			<form method="post">
+				<button type="submit" name="ClockIn" class="btn btn-danger" value="clockin">Logout</button>
+			</form>
 		</div>
 	</div>
 </div>
