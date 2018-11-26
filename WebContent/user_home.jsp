@@ -71,10 +71,10 @@
 	</div>
 	
 	<div class="row">
-		<div class="col text-center">
+		<div class="col">
 			<a href="search_system" class="btn btn-info btn-block" role="button">Seinor Swiffer</a>
 		</div>
-		<div class="col text-center">
+		<div class="col ">
 			<form method="post">
 				<button type="submit" name="ClockIn" class="btn btn-danger" value="clockin">Logout</button>
 			</form>

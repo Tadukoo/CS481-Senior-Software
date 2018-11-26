@@ -40,5 +40,9 @@ public class UserHomeServlet extends HttpServlet{
 			UserController.logout(req);
 			resp.sendRedirect(req.getContextPath() + "/login");
 		}
+		if(req.getParameter("ClockIn").equalsIgnoreCase("clockin")){
+			
+			resp.sendRedirect(req.getContextPath() + "/user_home");
+		}
 	}
 }
