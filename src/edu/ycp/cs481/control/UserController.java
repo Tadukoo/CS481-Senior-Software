@@ -96,8 +96,8 @@ public class UserController{
 	
 	public boolean verifyUser(String email, String verificationString) {
 		boolean verify = false;
-		ArrayList<String> user = new ArrayList<String>();
 		String hashedVerifString = null;
+		User user = null;
 
 		System.out.println(email);
 		try{
@@ -115,14 +115,15 @@ public class UserController{
 			try {
 				String name = "Migrating to User table";
 				String sql = "select " + DBFormat.getQuarantinePieces() + " from Quarantine where email = '" + email + "'";
-				user = db.executeQuery(name, sql, DBFormat.getQuarantineResFormat());
+				ArrayList<User> userSearch = db.executeQuery(name, sql, DBFormat.getQuarantineResFormat());
+				user = userSearch.get(0);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 			// Delete entry in Quarantine
 			db.executeUpdate("Deleting Quarantine User", "delete from Quarantine where email = '" + email + "'");
 			
-			insertUser(user.get(0), user.get(1), user.get(2), user.get(3),  false, false, 2);
+			insertUser(user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName(), false, false, 2);
 		} 
 		
 		return verify;

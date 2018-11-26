@@ -21,19 +21,16 @@ public class ResetPasswordServlet extends HttpServlet{
 		String email = req.getParameter("email");
 		String token = req.getParameter("token");
 		UserController uc = new UserController();
-		HttpSession session = req.getSession();
 		
 		if(email != null && token != null) {
-			if(!uc.resetPassword(email, token)) {
+			if(!uc.resetPassword(email, token)){
 				req.setAttribute("errorMessage", "Incorrect token");
-			} else {
+			}else{
 				req.setAttribute("goodToken", "true");
 				System.out.println("Good token");
 			}
 		}
-		
 		req.getRequestDispatcher("/reset_password.jsp").forward(req, resp);
-		session.removeAttribute("sendEmailSuccess");
 	}
 	
 	@Override
@@ -55,36 +52,37 @@ public class ResetPasswordServlet extends HttpServlet{
 			}else{
 				boolean exists = uc.findQuarantineUser(email);
 				user = uc.searchForUsers(-1, -1, false, email, false, null, false, null, -1, -1);
-				if(exists) {
+				if(exists){
 					errorMessage = "Please verify your account first!";
-				} 
-				else if(user.size() == 0) {
+				}else if(user.size() == 0){
 					errorMessage = "No account exists with this email!";
-				}
-				else {
+				}else{
 					uc.resetPasswordEmail(email);
 				}
 			}
 			if(errorMessage != null){
 				req.setAttribute("errorMessage", errorMessage);
-				req.getRequestDispatcher("/reset_password.jsp").forward(req, resp);
 			}else{
-				HttpSession session = req.getSession();
-				session.setAttribute("sendEmailSuccess", "Please check your email for a link to reset your password");
-				resp.sendRedirect(req.getContextPath() + "/reset_password");
-			}	
-		} else if(action.equalsIgnoreCase("changePassword")) {
+				req.setAttribute("sendEmailSuccess", "Please check your email for a link to reset your password");
+			}
+			req.getRequestDispatcher("/reset_password.jsp").forward(req, resp);
+		}else if(action.equalsIgnoreCase("changePassword")){
 			String newPassword = req.getParameter("newPassword");
 			String newPasswordConfirm = req.getParameter("newPasswordConfirm");
 			
 			if(!newPassword.equals(newPasswordConfirm)){
 				req.setAttribute("errorMessage", "Passwords don't match!");
+				// Reset request parameters for another password change attempt
+				req.setAttribute("email", email);
+				req.setAttribute("goodToken", "true");
+				req.getRequestDispatcher("/reset_password.jsp").forward(req, resp);
 			}else{
 				HttpSession session = req.getSession();
 				uc.changeUserPassword(email, newPassword);
-				session.setAttribute("resetPasswordSuccess", "Successfully changed password!");
+				// TODO: Remove reset password token from db table
+				session.setAttribute("successMessage", "Successfully changed password! You may now login.");
+				resp.sendRedirect(req.getContextPath() + "/login");
 			}
-			resp.sendRedirect(req.getContextPath() + "/login");
 		}
 	}
 }

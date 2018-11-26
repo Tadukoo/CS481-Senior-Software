@@ -39,14 +39,14 @@ public class SystemSnifferController {
 	}
 	
 	public void setAndShowToDoList(Position p) {
-		List<SOP> displayList = p.getIncompleteSOPs(p);
+		List<SOP> displayList = p.getIncompleteSOPs();
 		for(SOP s: displayList) {
 			System.out.println(s.getID() + " | " + s.getTitle() + " | " + s.getDescription());
 		}
 	}
 	
 	public void setAndshowDoneList(Position p) {
-		List<SOP> displayList = p.getCompletedSOPs(p);
+		List<SOP> displayList = p.getCompletedSOPs();
 		
 		for(SOP s: displayList) {
 			System.out.println(s.getID() + " | " + s.getTitle() + " | " + s.getDescription());
@@ -57,7 +57,7 @@ public class SystemSnifferController {
 		//set the initial condition to false and change it if need be
 		boolean areGaps = false;
 		
-		if(p.getIncompleteSOPs(p).isEmpty()) {
+		if(p.getIncompleteSOPs().isEmpty()) {
 			System.out.println("There is no incomplete SOPs");
 			areGaps = false; 
 		} else {

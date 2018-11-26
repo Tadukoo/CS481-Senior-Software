@@ -62,6 +62,14 @@ public class User{
 	public void setPosition(Position position){
 		this.position = position;
 	}
+	
+	public boolean isLockedOut(){
+		return lockedOut;
+	}
+
+	public void setLockedOut(boolean lockedOut){
+		this.lockedOut = lockedOut;
+	}
 
 	public boolean isArchived(){
 		return archived;
@@ -70,13 +78,4 @@ public class User{
 	public void setArchived(boolean archived){
 		this.archived = archived;
 	}
-
-	public boolean isLockedOut(){
-		return lockedOut;
-	}
-
-	public void setLockedOut(boolean lockedOut){
-		this.lockedOut = lockedOut;
-	}
-	
 }
