@@ -25,7 +25,7 @@ public class LoginServlet extends HttpServlet{
 			// Grab error message from session data, put into request, and clear it
 			req.setAttribute("errorMessage", session.getAttribute("errorMessage"));
 			session.removeAttribute("errorMessage");
-			
+
 			req.getRequestDispatcher("/login.jsp").forward(req, resp);
 		}else{
 			session.setAttribute("error", "You're already logged in!");
@@ -43,7 +43,7 @@ public class LoginServlet extends HttpServlet{
 
 		ArrayList<User> userSearch = null;
 		int id = -1;
-		
+
 		UserController uc = new UserController();
 
 		email = req.getParameter("email");
@@ -51,24 +51,28 @@ public class LoginServlet extends HttpServlet{
 
 		if(email == null || password == null || email.equals("") || password.equals("")) {
 			errorMessage = "Please specify both email and password"; 
-		}else if(uc.findQuarantineUser(email)){
-				errorMessage = "Account hasn't been verified!";
-		}else{
+		}
+		else if(uc.findQuarantineUser(email)){
+			errorMessage = "Account hasn't been verified!";
+		}
+		else{
 			userSearch = uc.searchForUsers(-1, -1, false, email, false, null, false, null, -1, -1);
 			if(userSearch == null || userSearch.size() == 0 || !uc.authenticate(userSearch.get(0), password)){
 				errorMessage = "Incorrect email or password!";
-			}else{
+			}
+			else{
 				id = userSearch.get(0).getID();
 				if(uc.isLockedOut(id)){
 					errorMessage = "This account is currently locked out!";
 				}
 			}
 		}
-		
+
 		if(errorMessage != null){
 			req.setAttribute("errorMessage", errorMessage);
 			req.getRequestDispatcher("/login.jsp").forward(req, resp);
-		}else{
+		}
+		else{
 			HttpSession session = req.getSession();
 			session.setAttribute("user_id", id);
 			resp.sendRedirect(req.getContextPath() + "/user_home");

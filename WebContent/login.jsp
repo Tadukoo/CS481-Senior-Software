@@ -21,21 +21,7 @@
 				</div>
 
 			</c:if>
-			<div class="form-group row">
-				<label for="email" class="control-label col-2">Email:</label> <input
-					type="text" class="form-control col-2" id="email" name="email"
-					value="${email}">
-			</div>
-			<div class="row">
-				<label for="password" class="control-label col-2">Password:</label>
-				<input type="password" class="form-control col-2" id="password"
-					name="password" value="${password}">
-			</div>
-			<div class="row">
-				<div class="col">
-					<button type="submit" class="btn btn-info">Submit</button>
-				</div>
-			</div>
+
 
 		<c:if test="${! empty successMessage}">
 			<div class="row">
