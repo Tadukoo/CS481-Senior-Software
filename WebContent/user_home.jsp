@@ -13,10 +13,7 @@
 		<div class="row">
 			<div class="col-10"></div>
 			<div class="col-2">
-				
-					<button type="submit" name="logout" class="btn btn-danger"
-						value="logout">Logout</button>
-				
+				<button type="submit" name="action" class="btn btn-danger" value="logout">Logout</button>
 			</div>
 		</div>
 		<c:if test="${!empty error}">
@@ -42,8 +39,7 @@
 		<div class="row">
 			<div class="col text-center"></div>
 			<div class="col-3 text-center">
-				<a href="account_settings" class="btn btn-info btn-block"
-					role="button">Account Settings</a>
+				<a href="account_settings" class="btn btn-info btn-block" role="button">Account Settings</a>
 			</div>
 			<div class="col"></div>
 		</div>
@@ -57,12 +53,10 @@
 		<div class="row">
 			<div class="col"></div>
 			<div class="col text-center">
-				<a href="create_account" class="btn btn-info btn-block"
-					role="button">Create Account</a>
+				<a href="create_account" class="btn btn-info btn-block" role="button">Create Account</a>
 			</div>
 			<div class="col text-center">
-				<a href="search_users" class="btn btn-info btn-block" role="button">Search
-					Users</a>
+				<a href="search_users" class="btn btn-info btn-block" role="button">Search Users</a>
 			</div>
 			<div class="col"></div>
 		</div>
@@ -76,12 +70,10 @@
 		<div class="row">
 			<div class="col"></div>
 			<div class="col text-center">
-				<a href="create_position" class="btn btn-info btn-block"
-					role="button">Create Position</a>
+				<a href="create_position" class="btn btn-info btn-block" role="button">Create Position</a>
 			</div>
 			<div class="col text-center">
-				<a href="search_positions" class="btn btn-info btn-block"
-					role="button">Search Positions</a>
+				<a href="search_positions" class="btn btn-info btn-block" role="button">Search Positions</a>
 			</div>
 			<div class="col"></div>
 		</div>
@@ -94,12 +86,10 @@
 		<div class="row">
 			<div class="col"></div>
 			<div class="col text-center">
-				<a href="create_sop" class="btn btn-info btn-block" role="button">Create
-					SOP</a>
+				<a href="create_sop" class="btn btn-info btn-block" role="button">Create SOP</a>
 			</div>
 			<div class="col text-center">
-				<a href="search_sops" class="btn btn-info btn-block" role="button">Search
-					SOPs</a>
+				<a href="search_sops" class="btn btn-info btn-block" role="button">Search SOPs</a>
 			</div>
 			<div class="col"></div>
 		</div>
@@ -113,8 +103,7 @@
 		<div class="row">
 			<div class="col"></div>
 			<div class="col text-center">
-				<a href="search_system" class="btn btn-info btn-block" role="button">Compliance
-					Monitor</a>
+				<a href="search_system" class="btn btn-info btn-block" role="button">Compliance Monitor</a>
 			</div>
 			<div class="col"></div>
 
@@ -128,14 +117,12 @@
 		<div class="row">
 			<div class="col"></div>
 			<div class="col text-center">
-				
-					<c:if test="${clockedIn == 'false'}">
-						<button type="submit" name="clockIn" class="btn btn-success btn-block" value="clockIn">Clock in</button>
-					</c:if>
-					<c:if test="${clockedIn == 'true'}">
-						<button type="submit" name="clockOut" class="btn btn-danger btn-block" value="clockOut">Clock out</button>
-					</c:if>
-				
+				<c:if test="${clockedIn == 'false'}">
+					<button type="submit" name="action" class="btn btn-success btn-block" value="clockIn">Clock in</button>
+				</c:if>
+				<c:if test="${clockedIn == 'true'}">
+					<button type="submit" name="action" class="btn btn-danger btn-block" value="clockOut">Clock out</button>
+				</c:if>
 			</div>
 			<div class="col"></div>
 
