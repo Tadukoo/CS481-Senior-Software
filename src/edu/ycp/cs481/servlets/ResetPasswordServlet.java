@@ -1,4 +1,3 @@
-
 package edu.ycp.cs481.servlets;
 
 import java.io.IOException;
@@ -19,7 +18,6 @@ public class ResetPasswordServlet extends HttpServlet{
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		System.out.println("Reset Password Servlet: doGet");
 
-
 		String email = req.getParameter("email");
 		String token = req.getParameter("token");
 		UserController uc = new UserController();
@@ -32,7 +30,6 @@ public class ResetPasswordServlet extends HttpServlet{
 				System.out.println("Good token");
 			}
 		}
-
 		req.getRequestDispatcher("/reset_password.jsp").forward(req, resp);
 	}
 	
@@ -45,15 +42,11 @@ public class ResetPasswordServlet extends HttpServlet{
 		ArrayList<User> user = null;
 
 		String action = req.getParameter("doThings");
-
-		
 		UserController uc = new UserController();
-		
 		email = req.getParameter("email");
-		
 
-		if(action.equalsIgnoreCase("sendEmail")) {
-			if(email == null || email.equals("")) {
+		if(action.equalsIgnoreCase("sendEmail")){
+			if(email == null || email.equals("")){
 				errorMessage = "Please specify an email"; 
 			}else{
 				boolean exists = uc.findQuarantineUser(email);
@@ -91,5 +84,4 @@ public class ResetPasswordServlet extends HttpServlet{
 			}
 		}
 	}
-
 }

@@ -7,22 +7,16 @@
 <link rel="stylesheet" href="css/bootstrap.css">
 </head>
 <body>
-
-	<h1>Login</h1>
-	<div class="fluid-container">
-		<form class="form-horizontal" method="post">
-			<c:if test="${! empty errorMessage}">
-
-				<div class="row">
-					<div class="col">
-						<button type="submit" class="btn btn-info">Submit</button>
-
-					</div>
+<h1>Login</h1>
+<div class="fluid-container">
+	<form class="form-horizontal" method="post">
+		<c:if test="${! empty errorMessage}">
+			<div class="row">
+				<div class="col">
+					<p class="alert alert-warning">${errorMessage}</p>
 				</div>
-
-			</c:if>
-
-
+			</div>
+		</c:if>
 		<c:if test="${! empty successMessage}">
 			<div class="row">
 				<div class="col">

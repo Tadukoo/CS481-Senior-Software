@@ -15,20 +15,9 @@ public class UserHomeServlet extends HttpServlet{
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		System.out.println("User Home Servlet: doGet");
 		HttpSession session = req.getSession();
-		UserController uc = new UserController();
-		
-		System.out.println("Session id: "+session.getId());
-		System.out.println("user_id: "+ (int) session.getAttribute("user_id") );
-		System.out.println("Time clock status"+ uc.isClockedIn((int) session.getAttribute("user_id")));
-		
-		
-		session.setAttribute("clockedIn", uc.isClockedIn((int) session.getAttribute("user_id")));
-		session.setAttribute("time", "");
-		session.setAttribute("logout", "stillLoggedIn");
 		if(session.getAttribute("user_id") == null){
 			resp.sendRedirect(req.getContextPath() + "/login");
-		}
-		else{
+		}else{
 			// TODO: Check for admin/privileges check
 			// Plan is to put attribute in so that user_home.jsp can check that for what to display and not display
 
@@ -40,6 +29,10 @@ public class UserHomeServlet extends HttpServlet{
 				req.setAttribute("success", session.getAttribute("success"));
 				session.setAttribute("success", null);
 			}
+			
+			int id = (int) session.getAttribute("user_id");
+			UserController uc = new UserController();
+			req.setAttribute("clockedIn", uc.isClockedIn(id));
 			req.getRequestDispatcher("/user_home.jsp").forward(req, resp);
 		}
 	}
@@ -49,33 +42,29 @@ public class UserHomeServlet extends HttpServlet{
 		System.out.println("User Home Servlet: doPost");
 		HttpSession session = req.getSession();
 		UserController uc = new UserController();
-		System.out.println(req.getParameter("logout"));
-		String status="";
-		status=req.getParameter("logout");
-		if(status != null) {
-			if(req.getParameter("logout").equalsIgnoreCase("logout")){
-				System.out.println("Processing Logout");
-				UserController.logout(req);
-				resp.sendRedirect(req.getContextPath() + "/login");
-			}
+		int id = (int) session.getAttribute("user_id");
+		boolean loggedIn = true;
+		
+		String action = req.getParameter("action");
+		
+		if(action == null){
+			req.setAttribute("error", "An unknown error happened (null action)");
+		}else if(action.equalsIgnoreCase("logout")){
+			UserController.logout(req);
+			loggedIn = false;
+			resp.sendRedirect(req.getContextPath() + "/login");
+		}else if(action.equalsIgnoreCase("clockIn")){
+			uc.clockIn(id);
+			req.setAttribute("success", "Successfully clocked in!");
+		}else if(action.equalsIgnoreCase("clockOut")){
+			uc.clockOut(id);
+			req.setAttribute("success", "Successfully clocked out!");
+		}else{
+			req.setAttribute("error", "An unknown error happened (unknown action)");
 		}
-		status=req.getParameter("clockIn");
-		if(status != null) {
-			if(req.getParameter("clockIn").equalsIgnoreCase("clockIn")){
-				System.out.println("Processing clockin");
-				uc.clockIn((int) session.getAttribute("user_id"));
-				resp.sendRedirect(req.getContextPath() + "/user_home");
-				session.setAttribute("success", session.getAttribute("time"));
-			}
-		}
-		status=req.getParameter("clockOut");
-		if(status != null) {
-			if(req.getParameter("clockOut").equalsIgnoreCase("clockOut")){
-				System.out.println("Processing clockout");
-				uc.clockOut((int) session.getAttribute("user_id"));
-				resp.sendRedirect(req.getContextPath() + "/user_home");
-				session.setAttribute("success", session.getAttribute("time"));
-			}
+		if(loggedIn){
+			req.setAttribute("clockedIn", uc.isClockedIn(id));
+			req.getRequestDispatcher("/user_home.jsp").forward(req, resp);
 		}
 	}
 }

@@ -49,18 +49,15 @@ public class LoginServlet extends HttpServlet{
 		email = req.getParameter("email");
 		password = req.getParameter("password");
 
-		if(email == null || password == null || email.equals("") || password.equals("")) {
+		if(email == null || password == null || email.equals("") || password.equals("")){
 			errorMessage = "Please specify both email and password"; 
-		}
-		else if(uc.findQuarantineUser(email)){
+		}else if(uc.findQuarantineUser(email)){
 			errorMessage = "Account hasn't been verified!";
-		}
-		else{
+		}else{
 			userSearch = uc.searchForUsers(-1, -1, false, email, false, null, false, null, -1, -1);
 			if(userSearch == null || userSearch.size() == 0 || !uc.authenticate(userSearch.get(0), password)){
 				errorMessage = "Incorrect email or password!";
-			}
-			else{
+			}else{
 				id = userSearch.get(0).getID();
 				if(uc.isLockedOut(id)){
 					errorMessage = "This account is currently locked out!";
@@ -71,8 +68,7 @@ public class LoginServlet extends HttpServlet{
 		if(errorMessage != null){
 			req.setAttribute("errorMessage", errorMessage);
 			req.getRequestDispatcher("/login.jsp").forward(req, resp);
-		}
-		else{
+		}else{
 			HttpSession session = req.getSession();
 			session.setAttribute("user_id", id);
 			resp.sendRedirect(req.getContextPath() + "/user_home");
