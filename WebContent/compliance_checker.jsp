@@ -8,14 +8,14 @@
 <link rel="stylesheet" href="css/bootstrap.css">
 </head>
 <body>
-	<h1>Search Positions</h1>
+	<h1>Compliance Checkers</h1>
 	<p class="note">
 		Want to return to the Homepage? <a href="./user_home">Home</a>
 	</p>
 	<div class="fluid-container">
 		<form class="form-horizontal" method="post">
 			<div class="form-group row">
-				<div class="col-1"></div>
+				<div class="col-4"></div>
 
 				<div class="fieldset col-2 text-center">
 					<input type="number" class="form-control" id="priority"
@@ -28,8 +28,8 @@
 			<div class="row">
 				<div class="col-1"></div>
 				<div class="col">Showing results ${(page*displaySize) + 1} -
-					${fn:length(positions) lt (((page+1)*displaySize) - 1)?fn:length(positions):(((page+1)*displaySize) - 1)}
-					of ${fn:length(positions)}</div>
+					${fn:length(issues) lt (((page+1)*displaySize) - 1)?fn:length(issues):(((page+1)*displaySize) - 1)}
+					of ${fn:length(issues)}</div>
 			</div>
 			<div class="row">
 				<div class="col-1"></div>
@@ -111,7 +111,7 @@
 					</div>
 				</c:if>
 				<div class="col-2 text-center">
-					<c:if test="${fn:length(positions) gt (displaySize*(page + 1))}">
+					<c:if test="${fn:length(issues) gt (displaySize*(page + 1))}">
 						<button type="submit" name="changePage" value="next"
 							class="btn btn-info">Next Page</button>
 					</c:if>

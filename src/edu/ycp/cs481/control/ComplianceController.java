@@ -21,47 +21,18 @@ public class ComplianceController {
 	private static UserController uc = new UserController();
 	private static SOPController sc = new SOPController(); 
 
-	public ComplianceController() {
-
 	}
-
-	public void setAndShowToDoList(Position p) {
-		List<SOP> displayList = p.getIncompleteSOPs();
-		for(SOP s: displayList) {
-			System.out.println(s.getID() + " | " + s.getTitle() + " | " + s.getDescription());
-		}
-	}
-
-	public void setAndshowDoneList(Position p) {
-		List<SOP> displayList = p.getCompletedSOPs();
-
-		for(SOP s: displayList) {
-			System.out.println(s.getID() + " | " + s.getTitle() + " | " + s.getDescription());
-		}
-	}
-
-	public boolean checkIfToDoIsEmpty(Position p) {
-		//set the initial condition to false and change it if need be
-		boolean areGaps = false;
-
-		if(p.getIncompleteSOPs().isEmpty()) {
-			System.out.println("There is no incomplete SOPs");
-			areGaps = false; 
-		} else {
-			areGaps = true;
-			System.out.println("There are incomplete SOPs");
-		}
-
-		return areGaps;
+	public ArrayList<ComplianceIssue> GetIssueswithUser(User u) {
+		ArrayList<ComplianceIssue> issues = null;
+		return issues;
 	}
 
 	//time to do the actual testing and checking of peoples training histories  
 	public ArrayList<ComplianceIssue> PullComplianceIssues() {
 		List<User> allUsers = uc.searchForUsers(-1, -1, false, "", false, "", false, "", 0, -1);
-		
-	
-
-				
+		for(User u: allUsers) {
+			
+		}
 		return null;
 	}
 }

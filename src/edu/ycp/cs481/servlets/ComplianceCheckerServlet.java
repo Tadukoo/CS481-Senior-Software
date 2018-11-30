@@ -32,7 +32,7 @@ public class ComplianceCheckerServlet extends HttpServlet{
 				SOPController sc = new SOPController();
 				ComplianceController cc = new ComplianceController();
 				ArrayList<ComplianceIssue> issues = cc.PullComplianceIssues();
-				
+				req.setAttribute("issues", issues);
 				req.setAttribute("displaySize", 10);
 				req.setAttribute("page", 0);
 				
@@ -55,10 +55,12 @@ public class ComplianceCheckerServlet extends HttpServlet{
 			int currentPage = Integer.parseInt(req.getParameter("page"));
 			if(changePage.equalsIgnoreCase("prev")){
 				req.setAttribute("page", currentPage - 1);
-			}else if(changePage.equalsIgnoreCase("next")){
+			}
+			else if(changePage.equalsIgnoreCase("next")){
 				req.setAttribute("page", currentPage + 1);
 			}
-		}else{
+		}
+		else{
 			req.setAttribute("page", 0);
 		}
 
