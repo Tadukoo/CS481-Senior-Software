@@ -49,7 +49,7 @@
 					</p>
 				</div>
 			</div>
-			<!--<c:forEach begin="${page*displaySize}"
+			<c:forEach begin="${page*displaySize}"
 				end="${((page+1)*displaySize) - 1}" items="${ComplianceList}"
 				var="current">
 				<div class="row">
@@ -67,9 +67,9 @@
 					<div class="col-2 text-center">
 						<p>${current.User}</p>
 					</div>
-					
+
 				</div>
-			</c:forEach> -->
+			</c:forEach>
 			<input type="hidden" name="page" value="${page}"> <input
 				type="hidden" name="displaySize" value="${displaySize}">
 			<div class="row">
