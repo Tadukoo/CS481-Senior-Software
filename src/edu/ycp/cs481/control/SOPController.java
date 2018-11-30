@@ -17,12 +17,25 @@ public class SOPController{
 						String.valueOf(authorID), String.valueOf(isArchived)});
 	}
 	
-	public ArrayList<SOP> searchForSOPs(int sopID, boolean titlePartial, String title, boolean descPartial, String description, 
-			int priority, int version, int authorID){
+	public ArrayList<SOP> searchForSOPs(int sopID, boolean titlePartial, String title, boolean descPartial, 
+			String description, int priority, int version, int authorID, int userID, int posID){
 		try{
-			ArrayList<SOP> results = db.doSearch(DBFormat.getSopResFormat(), "SOP", null, null, 
-					new String[]{"sop_id", "priority", "version", "author_id"}, 
-					new int[]{sopID, priority, version, authorID}, 
+			ArrayList<String> otherTables = new ArrayList<String>();
+			ArrayList<String> junctions = new ArrayList<String>();
+			if(userID != -1){
+				otherTables.add("PositionSOP");
+				otherTables.add("UserSOP");
+				otherTables.add("User");
+				junctions.add("PositionSOP.position_id = User.position_id");
+				junctions.add("(PositionSOP.sop_id = SOP.sop_id or UserSOP.sop_id = SOP.sop_id)");
+			}
+			if(posID != -1){
+				otherTables.add("PositionSOP");
+				junctions.add("PositionSOP.sop_id = SOP.sop_id");
+			}
+			ArrayList<SOP> results = db.doSearch(DBFormat.getSopResFormat(), "SOP", otherTables, junctions, 
+					new String[]{"user_id", "sop_id", "priority", "version", "author_id", "position_id"}, 
+					new int[]{userID, sopID, priority, version, authorID, posID}, 
 					new boolean[]{titlePartial, descPartial}, 
 					new String[]{"title", "description"}, 
 					new String[]{title, description});
@@ -50,7 +63,7 @@ public class SOPController{
 	}
 	
 	public void reversionSOP(int sopID, int version){
-		SOP s = searchForSOPs(sopID, false, null, false, null, -1, -1, -1).get(0);
+		SOP s = searchForSOPs(sopID, false, null, false, null, -1, -1, -1, -1, -1).get(0);
 		
 		archiveSOP(sopID);
 		insertSOP(s.getTitle(), s.getDescription(), s.getPriority(), version, s.getAuthorID(), false);

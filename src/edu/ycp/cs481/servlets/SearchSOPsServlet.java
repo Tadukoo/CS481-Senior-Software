@@ -23,7 +23,7 @@ public class SearchSOPsServlet extends HttpServlet{
 		}else{
 			// TODO: Use posID if it's sent in via url
 			SOPController sc = new SOPController();
-			ArrayList<SOP> sops = sc.searchForSOPs(-1, false, null, false, null, -1, -1, -1);
+			ArrayList<SOP> sops = sc.searchForSOPs(-1, false, null, false, null, -1, -1, -1, -1, -1);
 			req.setAttribute("sops", sops);
 			// Set default page and display size
 			req.setAttribute("page", 0);
@@ -68,7 +68,7 @@ public class SearchSOPsServlet extends HttpServlet{
 		int authorID = authorIDStr.equalsIgnoreCase("")?-1:Integer.parseInt(authorIDStr);
 		
 		SOPController sc = new SOPController();
-		ArrayList<SOP> sops = sc.searchForSOPs(id, true, title, true, description, priority, version, authorID);
+		ArrayList<SOP> sops = sc.searchForSOPs(id, true, title, true, description, priority, version, authorID, -1, -1);
 		
 		req.setAttribute("sops", sops);
 		
