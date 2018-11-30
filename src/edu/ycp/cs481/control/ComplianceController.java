@@ -21,7 +21,6 @@ public class ComplianceController {
 	private static UserController uc = new UserController();
 	private static SOPController sc = new SOPController(); 
 
-	}
 	public ArrayList<ComplianceIssue> GetIssueswithUser(User u) {
 		ArrayList<ComplianceIssue> issues = null;
 		return issues;
