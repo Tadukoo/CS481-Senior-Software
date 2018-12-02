@@ -267,7 +267,7 @@ public class UserController{
 	
 	public boolean userHasPermission(int userID, EnumPermission perm){
 		try{
-			String name = "Get Hashed Token from ResetPassword";
+			String name = "Get User's role_id";
 			String sql = "select role_id from User where user_id = " + userID;
 			int roleID = db.executeQuery(name, sql, DBFormat.getIntResFormat()).get(0);
 			
