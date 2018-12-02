@@ -259,7 +259,7 @@ public class Database{
 				 "title VARCHAR(80) NOT NULL," +
 				 "description VARCHAR(255) NOT NULL," +
 				 "priority INT NOT NULL," +
-				 "default_role INT NOT NULL," +
+				 "default_role INT NOT NULL DEFAULT 1," +
 				 "PRIMARY KEY (position_id), " +
 				 "UNIQUE INDEX position_id_UNIQUE (position_id ASC) VISIBLE, " + 
 				 "CONSTRAINT FOREIGN KEY (default_role) REFERENCES Role (role_id) " +
@@ -277,7 +277,7 @@ public class Database{
 				  "create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
 				  "position_id INT NOT NULL, " +
 				  "employee_id INT NOT NULL DEFAULT 0, " +
-				  "role_id INT NOT NULL DEFAULT 0, " +
+				  "role_id INT NOT NULL DEFAULT 1, " +
 				  "PRIMARY KEY (user_id), " +
 				  "UNIQUE INDEX user_id_UNIQUE (user_id ASC) VISIBLE, " +
 				  "INDEX fk_User_Position_idx (position_id ASC) VISIBLE, " +
@@ -322,7 +322,7 @@ public class Database{
 				  "UNIQUE INDEX perm_id_UNIQUE (perm_id ASC) VISIBLE);");
 		
 		names.add("Create RolePermission table");
-		sqls.add("CREATE TABLE IF NOT EXISTS PositionPermission (" +
+		sqls.add("CREATE TABLE IF NOT EXISTS RolePermission (" +
 				   "role_id INT NOT NULL, " +
 				   "perm_id INT NOT NULL, " +
 					"CONSTRAINT FOREIGN KEY (role_id) REFERENCES Role (role_id), " + 
@@ -395,6 +395,7 @@ public class Database{
 		InitialData initData = new InitialData();
 		
 		// They must go in this order
+		List<String> roleList = initData.getInitialRoles();
 		List<Position> posList = initData.getInitialPositions();
 		List<User> userList = initData.getInitialUsers();
 		List<SOP> sopList = initData.getInitialSOPs();
@@ -404,6 +405,12 @@ public class Database{
 		
 		ArrayList<String> names = new ArrayList<String>();
 		ArrayList<String> sqls = new ArrayList<String>();
+		
+		for(String s: roleList){
+			names.add("Insert Role " + s);
+			sqls.add("insert into Role (title) " +
+					 "values ('" + s +"')");
+		}
 		
 		for(Position p: posList){
 			names.add("Insert Position " + p.getTitle());
@@ -445,10 +452,11 @@ public class Database{
 			" values (" + perm.getID() + ", '" + perm.getPerm() + "')");
 		}
 		
-		for(Position p: posList){
-			names.add("Insert Position " + p.getTitle() + " and Permission " + perms.get(permIds[id] - 1).getPerm());
-			sqls.add("insert into PositionPermission (position_id, perm_id) " +
-			" values (" + p.getID() + ", " + permIds[id] + ")");
+		//
+		for(int i = 1; i < roleList.size(); i++ ){
+			names.add("Insert RolePermission " + perms.get(permIds[id] - 1).getPerm());
+			sqls.add("insert into RolePermission (role_id, perm_id) " +
+			" values (" + i + ", " + permIds[id] + ")");
 			id++;
 		}
 		
