@@ -261,8 +261,9 @@ public class Database{
 				 "priority INT NOT NULL," +
 				 "default_role INT NOT NULL," +
 				 "PRIMARY KEY (position_id), " +
-				 "UNIQUE INDEX position_id_UNIQUE (position_id ASC) VISIBLE), " + 
-				 "FOREIGN KEY (default_role) REFERENCES Role (role_id);");
+				 "UNIQUE INDEX position_id_UNIQUE (position_id ASC) VISIBLE, " + 
+				 "CONSTRAINT FOREIGN KEY (default_role) REFERENCES Role (role_id) " +
+				 ");");
 		
 		names.add("Create Users table");
 		sqls.add("CREATE TABLE IF NOT EXISTS User (" +
@@ -281,8 +282,8 @@ public class Database{
 				  "UNIQUE INDEX user_id_UNIQUE (user_id ASC) VISIBLE, " +
 				  "INDEX fk_User_Position_idx (position_id ASC) VISIBLE, " +
 				  "CONSTRAINT User_Position " +
-				  "FOREIGN KEY (position_id) REFERENCES Position (position_id) " +
-				  "FOREIGN KEY (role_id) REFERENCES Role (role_id) " +
+				  "FOREIGN KEY (position_id) REFERENCES Position (position_id), " + 
+				  "CONSTRAINT FOREIGN KEY (role_id) REFERENCES Role (role_id) " +
 				  "ON DELETE NO ACTION " +
 				  "ON UPDATE NO ACTION);");
 		
