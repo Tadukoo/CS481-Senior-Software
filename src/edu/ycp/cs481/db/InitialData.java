@@ -9,6 +9,7 @@ import edu.ycp.cs481.model.SOP;
 import edu.ycp.cs481.model.User;
 
 public class InitialData {
+	private ArrayList<String> rList;
 	private ArrayList<User> uList;
 	private User u1, u2;
 	private ArrayList<Position> pList;
@@ -18,10 +19,15 @@ public class InitialData {
 	private int[] permIds;
 	
 	public InitialData() {
+		rList = new ArrayList<String>();
 		uList = new ArrayList<User>();
 		pList = new ArrayList<Position>();
 		sList = new ArrayList<SOP>();
 		p1reqs = new ArrayList<SOP>();
+		
+		// Roles //
+		rList.add("User");
+		rList.add("Admin");
 		
 		p1 = new Position();
 		p1.setID(1);
@@ -122,6 +128,9 @@ public class InitialData {
 		permIds[2] = 4;
 	}
 
+	public ArrayList<String> getInitialRoles(){
+		return rList;
+	}
 
 	public ArrayList<User> getInitialUsers(){
 		return uList;

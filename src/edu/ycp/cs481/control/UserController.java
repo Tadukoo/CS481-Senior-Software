@@ -35,11 +35,20 @@ public class UserController{
 		if(positionID != 2)
 			password = hashPassword(password);
 		
+		int defaultRole = 0;
+		
+		try {
+			defaultRole = db.executeQuery("Checking Quarantine User doesn't exist", 
+					"select default_role from Position where position_id = " + positionID, DBFormat.getIntResFormat()).get(0);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		return db.insertAndGetID("User", "user_id",
 				new String[]{"email", "password", "first_name", "last_name", "locked_out", "archive_flag",
-						"position_id"},
+						"position_id, role_id"},
 				new String[]{email, password, firstName, lastName, String.valueOf(lockedOut), String.valueOf(isArchived),
-						String.valueOf(positionID)});
+						String.valueOf(positionID), String.valueOf(defaultRole)});
 	}
 	
 	public boolean findQuarantineUser(String email){
@@ -258,15 +267,22 @@ public class UserController{
 	
 	public boolean userHasPermission(int userID, EnumPermission perm){
 		try{
-			ArrayList<User> u = searchForUsers(userID, -1, false, null, false, null, false, null, -1, -1);
-			String name = "Permission check for permission " + perm.getPerm();
-			String sql = "select * from PositionPermission where position_id = " + u.get(0).getPosition().getID() + 
+			String name = "Get User's role_id";
+			String sql = "select role_id from User where user_id = " + userID;
+			int roleID = db.executeQuery(name, sql, DBFormat.getIntResFormat()).get(0);
+			
+			String name2 = "Permission check for permission " + perm.getPerm();
+			String sql2 = "select * from RolePermission where role_id = " + roleID + 
 															" and perm_id = " + perm.getID();
-			return db.executeQuery(name, sql, DBFormat.getCheckResFormat());
+			return db.executeQuery(name2, sql2, DBFormat.getCheckResFormat());
 		}catch(SQLException e){
 			e.printStackTrace();
 		} 
 		return false;
+	}
+	
+	public void changeUserRole(int userID, int roleID){
+		db.executeUpdate("Change user's role", "update User set role_id = " + roleID + " where user_id = " + userID);
 	}
 	
 	public boolean managerHasSubordinate(int managerID, int userID){
