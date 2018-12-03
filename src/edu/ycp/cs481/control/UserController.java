@@ -281,6 +281,10 @@ public class UserController{
 		return false;
 	}
 	
+	public void changeUserRole(int userID, int roleID){
+		db.executeUpdate("Change user's role", "update User set role_id = " + roleID + " where user_id = " + userID);
+	}
+	
 	public boolean managerHasSubordinate(int managerID, int userID){
 		try{
 			String name = "";
