@@ -24,7 +24,7 @@ public class SearchUsersServlet extends HttpServlet{
 		}else{
 			UserController uc = new UserController();
 			int userID = (int) session.getAttribute("user_id");
-			if(uc.userHasPermission(userID, EnumPermission.ALL) || uc.userHasPermission(userID, EnumPermission.SEARCH_USERS)){
+			if(uc.hasPermission(userID, EnumPermission.ALL) || uc.hasPermission(userID, EnumPermission.SEARCH_USERS)){
 				ArrayList<User> users = uc.searchForUsers(-1, -1, false, null, false, null, false, null, -1, -1);
 				req.setAttribute("users", users);
 				// Set default page and display size

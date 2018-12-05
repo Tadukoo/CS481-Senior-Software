@@ -26,7 +26,7 @@ public class CreatePositionServlet extends HttpServlet{
 		}else{
 			UserController uc = new UserController();
 			int userID = (int) session.getAttribute("user_id");
-			if(uc.userHasPermission(userID, EnumPermission.ALL) || uc.userHasPermission(userID, EnumPermission.CREATE_POSITION)){
+			if(uc.hasPermission(userID, EnumPermission.ALL) || uc.hasPermission(userID, EnumPermission.CREATE_POSITION)){
 				req.getRequestDispatcher("/create_position.jsp").forward(req, resp);
 			}else{
 				session.setAttribute("error", "You don't have permission to create a position!");

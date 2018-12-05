@@ -58,7 +58,7 @@ public class AccountSettingsServlet extends HttpServlet{
 				req.setAttribute("changeEmailError", "Incorrect password!");
 				error = true;
 			}else{
-				uc.changeUserEmail(user.getID(), email, newEmail);
+				uc.changeEmail(user.getID(), email, newEmail);
 				req.setAttribute("email", newEmail);
 				req.setAttribute("changeEmailSuccess", "Changed email to " + newEmail);
 			}

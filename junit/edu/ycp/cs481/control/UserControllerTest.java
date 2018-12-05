@@ -257,7 +257,7 @@ public class UserControllerTest {
 		assertEquals("rookie@email.com", user2.getEmail());
 		
 		//this method isnt working 
-		uc.changeUserEmail(user2.getID(), oldEmail, newEmail);
+		uc.changeEmail(user2.getID(), oldEmail, newEmail);
 		
 		
 		assertEquals("lelelel@tcp.com", user2.getEmail());
@@ -296,8 +296,8 @@ public class UserControllerTest {
 	
 	@Test 
 	public void testUserHasPermission() {
-		assertEquals(true, uc.userHasPermission(1, EnumPermission.ALL));
-		assertEquals(false, uc.userHasPermission(2, EnumPermission.ALL));
+		assertEquals(true, uc.hasPermission(1, EnumPermission.ALL));
+		assertEquals(false, uc.hasPermission(2, EnumPermission.ALL));
 	}
 	
 	//@Test

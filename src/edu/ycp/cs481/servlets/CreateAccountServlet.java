@@ -25,7 +25,7 @@ public class CreateAccountServlet extends HttpServlet{
 		}else{
 			UserController uc = new UserController();
 			int userID = (int) session.getAttribute("user_id");
-			if(uc.userHasPermission(userID, EnumPermission.ALL) || uc.userHasPermission(userID, EnumPermission.CREATE_USER)){
+			if(uc.hasPermission(userID, EnumPermission.ALL) || uc.hasPermission(userID, EnumPermission.CREATE_USER)){
 				req.setAttribute("managerCreate", "true");
 				req.getRequestDispatcher("/create_account.jsp").forward(req, resp);
 			}else{

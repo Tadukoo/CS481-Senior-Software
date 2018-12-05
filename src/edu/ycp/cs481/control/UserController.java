@@ -103,7 +103,7 @@ public class UserController{
 				+ "\">Verify Email</a>");
 	}
 	
-	public boolean verifyUser(String email, String verificationString) {
+	public boolean verifyEmail(String email, String verificationString) {
 		boolean verify = false;
 		String hashedVerifString = null;
 		User user = null;
@@ -172,7 +172,7 @@ public class UserController{
 		return null;
 	}
 
-	public void changeUserEmail(int userID, String oldEmail, String newEmail){
+	public void changeEmail(int userID, String oldEmail, String newEmail){
 		db.executeUpdate("Change User Email", "update User set email = '" + newEmail + "' where " + "email = '"
 				+ oldEmail + "' and user_id = " + userID);
 	}
@@ -265,7 +265,7 @@ public class UserController{
 		return verify;
 	}
 	
-	public boolean userHasPermission(int userID, EnumPermission perm){
+	public boolean hasPermission(int userID, EnumPermission perm){
 		try{
 			String name = "Get User's role_id";
 			String sql = "select role_id from User where user_id = " + userID;
@@ -281,7 +281,7 @@ public class UserController{
 		return false;
 	}
 	
-	public void changeUserRole(int userID, int roleID){
+	public void changeRole(int userID, int roleID){
 		db.executeUpdate("Change user's role", "update User set role_id = " + roleID + " where user_id = " + userID);
 	}
 	
