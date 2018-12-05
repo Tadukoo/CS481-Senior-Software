@@ -55,7 +55,7 @@ public class LoginServlet extends HttpServlet{
 			errorMessage = "Account hasn't been verified!";
 		}else{
 			userSearch = uc.searchForUsers(-1, -1, false, email, false, null, false, null, -1, -1);
-			if(userSearch == null || userSearch.size() == 0 || !uc.authenticate(userSearch.get(0), password)){
+			if(userSearch == null || userSearch.size() == 0 || !uc.authenticate(userSearch.get(0).getPassword(), password)){
 				errorMessage = "Incorrect email or password!";
 			}else{
 				id = userSearch.get(0).getID();

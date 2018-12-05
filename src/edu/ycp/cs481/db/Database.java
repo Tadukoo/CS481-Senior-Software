@@ -421,8 +421,8 @@ public class Database{
 		for(User u: userList){
 			names.add("Insert User " + u.getFirstName() + " " + u.getLastName());
 			sqls.add("insert into User (email, password, first_name, last_name, locked_out, archive_flag, " +
-					"position_id)  values ('" + u.getEmail() + "', '" + UserController.hashPassword(u.getPassword()) + "', '" + 
-					u.getFirstName() + "', '" + u.getLastName() + "', " + u.isLockedOut() + ", " + u.isArchived() + ", " + 
+					"position_id)  values ('" + u.getEmail() + "', '" + new UserController().hashPassword(u.getPassword()) + 
+					"', '" + u.getFirstName() + "', '" + u.getLastName() + "', " + u.isLockedOut() + ", " + u.isArchived() + ", " + 
 					u.getPosition().getID() + ")");
 		}
 		

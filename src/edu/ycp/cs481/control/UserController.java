@@ -15,16 +15,12 @@ import org.mindrot.jbcrypt.*;
 
 public class UserController{
 	private Database db = new Database();
-
-	public boolean authenticate(User u, String pswd){
-		return BCrypt.checkpw(pswd, u.getPassword());
-	}
 	
-	public boolean authenticate(String hashedPswd, String pswd){
-		return BCrypt.checkpw(pswd, hashedPswd);
+	public boolean authenticate(String password, String hashedPass){
+		return BCrypt.checkpw(password, hashedPass);
 	}
 
-	public static String hashPassword(String password){
+	public String hashPassword(String password){
 		return BCrypt.hashpw(password, BCrypt.gensalt());
 	}
 	
@@ -248,7 +244,6 @@ public class UserController{
 	
 	public boolean verifyResetPasswordToken(String email, String token) {
 		String hashedToken = "";
-		boolean verify = false;
 		
 		try {
 			String name = "Get Hashed Token from ResetPassword";
@@ -258,11 +253,7 @@ public class UserController{
 			e.printStackTrace();
 		}
 		
-		if(authenticate(hashedToken, token)) {
-			verify = true;
-		}
-		
-		return verify;
+		return authenticate(token, hashedToken);
 	}
 	
 	public boolean hasPermission(int userID, EnumPermission perm){
