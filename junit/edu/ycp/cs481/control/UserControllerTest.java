@@ -271,7 +271,7 @@ public class UserControllerTest {
 		assertEquals("", user3.getPassword()); 
 		
 		//this method also appears to not be working 
-		uc.changeUserPassword(user3.getID(), newPass);
+		uc.changePassword(user3.getID(), newPass);
 		
 		//search for users and pass that through user 3
 		

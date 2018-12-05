@@ -177,12 +177,12 @@ public class UserController{
 				+ oldEmail + "' and user_id = " + userID);
 	}
 
-	public void changeUserPassword(int userID, String newPass){
+	public void changePassword(int userID, String newPass){
 		db.executeUpdate("Change User Password",
 				"update User set password = '" + hashPassword(newPass) + "' where " + "user_id = " + userID);
 	}
 	
-	public void changeUserPassword(String email, String newPass){
+	public void resetPassword(String email, String newPass){
 		db.executeUpdate("Delete ResetPassword entry", "delete from ResetPassword where email = '" + email + "'");
 		db.executeUpdate("Change User Password",
 				"update User set password = '" + hashPassword(newPass) + "' where " + "email = '" + email + "'");
@@ -246,7 +246,7 @@ public class UserController{
 		return duplicate;
 	}
 	
-	public boolean resetPassword(String email, String token) {
+	public boolean verifyResetPasswordToken(String email, String token) {
 		String hashedToken = "";
 		boolean verify = false;
 		

@@ -23,7 +23,7 @@ public class ResetPasswordServlet extends HttpServlet{
 		UserController uc = new UserController();
 		
 		if(email != null && token != null) {
-			if(!uc.resetPassword(email, token)){
+			if(!uc.verifyResetPasswordToken(email, token)){
 				req.setAttribute("errorMessage", "Incorrect token");
 			}else{
 				req.setAttribute("goodToken", "true");
@@ -77,7 +77,7 @@ public class ResetPasswordServlet extends HttpServlet{
 				req.getRequestDispatcher("/reset_password.jsp").forward(req, resp);
 			}else{
 				HttpSession session = req.getSession();
-				uc.changeUserPassword(email, newPassword);
+				uc.resetPassword(email, newPassword);
 				// TODO: Remove reset password token from db table
 				session.setAttribute("successMessage", "Successfully changed password! You may now login.");
 				resp.sendRedirect(req.getContextPath() + "/login");

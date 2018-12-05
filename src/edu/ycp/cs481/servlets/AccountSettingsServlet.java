@@ -78,7 +78,7 @@ public class AccountSettingsServlet extends HttpServlet{
 			}else if(!uc.authenticate(user, password)){
 				req.setAttribute("changePasswordError", "Incorrect password!");
 			}else{
-				uc.changeUserPassword(user.getID(), newPassword);
+				uc.changePassword(user.getID(), newPassword);
 				req.setAttribute("changePasswordSuccess", "Changed password");
 			}
 			req.getRequestDispatcher("/account_settings.jsp").forward(req, resp);
