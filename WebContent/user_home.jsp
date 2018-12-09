@@ -103,7 +103,7 @@
 		<div class="row">
 			<div class="col"></div>
 			<div class="col text-center">
-				<a href="search_system" class="btn btn-info btn-block" role="button">Compliance Monitor</a>
+				<a href="compliance_checker" class="btn btn-info btn-block" role="button">Compliance Monitor</a>
 			</div>
 			<div class="col"></div>
 
