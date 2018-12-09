@@ -16,20 +16,19 @@ import org.mindrot.jbcrypt.*;
 public class UserController{
 	private Database db = new Database();
 	
-	public boolean authenticate(String password, String hashedPass){
-		return BCrypt.checkpw(password, hashedPass);
-	}
-
 	public String hashPassword(String password){
 		return BCrypt.hashpw(password, BCrypt.gensalt());
 	}
 	
-	public Integer insertUser(String email, String password, String firstName, String lastName, boolean lockedOut,
-			boolean isArchived, int positionID){
-		// Hash password if positionID is not 2, with 2 meaning their account was created themselves. ID different than 2 means
-		// an Admin/Manager made the account
-		if(positionID != 2)
+	public boolean authenticate(String password, String hashedPass){
+		return BCrypt.checkpw(password, hashedPass);
+	}
+
+	public Integer insertUser(boolean passNeedsHashed, String email, String password, String firstName, String lastName, 
+			boolean lockedOut, boolean isArchived, int positionID){
+		if(passNeedsHashed){
 			password = hashPassword(password);
+		}
 		
 		int defaultRole = 0;
 		
@@ -128,7 +127,7 @@ public class UserController{
 			// Delete entry in Quarantine
 			db.executeUpdate("Deleting Quarantine User", "delete from Quarantine where email = '" + email + "'");
 			
-			insertUser(user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName(), false, false, 2);
+			insertUser(false, user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName(), false, false, 2);
 		} 
 		
 		return verify;
