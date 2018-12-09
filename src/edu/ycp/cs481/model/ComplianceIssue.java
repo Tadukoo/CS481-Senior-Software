@@ -2,7 +2,6 @@ package edu.ycp.cs481.model;
 
 public class ComplianceIssue {
     //variables
-    ComplianceIssue list = new ComplianceIssue();
     private String title;
     private int priority;
     private String address;
@@ -20,7 +19,6 @@ public class ComplianceIssue {
         return address;
     }
 
- 
 
     public void setSOPTitle(String title) {
         this.title = title;

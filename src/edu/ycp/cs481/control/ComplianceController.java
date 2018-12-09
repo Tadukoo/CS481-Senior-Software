@@ -22,16 +22,27 @@ public class ComplianceController {
 	private static SOPController sc = new SOPController(); 
 
 	public ArrayList<ComplianceIssue> GetIssueswithUser(User u) {
-		ArrayList<ComplianceIssue> issues = null;
+		ArrayList<ComplianceIssue> issues =  PullComplianceIssues();
+		ArrayList<ComplianceIssue> userissues = new ArrayList<ComplianceIssue>(); 
+		for
 		return issues;
 	}
 
-	//time to do the actual testing and checking of peoples training histories  
+	//pulls all compliance issues with 
 	public ArrayList<ComplianceIssue> PullComplianceIssues() {
 		List<User> allUsers = uc.searchForUsers(-1, -1, false, "", false, "", false, "", 0, -1);
+		ArrayList<ComplianceIssue> issues = new ArrayList<ComplianceIssue>(); 
+		ArrayList<SOP> sops = new ArrayList<SOP>();
+		ComplianceIssue i = new ComplianceIssue();
 		for(User u: allUsers) {
-			
+			sops = sc.searchForSOPs(-1, false, "", false, "", -1, -1, -1, u.getID(), -1);
+			i.setEmail(u.getEmail());
+			for(SOP s: sops) {
+				i.setPriority(s.getPriority());
+				i.setSOPTitle(s.getTitle());
+				issues.add(i);
+			}
 		}
-		return null;
+		return issues;
 	}
 }
