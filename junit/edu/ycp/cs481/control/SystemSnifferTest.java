@@ -6,11 +6,11 @@ import org.junit.Before;
 import edu.ycp.cs481.model.User;
 import edu.ycp.cs481.model.SOP;
 import edu.ycp.cs481.model.Position;
-import edu.ycp.cs481.control.SystemSnifferController;
+import edu.ycp.cs481.control.ComplianceController;
 
 public class SystemSnifferTest {
 	
-	private SystemSnifferController s; 
+	private ComplianceController s; 
 	private User admin, user, manager;
 	
 	private SOP s1, s2, s3, s4, s5, s6, s7, s8, s9, s10; 
