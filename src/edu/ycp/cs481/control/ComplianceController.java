@@ -24,7 +24,7 @@ public class ComplianceController {
 	public ArrayList<ComplianceIssue> GetIssueswithUser(User u) {
 		ArrayList<ComplianceIssue> issues =  PullComplianceIssues();
 		ArrayList<ComplianceIssue> userissues = new ArrayList<ComplianceIssue>(); 
-		for
+		// TODO: THIS!?!?!?!?!?!?!?!?
 		return issues;
 	}
 
