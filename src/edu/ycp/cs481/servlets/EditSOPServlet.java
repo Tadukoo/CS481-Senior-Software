@@ -38,7 +38,7 @@ public class EditSOPServlet extends HttpServlet{
 		}else{
 			UserController uc = new UserController();
 			int userID = (int) session.getAttribute("user_id");
-			if(uc.userHasPermission(userID, EnumPermission.ALL) || uc.userHasPermission(userID, EnumPermission.EDIT_SOPS)){
+			if(uc.hasPermission(userID, EnumPermission.ALL) || uc.hasPermission(userID, EnumPermission.EDIT_SOPS)){
 				loadSOP(req);
 				req.getRequestDispatcher("/edit_sop.jsp").forward(req, resp);
 			}else{

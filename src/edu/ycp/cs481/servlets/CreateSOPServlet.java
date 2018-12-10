@@ -26,7 +26,7 @@ public class CreateSOPServlet extends HttpServlet{
 		}else{
 			UserController uc = new UserController();
 			int userID = (int) session.getAttribute("user_id");
-			if(uc.userHasPermission(userID, EnumPermission.ALL) || uc.userHasPermission(userID, EnumPermission.CREATE_SOP)){
+			if(uc.hasPermission(userID, EnumPermission.ALL) || uc.hasPermission(userID, EnumPermission.CREATE_SOP)){
 				req.getRequestDispatcher("/create_sop.jsp").forward(req, resp);
 			}else{
 				session.setAttribute("error", "You don't have permission to create an SOP!");

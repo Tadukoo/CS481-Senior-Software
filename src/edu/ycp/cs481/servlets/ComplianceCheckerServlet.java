@@ -1,4 +1,5 @@
 package edu.ycp.cs481.servlets;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -13,7 +14,6 @@ import edu.ycp.cs481.control.SOPController;
 import edu.ycp.cs481.control.UserController;
 import edu.ycp.cs481.model.ComplianceIssue;
 import edu.ycp.cs481.model.EnumPermission;
-import edu.ycp.cs481.model.SOP;
 
 @SuppressWarnings("serial")
 public class ComplianceCheckerServlet extends HttpServlet{
@@ -27,7 +27,7 @@ public class ComplianceCheckerServlet extends HttpServlet{
 		else{
 			UserController uc = new UserController();
 			int userID = (int) session.getAttribute("user_id");
-			if(uc.userHasPermission(userID, EnumPermission.ALL)){
+			if(uc.hasPermission(userID, EnumPermission.ALL)){
 				// Only admins with full permissions can go here ^
 				SOPController sc = new SOPController();
 				ComplianceController cc = new ComplianceController();
@@ -37,8 +37,7 @@ public class ComplianceCheckerServlet extends HttpServlet{
 				req.setAttribute("page", 0);
 				
 				req.getRequestDispatcher("/compliance_checker.jsp").forward(req, resp);	
-			}
-			else{
+			}else{
 				session.setAttribute("error", "Sorry, you don't have permission to do that.");
 				resp.sendRedirect(req.getContextPath() + "/user_home");
 			}

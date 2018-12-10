@@ -15,25 +15,20 @@ import org.mindrot.jbcrypt.*;
 
 public class UserController{
 	private Database db = new Database();
-
-	public boolean authenticate(User u, String pswd){
-		return BCrypt.checkpw(pswd, u.getPassword());
-	}
 	
-	public boolean authenticate(String hashedPswd, String pswd){
-		return BCrypt.checkpw(pswd, hashedPswd);
-	}
-
-	public static String hashPassword(String password){
+	public String hashPassword(String password){
 		return BCrypt.hashpw(password, BCrypt.gensalt());
 	}
 	
-	public Integer insertUser(String email, String password, String firstName, String lastName, boolean lockedOut,
-			boolean isArchived, int positionID){
-		// Hash password if positionID is not 2, with 2 meaning their account was created themselves. ID different than 2 means
-		// an Admin/Manager made the account
-		if(positionID != 2)
+	public boolean authenticate(String password, String hashedPass){
+		return BCrypt.checkpw(password, hashedPass);
+	}
+
+	public Integer insertUser(boolean passNeedsHashed, String email, String password, String firstName, String lastName, 
+			boolean lockedOut, boolean isArchived, int positionID){
+		if(passNeedsHashed){
 			password = hashPassword(password);
+		}
 		
 		int defaultRole = 0;
 		
@@ -103,7 +98,7 @@ public class UserController{
 				+ "\">Verify Email</a>");
 	}
 	
-	public boolean verifyUser(String email, String verificationString) {
+	public boolean verifyEmail(String email, String verificationString) {
 		boolean verify = false;
 		String hashedVerifString = null;
 		User user = null;
@@ -132,7 +127,7 @@ public class UserController{
 			// Delete entry in Quarantine
 			db.executeUpdate("Deleting Quarantine User", "delete from Quarantine where email = '" + email + "'");
 			
-			insertUser(user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName(), false, false, 2);
+			insertUser(false, user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName(), false, false, 2);
 		} 
 		
 		return verify;
@@ -172,17 +167,17 @@ public class UserController{
 		return null;
 	}
 
-	public void changeUserEmail(int userID, String oldEmail, String newEmail){
+	public void changeEmail(int userID, String oldEmail, String newEmail){
 		db.executeUpdate("Change User Email", "update User set email = '" + newEmail + "' where " + "email = '"
 				+ oldEmail + "' and user_id = " + userID);
 	}
 
-	public void changeUserPassword(int userID, String newPass){
+	public void changePassword(int userID, String newPass){
 		db.executeUpdate("Change User Password",
 				"update User set password = '" + hashPassword(newPass) + "' where " + "user_id = " + userID);
 	}
 	
-	public void changeUserPassword(String email, String newPass){
+	public void resetPassword(String email, String newPass){
 		db.executeUpdate("Delete ResetPassword entry", "delete from ResetPassword where email = '" + email + "'");
 		db.executeUpdate("Change User Password",
 				"update User set password = '" + hashPassword(newPass) + "' where " + "email = '" + email + "'");
@@ -246,9 +241,8 @@ public class UserController{
 		return duplicate;
 	}
 	
-	public boolean resetPassword(String email, String token) {
+	public boolean verifyResetPasswordToken(String email, String token) {
 		String hashedToken = "";
-		boolean verify = false;
 		
 		try {
 			String name = "Get Hashed Token from ResetPassword";
@@ -258,14 +252,10 @@ public class UserController{
 			e.printStackTrace();
 		}
 		
-		if(authenticate(hashedToken, token)) {
-			verify = true;
-		}
-		
-		return verify;
+		return authenticate(token, hashedToken);
 	}
 	
-	public boolean userHasPermission(int userID, EnumPermission perm){
+	public boolean hasPermission(int userID, EnumPermission perm){
 		try{
 			String name = "Get User's role_id";
 			String sql = "select role_id from User where user_id = " + userID;
@@ -281,7 +271,7 @@ public class UserController{
 		return false;
 	}
 	
-	public void changeUserRole(int userID, int roleID){
+	public void changeRole(int userID, int roleID){
 		db.executeUpdate("Change user's role", "update User set role_id = " + roleID + " where user_id = " + userID);
 	}
 	

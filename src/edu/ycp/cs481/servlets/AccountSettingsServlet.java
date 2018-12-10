@@ -54,11 +54,11 @@ public class AccountSettingsServlet extends HttpServlet{
 			if(!newEmail.equals(newEmailConfirm)){
 				req.setAttribute("changeEmailError", "Emails don't match!");
 				error = true;
-			}else if(!uc.authenticate(user, password)){
+			}else if(!uc.authenticate(user.getPassword(), password)){
 				req.setAttribute("changeEmailError", "Incorrect password!");
 				error = true;
 			}else{
-				uc.changeUserEmail(user.getID(), email, newEmail);
+				uc.changeEmail(user.getID(), email, newEmail);
 				req.setAttribute("email", newEmail);
 				req.setAttribute("changeEmailSuccess", "Changed email to " + newEmail);
 			}
@@ -75,10 +75,10 @@ public class AccountSettingsServlet extends HttpServlet{
 			
 			if(!newPassword.equals(newPasswordConfirm)){
 				req.setAttribute("changePasswordError", "Passwords don't match!");
-			}else if(!uc.authenticate(user, password)){
+			}else if(!uc.authenticate(user.getPassword(), password)){
 				req.setAttribute("changePasswordError", "Incorrect password!");
 			}else{
-				uc.changeUserPassword(user.getID(), newPassword);
+				uc.changePassword(user.getID(), newPassword);
 				req.setAttribute("changePasswordSuccess", "Changed password");
 			}
 			req.getRequestDispatcher("/account_settings.jsp").forward(req, resp);

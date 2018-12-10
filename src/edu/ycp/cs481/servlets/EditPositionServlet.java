@@ -36,7 +36,7 @@ public class EditPositionServlet extends HttpServlet{
 		}else{
 			UserController uc = new UserController();
 			int userID = (int) session.getAttribute("user_id");
-			if(uc.userHasPermission(userID, EnumPermission.ALL) || uc.userHasPermission(userID, EnumPermission.EDIT_POSITIONS)){
+			if(uc.hasPermission(userID, EnumPermission.ALL) || uc.hasPermission(userID, EnumPermission.EDIT_POSITIONS)){
 				loadPosition(req);
 				req.getRequestDispatcher("/edit_position.jsp").forward(req, resp);
 			}else{

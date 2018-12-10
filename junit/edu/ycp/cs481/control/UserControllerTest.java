@@ -1,8 +1,11 @@
 package edu.ycp.cs481.control;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,15 +14,14 @@ import edu.ycp.cs481.model.EnumPermission;
 import edu.ycp.cs481.model.Position;
 import edu.ycp.cs481.model.SOP;
 import edu.ycp.cs481.model.User;
-import edu.ycp.cs481.control.UserController;
 
-public class UserControllerTest {
+public class UserControllerTest{
 	private Position pos1, pos2, pos3, pos4, pos5;
 	private SOP sop1, sop2;
 	private User user1, user2, user3, user4; 
-	private List<Position> positionList; 
-	private List<SOP> sopList;
-	private List<User> userList;
+	private ArrayList<Position> positionList; 
+	private ArrayList<SOP> sopList;
+	private ArrayList<User> userList;
 	private UserController uc;
 	
 	@Before
@@ -116,6 +118,15 @@ public class UserControllerTest {
 	}
 	
 	@Test
+	public void testPasswordHashingAndAuthentification(){
+		String password = "passwordighr";
+		String hashedPass = uc.hashPassword(password);
+		assertNotEquals(password, hashedPass);
+		
+		assertTrue(uc.authenticate(password, hashedPass));
+	}
+	
+	@Test
 	public void testInsertQuarantineUser() {
 		uc.insertQuarantineUser("zhenry@ycp.edu", "password", "Chuck", "Norris");
 	}
@@ -126,10 +137,10 @@ public class UserControllerTest {
 		String pass1 = "DiveOnIn";
 		String pass2 = "bangBang";
 		
-		boolean firstTest = uc.authenticate(user2, pass1);
+		boolean firstTest = uc.authenticate(user2.getPassword(), pass1);
 		assertFalse(firstTest);
 		
-		boolean secondTest = uc.authenticate(user1, pass2);
+		boolean secondTest = uc.authenticate(user1.getPassword(), pass2);
 		assertFalse(secondTest); 
 		
 		//set a login setup 
@@ -143,7 +154,7 @@ public class UserControllerTest {
 	public void testSearchByFName() {
 		String searchFirstName = "Stan";
 		
-		List<User> testList = uc.searchForUsers(0, -1, false, "", false, searchFirstName, false, "", 0, -1);
+		ArrayList<User> testList = uc.searchForUsers(0, -1, false, "", false, searchFirstName, false, "", 0, -1);
 		
 		if(testList.isEmpty()) {
 			System.out.println("Search failed for user with FirstName" + searchFirstName);
@@ -164,7 +175,7 @@ public class UserControllerTest {
 	public void testSearchByLName() {
 		String searchLastName = "Smith";
 		
-		List<User> testList = uc.searchForUsers(0, -1, false, "", false, "", false, searchLastName, 0, -1);
+		ArrayList<User> testList = uc.searchForUsers(0, -1, false, "", false, "", false, searchLastName, 0, -1);
 		
 		if(testList.isEmpty()) {
 			System.out.println("Search failed for user with LastName" + searchLastName);
@@ -190,7 +201,7 @@ public class UserControllerTest {
 		String FirstName = "Stan";
 		String LastName = "Smith"; 
 		
-		List<User> testList = uc.searchForUsers(0, -1, false, "", false, FirstName, false, LastName, 0, -1);
+		ArrayList<User> testList = uc.searchForUsers(0, -1, false, "", false, FirstName, false, LastName, 0, -1);
 		
 		if(testList.isEmpty()) {
 			System.out.println("Search failed for user with first name " + FirstName + " and last name " + LastName);
@@ -211,7 +222,7 @@ public class UserControllerTest {
 	public void testSearchByID() {
 		int searchID = 12; 
 		
-		List<User> testList = uc.searchForUsers(searchID, -1, false, "", false, "", false, "", 0, -1);
+		ArrayList<User> testList = uc.searchForUsers(searchID, -1, false, "", false, "", false, "", 0, -1);
 		
 		if(testList.isEmpty()) {
 			System.out.println("Search failed for user with ID " + searchID);
@@ -233,7 +244,7 @@ public class UserControllerTest {
 	public void testSearchByPositionID() {
 		int searchPosID = 1;
 		
-		List<User> testList = uc.searchForUsers(0, -1, false, "", false, "", false, "", searchPosID, -1);
+		ArrayList<User> testList = uc.searchForUsers(0, -1, false, "", false, "", false, "", searchPosID, -1);
 		
 		if(testList.isEmpty()) {
 			System.out.println("Search failed for user with position ID"+ searchPosID);
@@ -257,7 +268,7 @@ public class UserControllerTest {
 		assertEquals("rookie@email.com", user2.getEmail());
 		
 		//this method isnt working 
-		uc.changeUserEmail(user2.getID(), oldEmail, newEmail);
+		uc.changeEmail(user2.getID(), oldEmail, newEmail);
 		
 		
 		assertEquals("lelelel@tcp.com", user2.getEmail());
@@ -271,7 +282,7 @@ public class UserControllerTest {
 		assertEquals("", user3.getPassword()); 
 		
 		//this method also appears to not be working 
-		uc.changeUserPassword(user3.getID(), newPass);
+		uc.changePassword(user3.getID(), newPass);
 		
 		//search for users and pass that through user 3
 		
@@ -296,8 +307,8 @@ public class UserControllerTest {
 	
 	@Test 
 	public void testUserHasPermission() {
-		assertEquals(true, uc.userHasPermission(1, EnumPermission.ALL));
-		assertEquals(false, uc.userHasPermission(2, EnumPermission.ALL));
+		assertEquals(true, uc.hasPermission(1, EnumPermission.ALL));
+		assertEquals(false, uc.hasPermission(2, EnumPermission.ALL));
 	}
 	
 	//@Test

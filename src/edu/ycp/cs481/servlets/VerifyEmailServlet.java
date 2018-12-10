@@ -19,7 +19,7 @@ public class VerifyEmailServlet extends HttpServlet{
 		String email = req.getParameter("email");
 		String token = req.getParameter("token");
 		UserController uc = new UserController();
-		boolean verify = uc.verifyUser(email, token);
+		boolean verify = uc.verifyEmail(email, token);
 		HttpSession session = req.getSession();
 		
 		if(!verify){
