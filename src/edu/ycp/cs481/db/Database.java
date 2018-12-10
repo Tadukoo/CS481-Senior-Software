@@ -144,7 +144,7 @@ public class Database{
 				throw new IllegalArgumentException("Database.doSearch: Unsupported table: " + mainTable + "!");
 		}
 		StringBuilder name = new StringBuilder("");
-		StringBuilder sql = new StringBuilder("select " + returnPieces + " from " + mainTable);
+		StringBuilder sql = new StringBuilder("select distinct " + returnPieces + " from " + mainTable);
 		boolean prevSet = false;
 		if(otherTables != null && otherTables.size() > 0){
 			for(String table: otherTables){
@@ -459,6 +459,10 @@ public class Database{
 			" values (" + i + ", " + permIds[id] + ")");
 			id++;
 		}
+		
+		names.add("Insert UserSOP 3 to User 1");
+		sqls.add("insert into UserSOP(user_id, sop_id) "
+				+ "values(1,3)");
 		
 		executeUpdates(names, sqls);
 	}

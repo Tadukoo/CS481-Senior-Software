@@ -30,7 +30,7 @@ public class ComplianceController {
 
 	//pulls all compliance issues with 
 	public ArrayList<ComplianceIssue> PullComplianceIssues() {
-		List<User> allUsers = uc.searchForUsers(-1, -1, false, "", false, "", false, "", 0, -1);
+		List<User> allUsers = uc.searchForUsers(-1, -1, false, "", false, "", false, "", -1, -1);
 		ArrayList<ComplianceIssue> issues = new ArrayList<ComplianceIssue>(); 
 		ArrayList<SOP> sops = new ArrayList<SOP>();
 		ComplianceIssue i = new ComplianceIssue();

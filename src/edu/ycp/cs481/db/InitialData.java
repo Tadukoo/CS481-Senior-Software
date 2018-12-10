@@ -15,7 +15,7 @@ public class InitialData {
 	private ArrayList<Position> pList;
 	private Position p1, p2, p3;
 	private ArrayList<SOP> sList, p1reqs;	
-	private SOP s1, s2, p1req1, p1req2;
+	private SOP s1, s2, s3, p1req1, p1req2;
 	private int[] permIds;
 	
 	public InitialData() {
@@ -85,6 +85,15 @@ public class InitialData {
 		s2.setAuthorID(p1.getID());
 		s2.setArchived(false);
 		
+		s3 = new SOP();
+		s3.setID(3);
+		s3.setTitle("Derp");
+		s3.setDescription("Herp");
+		s3.setPriority(2);
+		s3.setVersion(1);
+		s3.setAuthorID(p1.getID());
+		s3.setArchived(false);
+		
 		p1req1 = new SOP();
 		p1req1.setID(3);
 		p1req1.setTitle("Requirement 1");
@@ -106,13 +115,15 @@ public class InitialData {
 		p1reqs.add(p1req1);
 		p1reqs.add(p1req2);		
 		
-		sList.add(s2);
-		p2.setRequirements(sList);
-		sList.remove(s2);
+		ArrayList<SOP> tList = new ArrayList<SOP>();
+		tList.add(s1);
+		tList.add(s2);
+		p1.setRequirements(tList);
+		p2.setRequirements(tList);
 		
 		sList.add(s1);
 		sList.add(s2);
-		p1.setRequirements(sList);		
+		sList.add(s3);		
 		
 		uList.add(u1);
 		uList.add(u2);

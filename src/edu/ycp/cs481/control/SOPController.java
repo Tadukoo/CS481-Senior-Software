@@ -26,16 +26,16 @@ public class SOPController{
 				otherTables.add("PositionSOP");
 				otherTables.add("UserSOP");
 				otherTables.add("User");
-				junctions.add("PositionSOP.position_id = User.position_id");
-				junctions.add("(PositionSOP.sop_id = SOP.sop_id or UserSOP.sop_id = SOP.sop_id)");
+				junctions.add("((PositionSOP.position_id = User.position_id and PositionSOP.sop_id = SOP.sop_id) or "
+						+ "(UserSOP.user_id = User.user_id and UserSOP.sop_id = SOP.sop_id))");
 			}
 			if(posID != -1){
 				otherTables.add("PositionSOP");
 				junctions.add("PositionSOP.sop_id = SOP.sop_id");
 			}
 			ArrayList<SOP> results = db.doSearch(DBFormat.getSopResFormat(), "SOP", otherTables, junctions, 
-					new String[]{"user_id", "sop_id", "priority", "version", "author_id", "position_id"}, 
-					new int[]{userID, sopID, priority, version, authorID, posID}, 
+					new String[]{"sop_id", "priority", "version", "author_id", "User.user_id", "position_id"}, 
+					new int[]{sopID, priority, version, authorID, userID, posID}, 
 					new boolean[]{titlePartial, descPartial}, 
 					new String[]{"title", "description"}, 
 					new String[]{title, description});
