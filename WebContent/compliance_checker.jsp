@@ -50,7 +50,7 @@
 				</div>
 			</div>
 			<c:forEach begin="${page*displaySize}"
-				end="${((page+1)*displaySize) - 1}" items="${ComplianceList}"
+				end="${((page+1)*displaySize) - 1}" items="${issues}"
 				var="current">
 				<div class="row">
 					<div class="col-1 text-center">
@@ -59,13 +59,13 @@
 						</p>
 					</div>
 					<div class="col-2 text-center">
-						<p>${current.SOPtitle}</p>
+						<p>${current.title}</p>
 					</div>
 					<div class="col-1 text-center">
 						<p>${current.priority}</p>
 					</div>
 					<div class="col-2 text-center">
-						<p>${current.User}</p>
+						<p>${current.email}</p>
 					</div>
 
 				</div>
