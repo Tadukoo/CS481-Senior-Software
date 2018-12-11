@@ -14,7 +14,7 @@ public class ComplianceController{
 	public ArrayList<ComplianceIssue> pullComplianceIssuesOfUser(User u){
 		ArrayList<ComplianceIssue> userIssues = new ArrayList<ComplianceIssue>();
 		SOPController sc = new SOPController(); 
-		ArrayList<SOP> sops = sc.searchForSOPs(-1, false, "", false, "", -1, -1, -1, u.getID(), -1);
+		ArrayList<SOP> sops = sc.searchForSOPs(-1, false, "", false, "", -1, -1, -1, u.getID(), -1, false);
 		for(SOP s: sops){
 			ComplianceIssue i = new ComplianceIssue();
 			i.setEmail(u.getEmail());

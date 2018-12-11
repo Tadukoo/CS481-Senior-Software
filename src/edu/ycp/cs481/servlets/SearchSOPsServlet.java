@@ -25,7 +25,7 @@ public class SearchSOPsServlet extends HttpServlet{
 			SOPController sc = new SOPController();
 			String posIDStr = req.getParameter("posID");
 			int posID = (posIDStr != null)?Integer.parseInt(posIDStr):-1;
-			ArrayList<SOP> sops = sc.searchForSOPs(-1, false, null, false, null, -1, -1, -1, -1, posID);
+			ArrayList<SOP> sops = sc.searchForSOPs(-1, false, null, false, null, -1, -1, -1, -1, posID, null);
 			req.setAttribute("sops", sops);
 			// Set default page and display size
 			req.setAttribute("page", 0);
@@ -70,7 +70,7 @@ public class SearchSOPsServlet extends HttpServlet{
 		int authorID = authorIDStr.equalsIgnoreCase("")?-1:Integer.parseInt(authorIDStr);
 		
 		SOPController sc = new SOPController();
-		ArrayList<SOP> sops = sc.searchForSOPs(id, true, title, true, description, priority, version, authorID, -1, -1);
+		ArrayList<SOP> sops = sc.searchForSOPs(id, true, title, true, description, priority, version, authorID, -1, -1, null);
 		
 		req.setAttribute("sops", sops);
 		

@@ -26,7 +26,7 @@ public class Database{
 		}
 	}
 	
-	private Connection connect() throws SQLException {
+	private Connection connect() throws SQLException{
 		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + dbName +"?user=root&password=password");
 
 		conn.setAutoCommit(false);
@@ -34,49 +34,49 @@ public class Database{
 		return conn;
 	}
 
-	public interface Transaction<ResultType> {
+	public interface Transaction<ResultType>{
 		public ResultType execute(Connection conn) throws SQLException;
 	}
 
 	private static final int MAX_ATTEMPTS = 100;
 		
-	public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
-		try {
+	public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn){
+		try{
 			return doExecuteTransaction(txn);
-		} catch (SQLException e) {
+		}catch(SQLException e){
 			throw new PersistenceException("Transaction failed", e);
 		}
 	}
 
-	public<ResultType> ResultType doExecuteTransaction(Transaction<ResultType> txn) throws SQLException {
+	public<ResultType> ResultType doExecuteTransaction(Transaction<ResultType> txn) throws SQLException{
 		Connection conn = connect();
 
-		try {
+		try{
 			int numAttempts = 0;
 			boolean success = false;
 			ResultType result = null;
 
-			while (!success && numAttempts < MAX_ATTEMPTS) {
-				try {
+			while (!success && numAttempts < MAX_ATTEMPTS){
+				try{
 					result = txn.execute(conn);
 					conn.commit();
 					success = true;
-				} catch (SQLException e) {
-					if (e.getSQLState() != null && e.getSQLState().equals("41000")) {
+				}catch(SQLException e){
+					if(e.getSQLState() != null && e.getSQLState().equals("41000")){
 						numAttempts++;
-					} else {
+					}else{
 						throw e;
 					}
 				}
 			}
 
-			if (!success) {
+			if(!success){
 				throw new SQLException("Transaction failed (too many retries)");
 			}
 
 			// Success!
 			return result;
-		} finally {
+		}finally{
 			DBUtil.closeQuietly(conn);
 		}
 	}

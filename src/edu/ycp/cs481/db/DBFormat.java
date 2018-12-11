@@ -12,13 +12,19 @@ import edu.ycp.cs481.model.Shift;
 import edu.ycp.cs481.model.User;
 
 public class DBFormat{
+	private static String quarantinePieces = "Quarantine.email, Quarantine.password, Quarantine.first_name, Quarantine.last_name";
 	private static String userPieces = "User.user_id, User.employee_id, User.email, User.password, User.first_name, User.last_name,"
 			+ " User.locked_out, User.archive_flag, User.position_id";
 	private static String positionPieces = "Position.position_id, Position.title, Position.description, Position.priority";
 	private static String sopPieces = "SOP.sop_id, SOP.title, SOP.description, SOP.priority, SOP.version, SOP.author_id, "
 			+ "SOP.archive_flag";
-	private static String quarantinePieces = "Quarantine.email, Quarantine.password, Quarantine.first_name, Quarantine.last_name";
 	
+	private static QueryResultFormat<Boolean> checkResFormat = new QueryResultFormat<Boolean>(){
+		@Override
+		public Boolean convertFromResultSet(ResultSet resultSet) throws SQLException{
+			return resultSet.next();
+		}
+	};
 	
 	private static QueryResultFormat<ArrayList<Boolean>> boolResFormat = new QueryResultFormat<ArrayList<Boolean>>(){
 		@Override
@@ -66,13 +72,6 @@ public class DBFormat{
 				users.add(user);
 			}
 			return users;
-		}
-	};
-	
-	private static QueryResultFormat<Boolean> checkResFormat = new QueryResultFormat<Boolean>(){
-		@Override
-		public Boolean convertFromResultSet(ResultSet resultSet) throws SQLException{
-			return resultSet.next();
 		}
 	};
 	
@@ -168,6 +167,10 @@ public class DBFormat{
 		}
 	};
 	
+	public static String getQuarantinePieces(){
+		return quarantinePieces;
+	}
+	
 	public static String getUserPieces(){
 		return userPieces;
 	}
@@ -180,8 +183,8 @@ public class DBFormat{
 		return sopPieces;
 	}
 	
-	public static String getQuarantinePieces(){
-		return quarantinePieces;
+	public static QueryResultFormat<Boolean> getCheckResFormat(){
+		return checkResFormat;
 	}
 	
 	public static QueryResultFormat<ArrayList<Boolean>> getBoolResFormat(){
@@ -198,10 +201,6 @@ public class DBFormat{
 	
 	public static QueryResultFormat<ArrayList<User>> getQuarantineResFormat(){
 		return quarantineResFormat;
-	}
-	
-	public static QueryResultFormat<Boolean> getCheckResFormat(){
-		return checkResFormat;
 	}
 	
 	public static QueryResultFormat<ArrayList<User>> getUserResFormat(){
