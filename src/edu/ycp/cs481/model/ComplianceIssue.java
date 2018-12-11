@@ -4,10 +4,10 @@ public class ComplianceIssue {
     //variables
     private String title;
     private int priority;
-    private String address;
+    private String email;
 
 
-    public String getSOPTitle() {
+    public String getTitle() {
         return title;
     }
 
@@ -16,11 +16,11 @@ public class ComplianceIssue {
     }
 
     public String getEmail() {
-        return address;
+        return email;
     }
 
 
-    public void setSOPTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
@@ -28,8 +28,8 @@ public class ComplianceIssue {
         this.priority = priority;
     }
 
-    public void setEmail(String address) {
-        this.address = address;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
    

@@ -33,13 +33,13 @@ public class ComplianceController {
 		List<User> allUsers = uc.searchForUsers(-1, -1, false, "", false, "", false, "", -1, -1);
 		ArrayList<ComplianceIssue> issues = new ArrayList<ComplianceIssue>(); 
 		ArrayList<SOP> sops = new ArrayList<SOP>();
-		ComplianceIssue i = new ComplianceIssue();
 		for(User u: allUsers) {
 			sops = sc.searchForSOPs(-1, false, "", false, "", -1, -1, -1, u.getID(), -1);
-			i.setEmail(u.getEmail());
 			for(SOP s: sops) {
+				ComplianceIssue i = new ComplianceIssue();
+				i.setEmail(u.getEmail());
 				i.setPriority(s.getPriority());
-				i.setSOPTitle(s.getTitle());
+				i.setTitle(s.getTitle());
 				issues.add(i);
 			}
 		}
