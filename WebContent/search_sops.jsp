@@ -9,7 +9,7 @@
 </head>
 <body>
 <h1><c:choose>
-	<c:when test="${!empty userID}">
+	<c:when test="${userID != -1}">
 		<c:if test="${theirSOPs}">
 			My SOPs
 		</c:if>
@@ -17,7 +17,7 @@
 			SOPs of Subordinate with ID ${userID}
 		</c:if>
 	</c:when>
-	<c:when test="${!empty posID}">
+	<c:when test="${posID != -1}">
 		Position Requirements
 	</c:when>
 	<c:otherwise>

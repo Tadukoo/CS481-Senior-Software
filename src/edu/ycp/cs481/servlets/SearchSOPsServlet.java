@@ -31,20 +31,18 @@ public class SearchSOPsServlet extends HttpServlet{
 			
 			// Permission checks
 			UserController uc = new UserController();
-			int theirUserID = (int) session.getAttribute("user_id");
+			int theirID = (int) session.getAttribute("user_id");
 			if(userID == -1 && posID == -1 && 
-					!(uc.hasPermission(theirUserID, EnumPermission.SEARCH_SOPS) || 
-							uc.hasPermission(theirUserID, EnumPermission.ALL))){
+					!(uc.hasPermission(theirID, EnumPermission.SEARCH_SOPS) || uc.hasPermission(theirID, EnumPermission.ALL))){
 				session.setAttribute("error", "You don't have permission to search SOPs!");
 				resp.sendRedirect("/user_home");
 			}else if(posID != -1 && 
-					!(uc.hasPermission(theirUserID, EnumPermission.VIEW_REQUIREMENTS) || 
-							uc.hasPermission(theirUserID, EnumPermission.ALL))){
+					!(uc.hasPermission(theirID, EnumPermission.VIEW_REQUIREMENTS) || uc.hasPermission(theirID, EnumPermission.ALL))){
 				session.setAttribute("error", "You don't have permission to view Position requirements!");
 				resp.sendRedirect("/user_home");
-			}else if(userID != -1 && theirUserID != userID && 
-					!((uc.hasPermission(theirUserID, EnumPermission.HAVE_SUBORDINATES) && !uc.hasSubordinate(theirUserID, userID))
-							|| uc.hasPermission(theirUserID, EnumPermission.ALL))){
+			}else if(userID != -1 && theirID != userID && 
+					!((uc.hasPermission(theirID, EnumPermission.HAVE_SUBORDINATES) && !uc.hasSubordinate(theirID, userID))
+							|| uc.hasPermission(theirID, EnumPermission.ALL))){
 				session.setAttribute("error", "You're either not a manager or don't have user with ID " + userID + 
 						" as a subordinate!");
 				resp.sendRedirect("/user_home");
@@ -52,9 +50,12 @@ public class SearchSOPsServlet extends HttpServlet{
 				// Get SOPs List
 				SOPController sc = new SOPController();
 				ArrayList<SOP> sops = sc.searchForSOPs(-1, false, null, false, null, -1, -1, -1, userID, posID, null);
-				req.setAttribute("sops", sops);
 				
-				req.setAttribute("theirSOPs", userID == theirUserID);
+				// Set those attributes!
+				req.setAttribute("sops", sops);
+				req.setAttribute("userID", userID);
+				req.setAttribute("posID", posID);
+				req.setAttribute("theirSOPs", userID == theirID);
 				
 				// Set default page and display size
 				req.setAttribute("page", 0);
@@ -117,7 +118,11 @@ public class SearchSOPsServlet extends HttpServlet{
 		req.setAttribute("authorID", authorIDStr);
 		req.setAttribute("userID", userID);
 		req.setAttribute("posID", posID);
-		req.setAttribute("theirSOPs", req.getAttribute("theirSOPs"));
+		
+		// Redo theirSOPs
+		HttpSession session = req.getSession();
+		int theirID = (int) session.getAttribute("user_id");
+		req.setAttribute("theirSOPs", theirID == userID);
 		
 		req.getRequestDispatcher("/search_sops.jsp").forward(req, resp);
 	}
