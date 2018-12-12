@@ -56,19 +56,22 @@ public class ComplianceCheckerServlet extends HttpServlet{
 			else if(changePage.equalsIgnoreCase("next")){
 				req.setAttribute("page", currentPage + 1);
 			}
-		}
-		else{
+		}else{
 			req.setAttribute("page", 0);
 		}
 
 		if(changeDisplaySize != null && !changeDisplaySize.equalsIgnoreCase("")){
 			req.setAttribute("displaySize", Integer.parseInt(changeDisplaySize));
-		}
-		else{
+		}else{
 			req.setAttribute("displaySize", currentDisplaySize);
 		}
-
-
+		
+		// Reload issues and page
+		// Seems getting issues back from the jsp (e.g. req.getParameter("issues")) doesn't work right for this
+		ComplianceController cc = new ComplianceController();
+		ArrayList<ComplianceIssue> issues = cc.pullAllComplianceIssues();
+		req.setAttribute("issues", issues);
+		req.getRequestDispatcher("/compliance_checker.jsp").forward(req, resp);	
 	}
 }
 

@@ -42,7 +42,7 @@
 			
 			</div>
 			<div class="col">
-				Showing results ${(page*displaySize) + 1} - ${fn:length(users) lt (((page+1)*displaySize) - 1)?fn:length(users):(((page+1)*displaySize) - 1)} of ${fn:length(users)}
+				Showing results ${(page*displaySize) + 1} - ${fn:length(users) lt ((page+1)*displaySize)?fn:length(users):((page+1)*displaySize)} of ${fn:length(users)}
 			</div>
 		</div>
 		<div class="row">

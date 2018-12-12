@@ -28,7 +28,7 @@
 			<div class="row">
 				<div class="col-1"></div>
 				<div class="col">Showing results ${(page*displaySize) + 1} -
-					${fn:length(issues) lt (((page+1)*displaySize) - 1)?fn:length(issues):(((page+1)*displaySize) - 1)}
+					${fn:length(issues) lt ((page+1)*displaySize)?fn:length(issues):((page+1)*displaySize)}
 					of ${fn:length(issues)}</div>
 			</div>
 			<div class="row">
@@ -49,9 +49,7 @@
 					</p>
 				</div>
 			</div>
-			<c:forEach begin="${page*displaySize}"
-				end="${((page+1)*displaySize) - 1}" items="${issues}"
-				var="current">
+			<c:forEach begin="${page*displaySize}" end="${((page+1)*displaySize) - 1}" items="${issues}" var="current">
 				<div class="row">
 					<div class="col-1 text-center">
 						<p>
@@ -70,8 +68,7 @@
 
 				</div>
 			</c:forEach>
-			<input type="hidden" name="page" value="${page}"> <input
-				type="hidden" name="displaySize" value="${displaySize}">
+			<input type="hidden" name="page" value="${page}"> <input type="hidden" name="displaySize" value="${displaySize}">
 			<div class="row">
 				<div class="col-2 text-center">
 					<c:if test="${page gt 0}">
@@ -100,14 +97,12 @@
 				</c:if>
 				<c:if test="${displaySize != 50}">
 					<div class="col-1">
-						<button type="submit" name="changeDisplaySize" value="50"
-							class="btn btn-info">50</button>
+						<button type="submit" name="changeDisplaySize" value="50" class="btn btn-info">50</button>
 					</div>
 				</c:if>
 				<c:if test="${displaySize != 100}">
 					<div class="col-1">
-						<button type="submit" name="changeDisplaySize" value="100"
-							class="btn btn-info">100</button>
+						<button type="submit" name="changeDisplaySize" value="100" class="btn btn-info">100</button>
 					</div>
 				</c:if>
 				<div class="col-2 text-center">
