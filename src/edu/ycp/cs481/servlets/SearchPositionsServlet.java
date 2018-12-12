@@ -14,7 +14,7 @@ import edu.ycp.cs481.model.Position;
 
 @SuppressWarnings("serial")
 public class SearchPositionsServlet extends HttpServlet{
-
+	
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		HttpSession session = req.getSession();
@@ -31,9 +31,9 @@ public class SearchPositionsServlet extends HttpServlet{
 			req.getRequestDispatcher("/search_positions.jsp").forward(req, resp);
 		}
 	}
-
+	
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		String changePage = req.getParameter("changePage");
 		String changeDisplaySize = req.getParameter("changeDisplaySize");
 		int currentDisplaySize = Integer.parseInt(req.getParameter("displaySize"));

@@ -275,7 +275,7 @@ public class UserController{
 		db.executeUpdate("Change user's role", "update User set role_id = " + roleID + " where user_id = " + userID);
 	}
 	
-	public boolean managerHasSubordinate(int managerID, int userID){
+	public boolean hasSubordinate(int managerID, int userID){
 		try{
 			String name = "";
 			String sql = "select * from Subordinate where manager_id = " + managerID + 

@@ -8,7 +8,23 @@
 	<link rel="stylesheet" href="css/bootstrap.css">
 </head>
 <body>
-<h1>Search SOPs</h1>
+<h1><c:choose>
+	<c:when test="${!empty userID}">
+		<c:if test="${theirSOPs}">
+			My SOPs
+		</c:if>
+		<c:if test="${!theirSOPs}">
+			SOPs of Subordinate with ID ${userID}
+		</c:if>
+	</c:when>
+	<c:when test="${!empty posID}">
+		Position Requirements
+	</c:when>
+	<c:otherwise>
+		Search SOPs
+	</c:otherwise>
+	</c:choose>
+</h1>
 <p class="note">Want to return to the Homepage? <a href="./user_home">Home</a></p>
 <div class="fluid-container">
 	<form class="form-horizontal" method="post">
@@ -83,6 +99,9 @@
 		</c:forEach>
 		<input type="hidden" name="page" value="${page}">
 		<input type="hidden" name="displaySize" value="${displaySize}">
+		<input type="hidden" name="userID" value="${userID}">
+		<input type="hidden" name="posID" value="${posID}">
+		<input type="hidden" name="theirSOPs" value="${theirSOPs}">
 		<div class="row">
 			<div class="col-2 text-center">
 				<c:if test="${page gt 0}">
