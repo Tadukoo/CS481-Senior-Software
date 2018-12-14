@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.ycp.cs481.control.SOPController;
+import edu.ycp.cs481.control.UserController;
 import edu.ycp.cs481.model.SOP;
+import edu.ycp.cs481.model.User;
 
 @SuppressWarnings("serial")
 public class SearchSOPsServlet extends HttpServlet{
@@ -22,14 +24,18 @@ public class SearchSOPsServlet extends HttpServlet{
 			resp.sendRedirect(req.getContextPath() + "/login");
 		}else{
 			// TODO: Use posID if it's sent in via url
+			UserController uc = new UserController();
 			SOPController sc = new SOPController();
+			int userID = (int) session.getAttribute("user_id");
 			String posIDStr = req.getParameter("posID");
 			int posID = (posIDStr != null)?Integer.parseInt(posIDStr):-1;
 			ArrayList<SOP> sops = sc.searchForSOPs(-1, false, null, false, null, -1, -1, -1, -1, posID);
+			User current = uc.searchForUsers(userID, -1, false, "", false, "", false, "", -1, -1).get(0);
 			req.setAttribute("sops", sops);
 			// Set default page and display size
 			req.setAttribute("page", 0);
 			req.setAttribute("displaySize", 10);
+			req.setAttribute("currentemail", current.getEmail());
 			req.getRequestDispatcher("/search_sops.jsp").forward(req, resp);
 		}
 	}

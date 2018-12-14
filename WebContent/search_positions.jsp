@@ -6,12 +6,33 @@
 <head>
 	<title>CTM mkii - Search Positions</title>
 	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-<h1>Search Positions</h1>
-<p class="note">Want to return to the Homepage? <a href="./user_home">Home</a></p>
+
+
 <div class="fluid-container">
 	<form class="form-horizontal" method="post">
+	<header class="header">
+				<h1>Search Positions</h1>
+				<div class="row">
+
+					<div class="col-9">
+						<a type="button" class="btn" href="./user_home"
+							style="margin: 10px;">Want to return to the Homepage?</a>
+					</div>
+					<div class="col-3" style="padding-bottom: 4px; padding-left: 15px;">
+						<div class="loggedInAs">
+							<div id="#loggedinlabel">Currently logged in as:</div>
+							<div id="loggedinEmail">${currentemail}</div>
+						</div>
+						<button type="submit" name="action" class="btn btn-danger"
+							value="logout" id="logoutbtn">Logout</button>
+					</div>
+
+				</div>
+			</header>
+			<div style="margin-top: 10px;margin-left: 10%">
 		<div class="form-group row">
 			<div class="col-1">
 			
@@ -31,7 +52,9 @@
 			<div class="fieldset col-1 text-center">
 				<button type="submit" class="btn btn-info">Search</button>
 			</div>
+			</div>
 		</div>
+		<div class="SUtabletop">
 		<div class="row">
 			<div class="col-1">
 			
@@ -56,7 +79,9 @@
 			<div class="col-2 text-center">
 				<p><b>Priority</b></p>
 			</div>
+			</div>
 		</div>
+		<div class="SUtablecontents">
 		<c:forEach begin="${page*displaySize}" end="${((page+1)*displaySize) - 1}" items="${positions}" var="current">
 				<div class="row">
 					<div class="col-1 text-center">
@@ -79,6 +104,8 @@
 					</div>
 				</div>
 		</c:forEach>
+		</div>
+		<div style="margin-top: 5px">
 		<input type="hidden" name="page" value="${page}">
 		<input type="hidden" name="displaySize" value="${displaySize}">
 		<div class="row">
@@ -119,6 +146,7 @@
 				<c:if test="${fn:length(positions) gt (displaySize*(page + 1))}">
 					<button type="submit" name="changePage" value="next" class="btn btn-info">Next Page</button>
 				</c:if>
+			</div>
 			</div>
 		</div>
 	</form>

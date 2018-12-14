@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.ycp.cs481.control.PositionController;
+import edu.ycp.cs481.control.UserController;
 import edu.ycp.cs481.model.Position;
+import edu.ycp.cs481.model.User;
 
 @SuppressWarnings("serial")
 public class SearchPositionsServlet extends HttpServlet{
@@ -22,12 +24,16 @@ public class SearchPositionsServlet extends HttpServlet{
 			resp.sendRedirect(req.getContextPath() + "/login");
 		}else{
 			// Set default search with no parameters
+			int userID = (int) session.getAttribute("user_id");
 			PositionController pc = new PositionController();
+			UserController uc = new UserController();
+			User current = uc.searchForUsers(userID, -1, false, "", false, "", false, "", -1, -1).get(0);
 			ArrayList<Position> positions = pc.searchForPositions(-1, false, null, false, null, -1);
 			req.setAttribute("positions", positions);
 			// Set default page and display size
 			req.setAttribute("page", 0);
 			req.setAttribute("displaySize", 10);
+			req.setAttribute("currentemail", current.getEmail());
 			req.getRequestDispatcher("/search_positions.jsp").forward(req, resp);
 		}
 	}

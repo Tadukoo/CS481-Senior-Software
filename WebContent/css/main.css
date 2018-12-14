@@ -1,43 +1,129 @@
+html {
+	height: 100%;
+}
+
+body {
+	min-height: 100%;
+}
 /*ALL FOR THE HEADER */
 .header {
-	background-color: #667fcc; 
-	padding-bottom: 5px; 
-	padding-right: 10px;
+	background-color: #667fcc;
+	padding-bottom: 5px;
+	padding: 10px;
+	vertical-align: center;
+	min-height: 65px
 }
 
-.loggedInAs{
-	padding-bottom:4px; 
-	padding-left:15px;
+.loggedInAs {
+	padding-bottom: 4px;
+	padding-left: 15px;
+	vertical-align: center;
+	width: 200px ;
+	float: left;
 }
 
-#loggedinlabel{
+#loggedinlabel {
 	font-size: 15px;
+	width: 200px ;
+	float: left;
 }
 
-#loggedinEmail{
+#loggedinEmail {
 	font-size: 20px;
 }
-#logoutbtn{
-	float: right; 
-	overflow: auto; 
-	right-margin:8 px;
+
+#logoutbtn {
+	float: right;
+	overflow: auto;
+	right-margin: 8 px;
 }
 
 /*TABLES*/
-.tabletop{
-	background-color: #ccccff; 
-	margin-left: 10%; 
-	margin-right: 15%; 
+.tabletop {
+	background-color: #ccccff;
+	margin-left: 10%;
+	margin-right: 15%;
 	padding: 2px;
 }
-.tablecontents{
+.SUtabletop {
+	background-color: #ccccff;
+	
+	padding: 2px;
+}
+
+.tablecontents {
 	background-color: #858fad;
-	 margin-left: 10%; 
-	 margin-right: 15%; 
-	 padding: 2px;
+	margin-left: 10%;
+	margin-right: 15%;
+	padding: 2px;
+}
+.SUtablecontents {
+	background-color: #858fad;
+	
+	padding: 2px;
+	
 }
 /*Form*/
-.formlabel{
-	background-color: #ccccff; 
-	
+.formlabel {
+	background-color: #ccccff;
+}
+
+.bg-img {
+	/* The image used */
+	background-image: url(imgs/blue.jpg);
+	min-height: 900px;
+	max-width: 100%;
+	/* Center and scale the image nicely */
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	position: relative;
+}
+
+.altbg-img {
+	/* The image used */
+	background-image: url(imgs/otherblue.jpg);
+	min-height: 900px;
+	max-width: 100%;
+	/* Center and scale the image nicely */
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	position: relative;
+}
+
+.logincontainer {
+	margin: 20px;
+	max-width: 400px;
+	min-height: 200px;
+	padding: 16px;
+	background-color: rgba(255, 255, 255, 0.7);
+}
+
+.pwresetemail {
+	margin: 20px;
+	min-width: 400px;
+	min-height: 150px;
+	padding: 16px;
+	background-color: rgba(255, 255, 255, 0.7);
+}
+
+.pwresetnewpass {
+	margin: 20px;
+	max-width: 600px;
+	min-height: 180px;
+	padding: 16px;
+	background-color: rgba(255, 255, 255, 0.7);
+}
+
+input.createAccount {
+	width: 300px;
+}
+
+.createAccount {
+	margin: 20px;
+	max-width: 600px;
+	min-height: 180px;
+	padding: 24px;
+	background-color: rgba(255, 255, 255, 0.7);
 }

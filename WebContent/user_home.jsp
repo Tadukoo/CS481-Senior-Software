@@ -9,21 +9,22 @@
 </head>
 <body>
 
-
+	<div class="altbg-img">
 	<div class="fluid-container">
 		<form method="post">
 			<header class="header">
-				<h1>Home</h1>
+				
 				<div class="row">
 
-					<div class="col-9"></div>
-					<div class="col-3" style="">
+					<div class="col-8"><h1>Home</h1></div>
+					<div class="col-4">
 						<div class="loggedInAs">
 							<div id="#loggedinlabel">Currently logged in as:</div>
 							<div id="loggedinEmail">${email}</div>
-						</div>
+							</div>
 						<button type="submit" name="action" class="btn btn-danger"
 							value="logout" id="logoutbtn">Logout</button>
+							
 					</div>
 
 				</div>
@@ -152,6 +153,7 @@
 
 			</div>
 		</form>
+	</div>
 	</div>
 </body>
 </html>
