@@ -81,9 +81,7 @@
 				<button type="submit" class="btn btn-info">Submit</button>
 			</div>
 		</div>
-		</div>
-		<b>Want to return to the Homepage? <a href="./user_home">Home</a></b>
-		</div>
+		
 	</form>
 	
 

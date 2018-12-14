@@ -21,8 +21,8 @@
 					</div>
 					<div class="col-3" style="padding-bottom: 4px; padding-left: 15px;">
 						<div class="loggedInAs">
-						<div id="#loggedinlabel">Currently logged in as:</div>
-						<div id="loggedinEmail">${currentemail}</div>
+							<div id="#loggedinlabel">Currently logged in as:</div>
+							<div id="loggedinEmail">${currentemail}</div>
 						</div>
 						<button type="submit" name="action" class="btn btn-danger"
 							value="logout" id="logoutbtn">Logout</button>
@@ -98,10 +98,8 @@
 				</div>
 			</div>
 
-			<b class="note"> Want to return to the Homepage? <a
-				href="./user_home">Home</a>
-			</b>
-</div>
+
+		</div>
 	</form>
 
 </body>
