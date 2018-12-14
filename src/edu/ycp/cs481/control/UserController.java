@@ -41,7 +41,7 @@ public class UserController{
 		
 		return db.insertAndGetID("User", "user_id",
 				new String[]{"email", "password", "first_name", "last_name", "locked_out", "archive_flag",
-						"position_id, role_id"},
+						"position_id", "role_id"},
 				new String[]{email, password, firstName, lastName, String.valueOf(lockedOut), String.valueOf(isArchived),
 						String.valueOf(positionID), String.valueOf(defaultRole)});
 	}
