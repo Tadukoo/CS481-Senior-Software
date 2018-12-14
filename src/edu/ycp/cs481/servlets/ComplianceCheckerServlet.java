@@ -50,7 +50,7 @@ public class ComplianceCheckerServlet extends HttpServlet{
 		String changeDisplaySize = req.getParameter("changeDisplaySize");
 		int currentDisplaySize = Integer.parseInt(req.getParameter("displaySize"));
 		HttpSession session = req.getSession();
-		String action = req.getParameter("doStuff");
+		String action = req.getParameter("action");
 		boolean loggedIn = true;
 		if(action.equalsIgnoreCase("logout")){
 			UserController.logout(req);
