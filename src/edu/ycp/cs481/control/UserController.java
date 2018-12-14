@@ -84,22 +84,22 @@ public class UserController{
 		db.executeUpdate("Deleting Quarantine User", "delete from Quarantine where email = '" + email + "'");
 	}
 	
-	public void retrySendEmail(String email) {
-		String pin = generateString();
-		try {
-			String name = "Get Quarantine User";
-			String sql = "select verification from Quarantine where email = '" + email + "'";
-			pin = db.executeQuery(name, sql, DBFormat.getStringResFormat()).get(0);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public String retrySendEmail(String email) {
+		// Generate a new token
+		String token = generateString();
+
+		// Update Quarantine entry to use new token
+		db.executeUpdate("Updating Quarantine User", "update Quarantine set verification = '" + hashPassword(token) + "' where email = '" + email + "'");
 		
 		// Send email with messenger
 		Messenger.send(email, "CTM Verification Pin", "Please visit the following URL to verify your account: <br><br>"
 				+ "<a href=\"http://localhost:8081/CS481-Senior-Software/verify_email?"
 				+ "email=" + email
-				+ "&token=" + pin 
+				+ "&token=" + token 
 				+ "\">Verify Email</a>");
+		
+		// Return verificationString
+		return token;
 	}
 	
 	public boolean verifyEmail(String email, String verificationString) {

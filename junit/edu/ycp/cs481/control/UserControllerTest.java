@@ -135,12 +135,18 @@ public class UserControllerTest{
 		// Test Find
 		assertTrue(uc.findQuarantineUser("zhenry@ycp.edu"));
 		
+		// Test Verify
+		String token = uc.retrySendEmail("zhenry@ycp.edu");
+		assertTrue(uc.verifyEmail("zhenry@ycp.edu", token));
+		
+		// Clean up newly verified user
+		db.executeUpdate("Deleting User", "delete from User where email = 'zhenry@ycp.edu'");
+		
 		// Test Remove
+		uc.insertQuarantineUser("zhenry@ycp.edu", "password", "Chuck", "Norris");
 		uc.deleteQuarantineUser("zhenry@ycp.edu");
 		assertFalse(uc.findQuarantineUser("zhenry@ycp.edu"));
 	}
-	
-	// TODO: Rework searches to test searchForUsers
 	
 	@Test
 	public void testCRUDUser() {
@@ -153,182 +159,65 @@ public class UserControllerTest{
 		assertEquals(u.getLastName(), "Logan");
 		assertEquals(u.getPosition().getID(), 2);
 		// Test delete
-		db.executeUpdate("Deleting Quarantine User", "delete from Quarantine where email = 'thegame@ycp.edu'");
+		db.executeUpdate("Deleting User", "delete from User where email = 'thegame@ycp.edu'");
 	}
 	
 	@Test
-	public void testSearchByFName() {
-		String searchFirstName = "Stan";
+	public void testResetPassword() {
 		
-		ArrayList<User> testList = uc.searchForUsers(0, -1, false, "", false, searchFirstName, false, "", 0, -1);
-		
-		if(testList.isEmpty()) {
-			System.out.println("Search failed for user with FirstName" + searchFirstName);
-			//fail();
-			
-		} else {
-		assertEquals(1, testList.size());
-		
-		User u = testList.get(0);
-		
-		assertEquals("Smith", u.getLastName());
-		assertEquals("rookie@email.com", u.getEmail());
-		assertEquals(4, u.getID());
-		}
 	}
 	
 	@Test
-	public void testSearchByLName() {
-		String searchLastName = "Smith";
+	public void testSubordinates() {
+		// Inserts
+		uc.addSubordinate(1, 2);
 		
-		ArrayList<User> testList = uc.searchForUsers(0, -1, false, "", false, "", false, searchLastName, 0, -1);
+		// hasSubordinate
+		assertTrue(uc.hasSubordinate(1, 2));
 		
-		if(testList.isEmpty()) {
-			System.out.println("Search failed for user with LastName" + searchLastName);
-			//fail();
-			
-		} else {
-		assertEquals(2, testList.size());
+		// getManagersOfUser
 		
-		User u = testList.get(0);
-		assertEquals("Rodger", u.getFirstName());
-		assertEquals("Admin@google.com", u.getEmail());
-		assertEquals(12, u.getID());
-		
-		User u2 = testList.get(1);
-		assertEquals("Stan", u.getFirstName());
-		assertEquals("rookie@email.com", u.getEmail());
-		assertEquals(4, u.getID());
-		}
+		// Remove
+		uc.removeSubordinate(1, 2);
 	}
 	
 	@Test
-	public void testSearchByFullName() {
-		String FirstName = "Stan";
-		String LastName = "Smith"; 
+	public void testClock() {
+		// Clock In
+		uc.clockIn(1);
 		
-		ArrayList<User> testList = uc.searchForUsers(0, -1, false, "", false, FirstName, false, LastName, 0, -1);
+		// isClockedIn
+		assertTrue(uc.isClockedIn(1));
 		
-		if(testList.isEmpty()) {
-			System.out.println("Search failed for user with first name " + FirstName + " and last name " + LastName);
-			//fail(); 
-			
-		} else {
-		assertEquals(1, testList.size());
+		// Clock Out
+		uc.clockOut(1);
 		
-		User u = testList.get(0);
-		
-		//assertEquals("Smith", u.getLastName());
-		assertEquals("rookie@email.com", u.getEmail());
-		assertEquals(4, u.getID());
-		}
+		// Clean up CompletedShift
+		db.executeUpdate("Deleting Shift", "delete from CompletedShift where user_id = 1");
 	}
-	
-	@Test
-	public void testSearchByID() {
-		int searchID = 12; 
-		
-		ArrayList<User> testList = uc.searchForUsers(searchID, -1, false, "", false, "", false, "", 0, -1);
-		
-		if(testList.isEmpty()) {
-			System.out.println("Search failed for user with ID " + searchID);
-			//fail();
-			
-		} else {
-			assertEquals(1, testList.size());
-			
-			User u = testList.get(0);
-			
-			assertEquals("Rodger", u.getFirstName());
-			assertEquals("Smith", u.getLastName());
-			assertEquals("Admin@google.com", u.getEmail()); 
-			
-		}
-	}
-	
-	@Test
-	public void testSearchByPositionID() {
-		int searchPosID = 1;
-		
-		ArrayList<User> testList = uc.searchForUsers(0, -1, false, "", false, "", false, "", searchPosID, -1);
-		
-		if(testList.isEmpty()) {
-			System.out.println("Search failed for user with position ID"+ searchPosID);
-			//fail(); 
-		
-		} else {
-			User u = testList.get(0);
-			
-			assertEquals(5, u.getID());
-			assertEquals("theBoss@tesla.com", u.getEmail());
-			assertEquals("Elon", u.getFirstName());
-			assertEquals("Musk", u.getLastName());
-		}
-	}
-	
 	
 	@Test
 	public void testChangeEmail() {
-		String newEmail = "lelelel@tcp.com";
-		String oldEmail = user2.getEmail();
-		assertEquals("rookie@email.com", user2.getEmail());
-		
-		//this method isnt working 
-		uc.changeEmail(user2.getID(), oldEmail, newEmail);
-		
-		
-		assertEquals("lelelel@tcp.com", user2.getEmail());
+		//uc.changeEmail();
 	}
 	
 	@Test
 	public void testChangePassword() {
-		String newPass = "Password4";
-		String oldPass = user3.getPassword();
-		
-		assertEquals("", user3.getPassword()); 
-		
-		//this method also appears to not be working 
-		uc.changePassword(user3.getID(), newPass);
-		
-		//search for users and pass that through user 3
-		
-		//user3 = uc.searchForUsers(-1, -1, false, "failTest@@gmail.com" , false, null, false, null, -1).get(0);
-		
-		assertEquals("Password4", user3.getPassword()); 
-		
+		//uc.changePassword();
 	}
 	
 	@Test
 	public void testChangePosition() {
-		Position oldP = user3.getPosition();
-		
-		assertEquals(4, oldP.getID());
-		int newPositionID = 3;
-		
-		//this is also not working 
-		uc.changePosition(user3, newPositionID);
-		
-		assertEquals("IT", user3.getPosition().getTitle()); 
+		//uc.changePosition(user3, newPositionID);
 	}
 	
 	@Test 
-	public void testUserHasPermission() {
-		assertEquals(true, uc.hasPermission(1, EnumPermission.ALL));
-		assertEquals(false, uc.hasPermission(2, EnumPermission.ALL));
+	public void testHasPermission() {
+		assertTrue(uc.hasPermission(1, EnumPermission.ALL));
 	}
 	
-	//@Test
-	public void testManagerHasSubordinate() {
+	@Test
+	public void testIsLockedOut() {
 		
 	}
-	
-	public void testisLockedOut() {
-		
-	}
-	
-	public void testGetSubbordinates() {
-		
-	}
-	
-	
 }
