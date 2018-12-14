@@ -37,22 +37,22 @@ public class UserControllerTest{
 	@Test
 	public void testCRUDQuarantineUser() {
 		// Test Insert
-		uc.insertQuarantineUser("zhenry@ycp.edu", "password", "Chuck", "Norris");
+		uc.insertQuarantineUser("dglipsy@ycp.edu", "password", "Chuck", "Norris");
 		
 		// Test Find
-		assertTrue(uc.findQuarantineUser("zhenry@ycp.edu"));
+		assertTrue(uc.findQuarantineUser("dglipsy@ycp.edu"));
 		
 		// Test Verify
-		String token = uc.retrySendEmail("zhenry@ycp.edu");
-		assertTrue(uc.verifyEmail("zhenry@ycp.edu", token));
+		String token = uc.retrySendEmail("dglipsy@ycp.edu");
+		assertTrue(uc.verifyEmail("dglipsy@ycp.edu", token));
 		
 		// Clean up newly verified user
-		db.executeUpdate("Deleting User", "delete from User where email = 'zhenry@ycp.edu'");
+		db.executeUpdate("Deleting User", "delete from User where email = 'dglipsy@ycp.edu'");
 		
 		// Test Remove
-		uc.insertQuarantineUser("zhenry@ycp.edu", "password", "Chuck", "Norris");
-		uc.deleteQuarantineUser("zhenry@ycp.edu");
-		assertFalse(uc.findQuarantineUser("zhenry@ycp.edu"));
+		uc.insertQuarantineUser("dglipsy@ycp.edu", "password", "Chuck", "Norris");
+		uc.deleteQuarantineUser("dglipsy@ycp.edu");
+		assertFalse(uc.findQuarantineUser("dglipsy@ycp.edu"));
 	}
 	
 	@Test
@@ -76,6 +76,7 @@ public class UserControllerTest{
 		//
 		
 		//
+		
 	}
 	
 	@Test
@@ -111,23 +112,23 @@ public class UserControllerTest{
 	@Test
 	public void testChange() {
 		// Position
-		uc.changePosition(1, 1);
+		uc.changePosition(3, 3);
 		
 		// Password
-		uc.changePassword(1, "test");
+		uc.changePassword(3, "test");
 		
 		// Email
-		uc.changeEmail(1, "test@ycp.edu");
+		uc.changeEmail(3, "test@ycp.edu");
 		
 		// First Name
-		uc.changeFirstName(1, "Carlos");
+		uc.changeFirstName(3, "Carlos");
 		
 		// Last Name
-		uc.changeLastName(1, "Solrac");
+		uc.changeLastName(3, "Solrac");
 		
 		// Test all of our values
-		User u = uc.searchForUsers(-1, -1, false, null, false, null, false, null, -1, -1).get(0);
-		assertEquals(u.getPosition().getID(), 1);
+		User u = uc.searchForUsers(-1, -1, false, "test@ycp.edu", false, "Carlos", false, "Solrac", -1, -1).get(0);
+		assertEquals(u.getPosition().getID(), 3);
 		assertTrue(uc.authenticate("test", u.getPassword()));
 		assertEquals(u.getEmail(), "test@ycp.edu");
 		assertEquals(u.getFirstName(), "Carlos");
@@ -140,7 +141,12 @@ public class UserControllerTest{
 	}
 	
 	@Test
-	public void testIsLockedOut() {
+	public void testLockOut() {
+		//
+		
+		//
+		
+		//
 		
 	}
 }
