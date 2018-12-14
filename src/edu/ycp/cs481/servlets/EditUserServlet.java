@@ -1,6 +1,7 @@
 package edu.ycp.cs481.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -8,8 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import edu.ycp.cs481.control.SOPController;
 import edu.ycp.cs481.control.UserController;
 import edu.ycp.cs481.model.EnumPermission;
+import edu.ycp.cs481.model.SOP;
 import edu.ycp.cs481.model.User;
 
 @SuppressWarnings("serial")
@@ -26,6 +29,7 @@ public class EditUserServlet extends HttpServlet{
 		req.setAttribute("firstName", user.getFirstName());
 		req.setAttribute("lastName", user.getLastName());
 		req.setAttribute("archived", user.isArchived());
+		req.setAttribute("lockedOut", user.isLockedOut());
 		// TODO: SOPs
 	}
 	
@@ -99,6 +103,29 @@ public class EditUserServlet extends HttpServlet{
 			if(goodUpdate){
 				uc.changeLastName(id, newLastName);
 				req.setAttribute("successMessage", "Updated Last Name to " + newLastName + "!");
+			}
+		}else if(action.equalsIgnoreCase("addSOP")){
+			String sopIDStr = req.getParameter("sopID");
+			int sopID = -1;
+			ArrayList<SOP> sopResult = null;
+			
+			if(sopIDStr == null || sopIDStr.equalsIgnoreCase("")){
+				req.setAttribute("sopError", "SOP ID can't be null!");
+				goodUpdate = false;
+			}else{
+				sopID = Integer.parseInt(sopIDStr);
+				SOPController sc = new SOPController();
+				sopResult = sc.searchForSOPs(sopID, false, null, false, null, -1, -1, -1, -1, -1, null);
+				if(sopResult == null || sopResult.size() == 0){
+					req.setAttribute("sopError", "That SOP ID isn't used!");
+					goodUpdate = false;
+				}
+			}
+			
+			if(goodUpdate){
+				String title = sopResult.get(0).getTitle();
+				uc.assignSOP(id, sopID);
+				req.setAttribute("successMessage", "Added " + title + " to User!");
 			}
 		}
 		loadUser(req);

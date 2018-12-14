@@ -45,6 +45,9 @@
 	</div>
 	<div class="row">
 		<div class="col text-center">
+		
+		</div>
+		<div class="col text-center">
 			Locked Out: ${lockedOut}
 		</div>
 		<div class="col text-center">
@@ -58,10 +61,8 @@
 				</c:if>
 			</form>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col text-center">
-			Requirements TBA
+		<div class="col">
+		
 		</div>
 	</div>
 	<h2>Change Basic Details</h2>
@@ -142,6 +143,40 @@
 		<div class="row">
 			<div class="col">
 				<button type="submit" name="doStuff" value="changeLastName" class="btn btn-info">Change Last Name</button>
+			</div>
+		</div>
+	</form>
+	<h2>View and Change Their SOPs</h2>
+	<form class="form-horizontal" method="post">
+		<h3>View Them</h3>
+		<div class="row">
+			<div class="col">
+				<a href="search_sops?userID=${userID}" class="btn btn-info btn-block" role="button">View Them</a>
+			</div>
+			<div class="col">
+			
+			</div>
+			<div class="col">
+			
+			</div>
+		</div>
+		<h3>Add SOP</h3>
+		<div class="row">
+			<div class="col">
+				<c:if test="${!empty sopError}">
+					<p class="alert alert-warning">${sopError}</p>
+				</c:if>
+			</div>
+			<div class="col">
+			
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<input type="number" class="form-control" id="sopID" name="sopID" value="${sopID}">
+			</div>
+			<div class="col">
+				<button type="submit" name="doStuff" value="addSOP" class="btn btn-info">Add SOP</button>
 			</div>
 		</div>
 	</form>

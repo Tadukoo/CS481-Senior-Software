@@ -336,11 +336,11 @@ public class UserController{
 	}
 	
 	public void lockout(int userID){
-		db.executeUpdate("Lockout User with ID " + userID, "update User set lock_out = true where user_id = " + userID);
+		db.executeUpdate("Lockout User with ID " + userID, "update User set locked_out = true where user_id = " + userID);
 	}
 
 	public void overturnLockout(int userID) {
-		db.executeUpdate("Overturn lockout on User with ID " + userID, "update User set lock_out = false where user_id = " + userID);
+		db.executeUpdate("Overturn lockout on User with ID " + userID, "update User set locked_out = false where user_id = " + userID);
 	}
 	
 	public void archiveUser(int userID){
