@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.ycp.cs481.db.Database;
 import edu.ycp.cs481.model.EnumPermission;
 import edu.ycp.cs481.model.Position;
 import edu.ycp.cs481.model.SOP;
@@ -23,6 +24,7 @@ public class UserControllerTest{
 	private ArrayList<SOP> sopList;
 	private ArrayList<User> userList;
 	private UserController uc;
+	private Database db;
 	
 	@Before
 	public void setUp(){
@@ -114,7 +116,7 @@ public class UserControllerTest{
 		
 		uc = new UserController();
 		
-		
+		db = new Database();
 	}
 	
 	@Test
@@ -139,6 +141,20 @@ public class UserControllerTest{
 	}
 	
 	// TODO: Rework searches to test searchForUsers
+	
+	@Test
+	public void testCRUDUser() {
+		// Test Insert
+		uc.insertUser(true, "thegame@ycp.edu", "tester", "Paul", "Logan", false, false, 2);
+		// Test searchForUsers
+		User u = uc.searchForUsers(-1, -1, false, "thegame@ycp.edu", false, "Paul", false, "Logan", 2, -1).get(0);
+		assertEquals(u.getEmail(), "thegame@ycp.edu");
+		assertEquals(u.getFirstName(), "Paul");
+		assertEquals(u.getLastName(), "Logan");
+		assertEquals(u.getPosition().getID(), 2);
+		// Test delete
+		db.executeUpdate("Deleting Quarantine User", "delete from Quarantine where email = 'thegame@ycp.edu'");
+	}
 	
 	@Test
 	public void testSearchByFName() {
