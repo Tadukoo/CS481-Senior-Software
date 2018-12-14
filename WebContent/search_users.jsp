@@ -11,6 +11,7 @@
 <body>
 
 
+
 	<div class="fluid-container">
 		<form class="form-horizontal" method="post">
 			<header class="header">
@@ -29,6 +30,7 @@
 						<button type="submit" name="action" class="btn btn-danger"
 							value="logout" id="logoutbtn">Logout</button>
 					</div>
+
 
 				</div>
 			</header>

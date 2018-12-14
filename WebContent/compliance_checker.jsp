@@ -36,8 +36,10 @@
 
 
 
+
 			</div>
 			<div class="tabletop">
+
 				<div class="row">
 					<div class="col-1"></div>
 
@@ -82,9 +84,11 @@
 
 				</div>
 			</c:forEach>
+
 			<input type="hidden" name="page" value="${page}"> <input
 				type="hidden" name="displaySize" value="${displaySize}">
 			<div class="row" style="padding: 2px; margin-top: 5px;">
+
 				<div class="col-2 text-center">
 					<c:if test="${page gt 0}">
 						<button type="submit" name="changePage" value="prev"
@@ -112,14 +116,12 @@
 				</c:if>
 				<c:if test="${displaySize != 50}">
 					<div class="col-1">
-						<button type="submit" name="changeDisplaySize" value="50"
-							class="btn btn-info">50</button>
+						<button type="submit" name="changeDisplaySize" value="50" class="btn btn-info">50</button>
 					</div>
 				</c:if>
 				<c:if test="${displaySize != 100}">
 					<div class="col-1">
-						<button type="submit" name="changeDisplaySize" value="100"
-							class="btn btn-info">100</button>
+						<button type="submit" name="changeDisplaySize" value="100" class="btn btn-info">100</button>
 					</div>
 				</c:if>
 				<div class="col-2 text-center">

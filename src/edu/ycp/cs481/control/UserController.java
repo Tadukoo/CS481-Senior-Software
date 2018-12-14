@@ -41,7 +41,7 @@ public class UserController{
 		
 		return db.insertAndGetID("User", "user_id",
 				new String[]{"email", "password", "first_name", "last_name", "locked_out", "archive_flag",
-						"position_id, role_id"},
+						"position_id", "role_id"},
 				new String[]{email, password, firstName, lastName, String.valueOf(lockedOut), String.valueOf(isArchived),
 						String.valueOf(positionID), String.valueOf(defaultRole)});
 	}
@@ -80,22 +80,26 @@ public class UserController{
 		}
 	}
 	
-	public void retrySendEmail(String email) {
-		String pin = generateString();
-		try {
-			String name = "Get Quarantine User";
-			String sql = "select verification from Quarantine where email = " + email;
-			pin = db.executeQuery(name, sql, DBFormat.getStringResFormat()).get(0);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public void deleteQuarantineUser(String email) {
+		db.executeUpdate("Deleting Quarantine User", "delete from Quarantine where email = '" + email + "'");
+	}
+	
+	public String retrySendEmail(String email) {
+		// Generate a new token
+		String token = generateString();
+
+		// Update Quarantine entry to use new token
+		db.executeUpdate("Updating Quarantine User", "update Quarantine set verification = '" + hashPassword(token) + "' where email = '" + email + "'");
 		
 		// Send email with messenger
 		Messenger.send(email, "CTM Verification Pin", "Please visit the following URL to verify your account: <br><br>"
 				+ "<a href=\"http://localhost:8081/CS481-Senior-Software/verify_email?"
 				+ "email=" + email
-				+ "&token=" + pin 
+				+ "&token=" + token 
 				+ "\">Verify Email</a>");
+		
+		// Return verificationString
+		return token;
 	}
 	
 	public boolean verifyEmail(String email, String verificationString) {
@@ -166,10 +170,19 @@ public class UserController{
 		}
 		return null;
 	}
+	
+	public void changeFirstName(int userID, String newFirstName){
+		db.executeUpdate("Change User First Name", "update User set first_name = '" + newFirstName + "' where user_id = "
+				+ userID);
+	}
+	
+	public void changeLastName(int userID, String newLastName){
+		db.executeUpdate("Change User Last Name", "update User set last_name = '" + newLastName + "' where user_id = "
+				+ userID);
+	}
 
-	public void changeEmail(int userID, String oldEmail, String newEmail){
-		db.executeUpdate("Change User Email", "update User set email = '" + newEmail + "' where " + "email = '"
-				+ oldEmail + "' and user_id = " + userID);
+	public void changeEmail(int userID, String newEmail){
+		db.executeUpdate("Change User Email", "update User set email = '" + newEmail + "' where user_id = " + userID);
 	}
 
 	public void changePassword(int userID, String newPass){
@@ -275,7 +288,7 @@ public class UserController{
 		db.executeUpdate("Change user's role", "update User set role_id = " + roleID + " where user_id = " + userID);
 	}
 	
-	public boolean managerHasSubordinate(int managerID, int userID){
+	public boolean hasSubordinate(int managerID, int userID){
 		try{
 			String name = "";
 			String sql = "select * from Subordinate where manager_id = " + managerID + 
@@ -321,9 +334,13 @@ public class UserController{
 		}
 		return null;
 	}
+	
+	public void lockout(int userID){
+		db.executeUpdate("Lockout User with ID " + userID, "update User set locked_out = true where user_id = " + userID);
+	}
 
 	public void overturnLockout(int userID) {
-		db.executeUpdate("Overturn lockout on User with ID " + userID, "update User set lock_out = false where user_id = " + userID);
+		db.executeUpdate("Overturn lockout on User with ID " + userID, "update User set locked_out = false where user_id = " + userID);
 	}
 	
 	public void archiveUser(int userID){
@@ -334,12 +351,10 @@ public class UserController{
 		db.executeUpdate("Unarchive User with ID " + userID, "update User set archive_flag = false where user_id = " + userID);
 	}
 
-	public void changePosition(User user, int positionID){
+	public void changePosition(int userID, int positionID){
 		db.executeUpdate(
-				"Change User " + user.getFirstName() + " " + user.getLastName() + " Position to id " + positionID,
-				"update User set position_id = " + positionID + " where user_id = " + user.getID());
-		PositionController pc = new PositionController();
-		user.setPosition(pc.getPositionByUser(user.getID()));
+				"Change User Position",
+				"update User set position_id = " + positionID + " where user_id = " + userID);
 	}
 	
 	public void changeEmployeeID(int userID, int employeeID){

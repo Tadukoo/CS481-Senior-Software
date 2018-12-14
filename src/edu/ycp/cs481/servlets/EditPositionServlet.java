@@ -1,6 +1,7 @@
 package edu.ycp.cs481.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,7 +11,9 @@ import javax.servlet.http.HttpSession;
 
 import edu.ycp.cs481.model.EnumPermission;
 import edu.ycp.cs481.model.Position;
+import edu.ycp.cs481.model.SOP;
 import edu.ycp.cs481.control.PositionController;
+import edu.ycp.cs481.control.SOPController;
 import edu.ycp.cs481.control.UserController;
 
 @SuppressWarnings("serial")
@@ -103,6 +106,29 @@ public class EditPositionServlet extends HttpServlet{
 			String newDescription = req.getParameter("newDescription");
 			pc.changeDescription(id, newDescription);
 			req.setAttribute("successMessage", "Updated description!");
+		}else if(action.equalsIgnoreCase("addSOP")){
+			String sopIDStr = req.getParameter("sopID");
+			int sopID = -1;
+			ArrayList<SOP> sopResult = null;
+			
+			if(sopIDStr == null || sopIDStr.equalsIgnoreCase("")){
+				req.setAttribute("sopError", "SOP ID can't be null!");
+				goodUpdate = false;
+			}else{
+				sopID = Integer.parseInt(sopIDStr);
+				SOPController sc = new SOPController();
+				sopResult = sc.searchForSOPs(sopID, false, null, false, null, -1, -1, -1, -1, -1, null);
+				if(sopResult == null || sopResult.size() == 0){
+					req.setAttribute("sopError", "That SOP ID isn't used!");
+					goodUpdate = false;
+				}
+			}
+			
+			if(goodUpdate){
+				String title = sopResult.get(0).getTitle();
+				pc.insertPositionSOP(id, sopID);
+				req.setAttribute("successMessage", "Added " + title + " to Position!");
+			}
 		}
 		loadPosition(req);
 		req.getRequestDispatcher("/edit_position.jsp").forward(req, resp);

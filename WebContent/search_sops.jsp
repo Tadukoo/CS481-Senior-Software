@@ -10,6 +10,7 @@
 </head>
 <body>
 
+
 	<div class="fluid-container">
 		<form class="form-horizontal" method="post">
 			<header class="header">
@@ -28,6 +29,7 @@
 						<button type="submit" name="action" class="btn btn-danger"
 							value="logout" id="logoutbtn">Logout</button>
 					</div>
+
 
 				</div>
 			</header>
@@ -65,12 +67,14 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="SUtabletop">
 				<div class="row">
 					<div class="col-1"></div>
 					<div class="col">Showing results ${(page*displaySize) + 1} -
 						${fn:length(sops) lt (((page+1)*displaySize) - 1)?fn:length(sops):(((page+1)*displaySize) - 1)}
 						of ${fn:length(sops)}</div>
+
 				</div>
 				<div class="row">
 					<div class="col-1"></div>

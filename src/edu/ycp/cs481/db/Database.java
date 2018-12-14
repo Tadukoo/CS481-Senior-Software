@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 import edu.ycp.cs481.model.EnumPermission;
 import edu.ycp.cs481.model.Position;
@@ -26,7 +26,7 @@ public class Database{
 		}
 	}
 	
-	private Connection connect() throws SQLException {
+	private Connection connect() throws SQLException{
 		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + dbName +"?user=root&password=password");
 
 		conn.setAutoCommit(false);
@@ -34,49 +34,49 @@ public class Database{
 		return conn;
 	}
 
-	public interface Transaction<ResultType> {
+	public interface Transaction<ResultType>{
 		public ResultType execute(Connection conn) throws SQLException;
 	}
 
 	private static final int MAX_ATTEMPTS = 100;
 		
-	public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
-		try {
+	public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn){
+		try{
 			return doExecuteTransaction(txn);
-		} catch (SQLException e) {
+		}catch(SQLException e){
 			throw new PersistenceException("Transaction failed", e);
 		}
 	}
 
-	public<ResultType> ResultType doExecuteTransaction(Transaction<ResultType> txn) throws SQLException {
+	public<ResultType> ResultType doExecuteTransaction(Transaction<ResultType> txn) throws SQLException{
 		Connection conn = connect();
 
-		try {
+		try{
 			int numAttempts = 0;
 			boolean success = false;
 			ResultType result = null;
 
-			while (!success && numAttempts < MAX_ATTEMPTS) {
-				try {
+			while (!success && numAttempts < MAX_ATTEMPTS){
+				try{
 					result = txn.execute(conn);
 					conn.commit();
 					success = true;
-				} catch (SQLException e) {
-					if (e.getSQLState() != null && e.getSQLState().equals("41000")) {
+				}catch(SQLException e){
+					if(e.getSQLState() != null && e.getSQLState().equals("41000")){
 						numAttempts++;
-					} else {
+					}else{
 						throw e;
 					}
 				}
 			}
 
-			if (!success) {
+			if(!success){
 				throw new SQLException("Transaction failed (too many retries)");
 			}
 
 			// Success!
 			return result;
-		} finally {
+		}finally{
 			DBUtil.closeQuietly(conn);
 		}
 	}
@@ -395,21 +395,35 @@ public class Database{
 		InitialData initData = new InitialData();
 		
 		// They must go in this order
-		List<String> roleList = initData.getInitialRoles();
-		List<Position> posList = initData.getInitialPositions();
-		List<User> userList = initData.getInitialUsers();
-		List<SOP> sopList = initData.getInitialSOPs();
+		ArrayList<String> roleList = initData.getInitialRoles();
 		ArrayList<EnumPermission> perms = initData.getInitialPermissions();
-		int[] permIds = initData.getInitialPermissionIDs();
-		int id = 0;
+		HashMap<Integer, ArrayList<Integer>> rolePermissions = initData.getRolePermissions();
+		ArrayList<Position> posList = initData.getInitialPositions();
+		ArrayList<User> userList = initData.getInitialUsers();
+		ArrayList<SOP> sopList = initData.getInitialSOPs();
+		HashMap<Integer, ArrayList<Integer>> userSOPs = initData.getUserSOPs();
 		
 		ArrayList<String> names = new ArrayList<String>();
 		ArrayList<String> sqls = new ArrayList<String>();
 		
 		for(String s: roleList){
 			names.add("Insert Role " + s);
-			sqls.add("insert into Role (title) " +
-					 "values ('" + s +"')");
+			sqls.add("insert into Role (title) " + "values ('" + s +"')");
+		}
+		
+		for(int i = 0; i < perms.size(); i++){
+			EnumPermission perm = perms.get(i);
+			names.add("Insert Permission " + perm.getPerm() + " with id " + perm.getID());
+			sqls.add("insert into Permission (perm_id, permission) " +
+			" values (" + perm.getID() + ", '" + perm.getPerm() + "')");
+		}
+		
+		for(int roleID: rolePermissions.keySet()){
+			ArrayList<Integer> rolePerms = rolePermissions.get(roleID);
+			for(int perm: rolePerms){
+				names.add("Add Permission " + perm + " to role " + roleID);
+				sqls.add("insert into RolePermission (role_id, perm_id) values (" + roleID + ", " + perm + ")");
+			}
 		}
 		
 		for(Position p: posList){
@@ -434,7 +448,7 @@ public class Database{
 		}
 		
 		for(Position p: posList){
-			List<SOP> reqs = p.getRequirements();
+			ArrayList<SOP> reqs = p.getRequirements();
 			
 			if(reqs != null){
 				for(SOP s: reqs){
@@ -445,24 +459,13 @@ public class Database{
 			}
 		}
 		
-		for(int i = 0; i < perms.size(); i++){
-			EnumPermission perm = perms.get(i);
-			names.add("Insert Permission " + perm.getPerm() + " with id " + perm.getID());
-			sqls.add("insert into Permission (perm_id, permission) " +
-			" values (" + perm.getID() + ", '" + perm.getPerm() + "')");
+		for(int userID: userSOPs.keySet()){
+			ArrayList<Integer> sops = userSOPs.get(userID);
+			for(int sop: sops){
+				names.add("Insert UserSOP " + sop + " to User " + userID);
+				sqls.add("insert into UserSOP(user_id, sop_id) values(" + userID + ", " + sop + ")");
+			}
 		}
-		
-		//
-		for(int i = 1; i < roleList.size(); i++ ){
-			names.add("Insert RolePermission " + perms.get(permIds[id] - 1).getPerm());
-			sqls.add("insert into RolePermission (role_id, perm_id) " +
-			" values (" + i + ", " + permIds[id] + ")");
-			id++;
-		}
-		
-		names.add("Insert UserSOP 3 to User 1");
-		sqls.add("insert into UserSOP(user_id, sop_id) "
-				+ "values(1,3)");
 		
 		executeUpdates(names, sqls);
 	}

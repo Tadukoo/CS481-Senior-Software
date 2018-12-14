@@ -1,11 +1,9 @@
 package edu.ycp.cs481.model;
 
 public class ComplianceIssue {
-    //variables
     private String title;
     private int priority;
     private String email;
-
 
     public String getTitle() {
         return title;
@@ -19,7 +17,6 @@ public class ComplianceIssue {
         return email;
     }
 
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -31,6 +28,4 @@ public class ComplianceIssue {
     public void setEmail(String email) {
         this.email = email;
     }
-
-   
 }
