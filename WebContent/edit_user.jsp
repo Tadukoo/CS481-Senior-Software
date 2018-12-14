@@ -163,6 +163,16 @@
 		<h3>Add SOP</h3>
 		<div class="row">
 			<div class="col">
+				<c:if test="${!empty sopError}">
+					<p class="alert alert-warning">${sopError}</p>
+				</c:if>
+			</div>
+			<div class="col">
+			
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
 				<input type="number" class="form-control" id="sopID" name="sopID" value="${sopID}">
 			</div>
 			<div class="col">
