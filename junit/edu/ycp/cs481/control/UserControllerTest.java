@@ -122,30 +122,20 @@ public class UserControllerTest{
 		String password = "passwordighr";
 		String hashedPass = uc.hashPassword(password);
 		assertNotEquals(password, hashedPass);
-		
 		assertTrue(uc.authenticate(password, hashedPass));
 	}
 	
 	@Test
-	public void testInsertQuarantineUser() {
+	public void testCRUDQuarantineUser() {
+		// Test Insert
 		uc.insertQuarantineUser("zhenry@ycp.edu", "password", "Chuck", "Norris");
-	}
-	
-	//this needs to be updated to handle the new salted passwords 
-	@Test
-	public void testvalidateLogin() {
-		String pass1 = "DiveOnIn";
-		String pass2 = "bangBang";
 		
-		boolean firstTest = uc.authenticate(user2.getPassword(), pass1);
-		assertFalse(firstTest);
+		// Test Find
+		assertTrue(uc.findQuarantineUser("zhenry@ycp.edu"));
 		
-		boolean secondTest = uc.authenticate(user1.getPassword(), pass2);
-		assertFalse(secondTest); 
-		
-		//set a login setup 
-		//if authenticate login = true
-		
+		// Test Remove
+		uc.deleteQuarantineUser("zhenry@ycp.edu");
+		assertFalse(uc.findQuarantineUser("zhenry@ycp.edu"));
 	}
 	
 	// TODO: Rework searches to test searchForUsers
