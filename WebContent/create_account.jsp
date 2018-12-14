@@ -5,11 +5,32 @@
 <head>
 	<title>CTM mkii - Create Account</title>
 	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-<h1>Create Account</h1>
-<div class="container-fluid">
+
+
 	<form class="form-horizontal" method="post">
+	<header class="header" style="margin-bottom: 8px;">
+				<h1>Create Account</h1>
+				<div class="row">
+
+					<div class="col-9"></div>
+					<div class="col-3">
+					<c:if test="${managerCreate}">
+						<div class="loggedInAs">
+						
+							<div id="#loggedinlabel">Currently logged in as:</div>
+							<div id="loggedinEmail">${userEmail}</div>
+						</div>
+						
+						<button type="submit" name="action" class="btn btn-danger"
+							value="logout" id="logoutbtn">Logout</button>
+							</c:if>
+					</div>
+
+				</div>
+			</header>
 		<div class="row">
 			<div class="col">
 				<c:if test="${! empty firstNameError}">
@@ -51,13 +72,13 @@
 		<div class="row">
 			<div class="col">
 				<div class="form-group row">
-					<label for="email" class="form-label col-2">Email:</label>
+					<label for="email" class="form-label col-2" >Email:</label>
 					<input type="email" class="form-control col-10" id="email" name="email" value="${email}">
 				</div>
 			</div>
 			<div class="col">
 				<div class="form-group row">
-					<label for="emailConfirm" class="form-label col-2">Confirm Email:</label>
+					<label for="emailConfirm" class="form-label col-2" >Confirm Email:</label>
 					<input type="email" class="form-control col-10" id="emailConfirm" name="emailConfirm" value="${emailConfirm}">
 				</div>
 			</div>
@@ -97,9 +118,11 @@
 			</div>
 		</div>
 	</form>
-</div>
+
 <c:if test="${empty managerCreate}">
 <p class="note">Already have an account? <a href="./login">Login</a></p>
 </c:if>
+<c:if test="${managerCreate}">
 <p class="note">Want to return to the Homepage? <a href="./user_home">Home</a></p>
+</c:if>
 </body></html>

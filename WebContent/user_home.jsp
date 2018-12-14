@@ -5,20 +5,25 @@
 <head>
 <title>CTM mkii - User Home</title>
 <link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 
 
 	<div class="fluid-container">
 		<form method="post">
-			<header style = "background-color: #667fcc; padding-bottom: 5px;">
+			<header class="header">
 				<h1>Home</h1>
 				<div class="row">
-					<div class="col-10"></div>
-					<div class="col-2">
-					<p>Currently logged in as: ${user}</p>
+
+					<div class="col-9"></div>
+					<div class="col-3" style="">
+						<div class="loggedInAs">
+							<div id="#loggedinlabel">Currently logged in as:</div>
+							<div id="loggedinEmail">${email}</div>
+						</div>
 						<button type="submit" name="action" class="btn btn-danger"
-							value="logout">Logout</button>
+							value="logout" id="logoutbtn">Logout</button>
 					</div>
 
 				</div>

@@ -14,6 +14,7 @@ import edu.ycp.cs481.control.SOPController;
 import edu.ycp.cs481.control.UserController;
 import edu.ycp.cs481.model.ComplianceIssue;
 import edu.ycp.cs481.model.EnumPermission;
+import edu.ycp.cs481.model.User;
 
 @SuppressWarnings("serial")
 public class ComplianceCheckerServlet extends HttpServlet{
@@ -27,15 +28,17 @@ public class ComplianceCheckerServlet extends HttpServlet{
 		else{
 			UserController uc = new UserController();
 			int userID = (int) session.getAttribute("user_id");
+			
 			if(uc.hasPermission(userID, EnumPermission.ALL)){
 				// Only admins with full permissions can go here ^
 				SOPController sc = new SOPController();
 				ComplianceController cc = new ComplianceController();
 				ArrayList<ComplianceIssue> issues = cc.PullComplianceIssues();
+				User current = uc.searchForUsers(userID, -1, false, "", false, "", false, "", -1, -1).get(0);
 				req.setAttribute("issues", issues);
 				req.setAttribute("displaySize", 10);
 				req.setAttribute("page", 0);
-				
+				req.setAttribute("email", current.getEmail());
 				req.getRequestDispatcher("/compliance_checker.jsp").forward(req, resp);	
 			}else{
 				session.setAttribute("error", "Sorry, you don't have permission to do that.");

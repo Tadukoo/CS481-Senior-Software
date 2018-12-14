@@ -15,6 +15,7 @@ import edu.ycp.cs481.model.User;
 
 @SuppressWarnings("serial")
 public class CreateAccountServlet extends HttpServlet{
+	boolean loggedIn = false;
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		System.out.println("Create Account Servlet: doGet");
@@ -23,9 +24,12 @@ public class CreateAccountServlet extends HttpServlet{
 		if(session.getAttribute("user_id") == null){
 			req.getRequestDispatcher("/create_account.jsp").forward(req, resp);
 		}else{
-			UserController uc = new UserController();
+			UserController userControl = new UserController();
 			int userID = (int) session.getAttribute("user_id");
-			if(uc.hasPermission(userID, EnumPermission.ALL) || uc.hasPermission(userID, EnumPermission.CREATE_USER)){
+			String userEmail = userControl.searchForUsers(userID, -1, false, "", false, "", false, "", -1, -1).get(0).getEmail();
+			loggedIn = true;
+			req.setAttribute("userEmail", userEmail);
+			if(userControl.hasPermission(userID, EnumPermission.ALL) || userControl.hasPermission(userID, EnumPermission.CREATE_USER)){
 				req.setAttribute("managerCreate", "true");
 				req.getRequestDispatcher("/create_account.jsp").forward(req, resp);
 			}else{
@@ -40,16 +44,23 @@ public class CreateAccountServlet extends HttpServlet{
 		System.out.println("Create Account Servlet: doPost");
 		
 		UserController userControl = new UserController();
-		
+		HttpSession session = req.getSession();
 		boolean goodUser = true;
 		
 		// Get the information
+		int userID = (int) session.getAttribute("user_id");
 		String firstName = req.getParameter("firstName");
 		String lastName = req.getParameter("lastName");
 		String email = req.getParameter("email");
 		String emailConfirm = req.getParameter("emailConfirm");
 		String password = req.getParameter("password");
 		String passwordConfirm = req.getParameter("passwordConfirm");
+		String action = req.getParameter("action");
+		if(action.equalsIgnoreCase("logout")){
+			UserController.logout(req);
+			loggedIn = false;
+			resp.sendRedirect(req.getContextPath() + "/login");
+		}else {
 		
 		if(firstName == null || firstName.equalsIgnoreCase("")){
 			goodUser = false;
@@ -111,4 +122,5 @@ public class CreateAccountServlet extends HttpServlet{
 			req.getRequestDispatcher("/create_account.jsp").forward(req, resp);
 		}
 	}
+		}
 }

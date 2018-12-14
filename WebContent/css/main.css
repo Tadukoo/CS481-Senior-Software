@@ -1,0 +1,43 @@
+/*ALL FOR THE HEADER */
+.header {
+	background-color: #667fcc; 
+	padding-bottom: 5px; 
+	padding-right: 10px;
+}
+
+.loggedInAs{
+	padding-bottom:4px; 
+	padding-left:15px;
+}
+
+#loggedinlabel{
+	font-size: 15px;
+}
+
+#loggedinEmail{
+	font-size: 20px;
+}
+#logoutbtn{
+	float: right; 
+	overflow: auto; 
+	right-margin:8 px;
+}
+
+/*TABLES*/
+.tabletop{
+	background-color: #ccccff; 
+	margin-left: 10%; 
+	margin-right: 15%; 
+	padding: 2px;
+}
+.tablecontents{
+	background-color: #858fad;
+	 margin-left: 10%; 
+	 margin-right: 15%; 
+	 padding: 2px;
+}
+/*Form*/
+.formlabel{
+	background-color: #ccccff; 
+	
+}
