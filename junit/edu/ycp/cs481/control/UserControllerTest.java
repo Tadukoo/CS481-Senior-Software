@@ -17,105 +17,12 @@ import edu.ycp.cs481.model.SOP;
 import edu.ycp.cs481.model.User;
 
 public class UserControllerTest{
-	private Position pos1, pos2, pos3, pos4, pos5;
-	private SOP sop1, sop2;
-	private User user1, user2, user3, user4; 
-	private ArrayList<Position> positionList; 
-	private ArrayList<SOP> sopList;
-	private ArrayList<User> userList;
 	private UserController uc;
 	private Database db;
 	
 	@Before
 	public void setUp(){
-		positionList = new ArrayList<Position>(); 
-		sopList = new ArrayList<SOP>(); 
-		userList = new ArrayList<User>(); 
-		
-		pos1 = new Position(); 
-		pos1.setID(2);
-		pos1.setPriority(1);
-		pos1.setTitle("Admin");
-		
-		pos2 = new Position(); 
-		pos2.setID(1);
-		pos2.setPriority(1);
-		pos2.setTitle("CEO");
-		
-		pos3 = new Position(); 
-		pos3.setID(3);
-		pos3.setPriority(5);
-		pos3.setTitle("IT");
-		
-		pos4 = new Position(); 
-		pos4.setID(4);
-		pos4.setPriority(9);
-		pos4.setTitle("Intern");
-		
-		pos5 = new Position(); 
-		pos5.setTitle("Manager");
-		pos5.setID(5);
-		pos5.setPriority(4);
-		
-		user1 = new User();
-		user1.setEmail("Admin@google.com");
-		user1.setPassword("DiveOnIn");
-		user1.setFirstName("Rodger");
-		user1.setLastName("Smith");
-		user1.setID(12);
-		user1.setPosition(pos1);
-		
-		user2 = new User();
-		user2.setFirstName("Stan");
-		user2.setLastName("Smith");
-		user2.setEmail("rookie@email.com");
-		user2.setPassword("bangBang");
-		user2.setPosition(pos3);
-		user2.setID(4);
-		
-		user3 = new User(); 
-		user3.setEmail("failTest@@gmail.com");
-		user3.setFirstName("");
-		user3.setLastName("");
-		user3.setPassword("");
-		user3.setID(-1);
-		user3.setPosition(pos4);
-		
-		user4 = new User(); 
-		user4.setEmail("theBoss@tesla.com");
-		user4.setPassword("POWER");
-		user4.setFirstName("Elon");
-		user4.setLastName("Musk");
-		user4.setID(5);
-		user4.setPosition(pos2);
-		
-		positionList.add(pos1);
-		positionList.add(pos2);
-		positionList.add(pos3);
-		positionList.add(pos4);
-		
-		sop1 = new SOP(); 
-		sop1.setTitle("Login");
-		sop1.setID(1);
-		sop1.setDescription("How to login");
-		sop1.setPriority(7);
-		sop1.setVersion(1);
-		sop1.setAuthorID(user1.getID());
-		
-		sop2 = new SOP(); 
-		sop2.setTitle("Logout");
-		sop2.setDescription("How to logout");
-		sop2.setPriority(7);
-		sop2.setID(2);
-		sop2.setVersion(2);
-		sop2.setAuthorID(user1.getID());
-		
-		sopList.add(sop1);
-		sopList.add(sop2);
-		
-		
 		uc = new UserController();
-		
 		db = new Database();
 	}
 	
@@ -164,7 +71,11 @@ public class UserControllerTest{
 	
 	@Test
 	public void testResetPassword() {
+		// 
 		
+		//
+		
+		//
 	}
 	
 	@Test
@@ -176,6 +87,7 @@ public class UserControllerTest{
 		assertTrue(uc.hasSubordinate(1, 2));
 		
 		// getManagersOfUser
+		
 		
 		// Remove
 		uc.removeSubordinate(1, 2);
@@ -197,18 +109,29 @@ public class UserControllerTest{
 	}
 	
 	@Test
-	public void testChangeEmail() {
-		//uc.changeEmail();
-	}
-	
-	@Test
-	public void testChangePassword() {
-		//uc.changePassword();
-	}
-	
-	@Test
-	public void testChangePosition() {
-		//uc.changePosition(user3, newPositionID);
+	public void testChange() {
+		// Position
+		uc.changePosition(1, 1);
+		
+		// Password
+		uc.changePassword(1, "test");
+		
+		// Email
+		uc.changeEmail(1, "test@ycp.edu");
+		
+		// First Name
+		uc.changeFirstName(1, "Carlos");
+		
+		// Last Name
+		uc.changeLastName(1, "Solrac");
+		
+		// Test all of our values
+		User u = uc.searchForUsers(-1, -1, false, null, false, null, false, null, -1, -1).get(0);
+		assertEquals(u.getPosition().getID(), 1);
+		assertTrue(uc.authenticate("test", u.getPassword()));
+		assertEquals(u.getEmail(), "test@ycp.edu");
+		assertEquals(u.getFirstName(), "Carlos");
+		assertEquals(u.getLastName(), "Solrac");
 	}
 	
 	@Test 

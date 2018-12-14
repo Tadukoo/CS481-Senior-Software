@@ -181,9 +181,8 @@ public class UserController{
 				+ userID);
 	}
 
-	public void changeEmail(int userID, String oldEmail, String newEmail){
-		db.executeUpdate("Change User Email", "update User set email = '" + newEmail + "' where email = '"
-				+ oldEmail + "' and user_id = " + userID);
+	public void changeEmail(int userID, String newEmail){
+		db.executeUpdate("Change User Email", "update User set email = '" + newEmail + "' where user_id = " + userID);
 	}
 
 	public void changePassword(int userID, String newPass){
@@ -352,12 +351,10 @@ public class UserController{
 		db.executeUpdate("Unarchive User with ID " + userID, "update User set archive_flag = false where user_id = " + userID);
 	}
 
-	public void changePosition(User user, int positionID){
+	public void changePosition(int userID, int positionID){
 		db.executeUpdate(
-				"Change User " + user.getFirstName() + " " + user.getLastName() + " Position to id " + positionID,
-				"update User set position_id = " + positionID + " where user_id = " + user.getID());
-		PositionController pc = new PositionController();
-		user.setPosition(pc.getPositionByUser(user.getID()));
+				"Change User Position",
+				"update User set position_id = " + positionID + " where user_id = " + userID);
 	}
 	
 	public void changeEmployeeID(int userID, int employeeID){
