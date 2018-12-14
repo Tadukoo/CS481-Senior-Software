@@ -46,11 +46,18 @@ public class CreateSOPServlet extends HttpServlet{
 		
 		SOPController sc = new SOPController(); 
 		
-		String title = null; 
-		String description = null;  
-		int version = 0; 
-		int priority = 0; 
-		int authorID = 0; 
+		String title = null;
+		String description = null;
+		int version = 0;
+		int priority = 0;
+		int authorID = 0;
+		
+		String action = req.getParameter("action");
+		if(action != null && action.equalsIgnoreCase("logout")){
+			UserController.logout(req);
+			resp.sendRedirect("login");
+			return;
+		}
 		
 		title = req.getParameter("title");
 		if(title == null || title.equalsIgnoreCase("")) {

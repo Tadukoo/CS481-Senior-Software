@@ -197,6 +197,10 @@ public class InitialData {
 		return userList;
 	}
 	
+	public ArrayList<Integer> getRoles(){
+		return roleS;
+	}
+	
 	public ArrayList<Position> getInitialPositions(){
 		return posList;
 	}

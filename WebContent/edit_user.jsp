@@ -21,7 +21,7 @@
 
 	<div class="bg-img">
 		<header class="header">
-			<h1>Current User Details</h1>
+			<h1>Edit User</h1>
 			<div class="row">
 
 				<div class="col-9">
@@ -33,8 +33,10 @@
 						<div id="#loggedinlabel">Currently logged in as:</div>
 						<div id="loggedinEmail">${currentemail}</div>
 					</div>
-					<button type="submit" name="action" class="btn btn-danger"
-						value="logout" id="logoutbtn">Logout</button>
+					<form class="form-horizontal" method="post">
+						<button type="submit" name="action" class="btn btn-danger"
+							value="logout" id="logoutbtn">Logout</button>
+					</form>
 				</div>
 
 
@@ -62,6 +64,12 @@
 					${employeeID}</div>
 				<div class="col-3 text-center">Email: ${email}</div>
 				<div class="col-3 text-center">Name: ${firstName} ${lastName}</div>
+			</div>
+			<div class="row">
+				<div class="col"></div>
+				<div class="col text-center">Position:</div>
+				<div class="col text-center">${posTitle}</div>
+				<div class="col"></div>
 			</div>
 			<div class="row">
 				<div class="col text-center"></div>
@@ -162,6 +170,46 @@
 					</div>
 				</div>
 			</form>
+			<form class="form-horizontal" method="post">
+			<input type="hidden" name="userID" value="${userID}">
+			<div class="row">
+				<div class="col-1"></div>
+				<div class="col-5">
+					<c:if test="${!empty positionError}">
+						<p class="alert alert-warning">${positionError}</p>
+					</c:if>
+				</div>
+				<div class="col-1"></div>
+				<div class="col-5">
+					<c:if test="${!empty positionConfirmError}">
+						<p class="alert alert-warning">${positionConfirmError}</p>
+					</c:if>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="form-group row">
+						<label for="newPriority" class="control-label col-4">New
+							Position ID:</label> <input type="number" class="form-control col-10"
+							id="newPriority" name="newPosition" value="${newPosition}">
+					</div>
+				</div>
+				<div class="col">
+					<div class="form-group row">
+						<label for="newPositionConfirm" class="control-label col-4">Confirm
+							Position ID:</label> <input type="number" class="form-control col-10"
+							id="newPositionConfirm" name="newPositionConfirm"
+							value="${newPositionConfirm}">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<button type="submit" name="doStuff" value="changePosition"
+						class="btn btn-info">Change Position</button>
+				</div>
+			</div>
+		</form>
 			<h2>View and Change Their SOPs</h2>
 			<form class="form-horizontal" method="post">
 				<h3>View Them</h3>

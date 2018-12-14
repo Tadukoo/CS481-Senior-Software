@@ -56,10 +56,11 @@ public class ComplianceCheckerServlet extends HttpServlet{
 		HttpSession session = req.getSession();
 		String action = req.getParameter("action");
 		boolean loggedIn = true;
-		if(action.equalsIgnoreCase("logout")){
+		if(action != null && action.equalsIgnoreCase("logout")){
 			UserController.logout(req);
 			loggedIn = false;
-			resp.sendRedirect(req.getContextPath() + "/login");
+			resp.sendRedirect("login");
+			return;
 		}
 		if(changePage != null && !changePage.equalsIgnoreCase("")){
 			int currentPage = Integer.parseInt(req.getParameter("page"));

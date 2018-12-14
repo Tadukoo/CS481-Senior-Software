@@ -9,9 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import edu.ycp.cs481.control.PositionController;
 import edu.ycp.cs481.control.SOPController;
 import edu.ycp.cs481.control.UserController;
 import edu.ycp.cs481.model.EnumPermission;
+import edu.ycp.cs481.model.Position;
 import edu.ycp.cs481.model.SOP;
 import edu.ycp.cs481.model.User;
 
@@ -30,6 +32,7 @@ public class EditUserServlet extends HttpServlet{
 		req.setAttribute("lastName", user.getLastName());
 		req.setAttribute("archived", user.isArchived());
 		req.setAttribute("lockedOut", user.isLockedOut());
+		req.setAttribute("posTitle", user.getPosition().getTitle());
 		// TODO: SOPs
 	}
 	
@@ -62,6 +65,13 @@ public class EditUserServlet extends HttpServlet{
 		UserController uc = new UserController();
 		String action = req.getParameter("doStuff");
 		boolean goodUpdate = true;
+		
+		String otherAction = req.getParameter("action");
+		if(otherAction != null && otherAction.equalsIgnoreCase("logout")){
+			UserController.logout(req);
+			resp.sendRedirect("login");
+			return;
+		}
 		
 		if(action.equalsIgnoreCase("archiveUser")){
 			uc.archiveUser(id);
@@ -106,6 +116,36 @@ public class EditUserServlet extends HttpServlet{
 			if(goodUpdate){
 				uc.changeLastName(id, newLastName);
 				req.setAttribute("successMessage", "Updated Last Name to " + newLastName + "!");
+			}
+		}else if(action.equalsIgnoreCase("changePosition")){
+			String positionStr = req.getParameter("newPosition");
+			String positionConfirmStr = req.getParameter("newPositionConfirm");
+			
+			int posID = -1;
+			ArrayList<Position> posResult = null;
+			
+			if(positionStr == null || positionStr.equalsIgnoreCase("")){
+				req.setAttribute("positionError", "Position ID can't be null!");
+				goodUpdate = false;
+			}else{
+				posID = Integer.parseInt(positionStr);
+				PositionController pc = new PositionController();
+				posResult = pc.searchForPositions(posID, false, null, false, null, -1);
+				if(posResult == null || posResult.size() == 0){
+					req.setAttribute("positionError", "That Position ID isn't used!");
+					goodUpdate = false;
+				}
+			}
+			
+			if(!positionStr.equalsIgnoreCase(positionConfirmStr)){
+				req.setAttribute("positionConfirmError", "Position IDs don't match!");
+				goodUpdate = false;
+			}
+			
+			if(goodUpdate){
+				String title = posResult.get(0).getTitle();
+				uc.changePosition(id, posID);
+				req.setAttribute("successMessage", "Added " + title + " to User!");
 			}
 		}else if(action.equalsIgnoreCase("addSOP")){
 			String sopIDStr = req.getParameter("sopID");

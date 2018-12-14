@@ -9,7 +9,6 @@
 <body>
 
 
-	<form class="form-horizontal" method="post">
 	<div class="bg-img">
 		<header class="header">
 				<h1>Create Position</h1>
@@ -24,13 +23,16 @@
 						<div id="#loggedinlabel">Currently logged in as:</div>
 						<div id="loggedinEmail">${currentemail}</div>
 						</div>
+						<form class="form-horizontal" method="post">
 						<button type="submit" name="action" class="btn btn-danger"
 							value="logout" id="logoutbtn">Logout</button>
+						</form>
 					</div>
 
 
 				</div>
 			</header>
+			<form class="form-horizontal" method="post">
 			<div class="createPosition">
 		<div class="row">
 			<div class="col">
@@ -82,9 +84,9 @@
 			</div>
 		</div>
 		</div>
+		</form>
 		<b>Want to return to the Homepage? <a href="./user_home">Home</a></b>
 		</div>
-	</form>
 	
 
 

@@ -13,7 +13,6 @@
 
 	<div class="altbg-img">
 		<div class="fluid-container">
-			<form class="form-horizontal" method="post">
 				<header class="header">
 					<h1>Search Users</h1>
 					<div class="row">
@@ -28,13 +27,14 @@
 								<div id="#loggedinlabel">Currently logged in as:</div>
 								<div id="loggedinEmail">${currentemail}</div>
 							</div>
+							<form class="form-horizontal" method="post">
 							<button type="submit" name="action" class="btn btn-danger"
 								value="logout" id="logoutbtn">Logout</button>
+							</form>
 						</div>
-
-
 					</div>
 				</header>
+				<form class="form-horizontal" method="post">
 				<div style="margin-top: 10px; margin-left: 10%">
 					<div class="form-group row">
 						<div class="fieldset col-3">
@@ -74,7 +74,7 @@
 					<div class="row">
 						<div class="col-1"></div>
 						<div class="col">Showing results ${(page*displaySize) + 1} -
-							${fn:length(users) lt (((page+1)*displaySize) - 1)?fn:length(users):(((page+1)*displaySize) - 1)}
+							${fn:length(users) lt (((page+1)*displaySize))?fn:length(users):(((page+1)*displaySize))}
 							of ${fn:length(users)}</div>
 					</div>
 
@@ -118,7 +118,7 @@
 								<p>${current.email}</p>
 							</div>
 							<div class="col-3 text-center">
-								<p>${current.firstName}${current.lastName}</p>
+								<p>${current.firstName} ${current.lastName}</p>
 							</div>
 							<div class="col-3 text-center">
 								<p>${current.position.title}</p>

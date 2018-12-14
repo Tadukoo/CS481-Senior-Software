@@ -12,7 +12,6 @@
 
 	<div class="altbg-img">
 		<div class="fluid-container">
-			<form class="form-horizontal" method="post">
 				<header class="header">
 					<h1>Search SOPs</h1>
 					<div class="row">
@@ -27,13 +26,14 @@
 								<div id="#loggedinlabel">Currently logged in as:</div>
 								<div id="loggedinEmail">${currentemail}</div>
 							</div>
+							<form class="form-horizontal" method="post">
 							<button type="submit" name="action" class="btn btn-danger"
 								value="logout" id="logoutbtn">Logout</button>
+							</form>
 						</div>
-
-
 					</div>
 				</header>
+				<form class="form-horizontal" method="post">
 				<div style="margin-top: 10px; margin-left: 10%">
 					<div class="form-group row">
 						<div class="fieldset col-3">
@@ -73,7 +73,7 @@
 					<div class="row">
 						<div class="col-1"></div>
 						<div class="col">Showing results ${(page*displaySize) + 1} -
-							${fn:length(sops) lt (((page+1)*displaySize) - 1)?fn:length(sops):(((page+1)*displaySize) - 1)}
+							${fn:length(sops) lt (((page+1)*displaySize))?fn:length(sops):(((page+1)*displaySize))}
 							of ${fn:length(sops)}</div>
 
 					</div>
@@ -126,6 +126,8 @@
 				</div>
 				<input type="hidden" name="page" value="${page}"> <input
 					type="hidden" name="displaySize" value="${displaySize}">
+				<input type="hidden" name="userID" value="${userID}">
+				<input type="hidden" name="posID" value="${posID}">
 				<div class="row">
 					<div class="col-2 text-center">
 						<c:if test="${page gt 0}">

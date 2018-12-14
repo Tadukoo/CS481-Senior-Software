@@ -47,6 +47,13 @@ public class CreatePositionServlet extends HttpServlet{
 		int priority = 0;
 		PositionController pc = new PositionController();
 		
+		String action = req.getParameter("action");
+		if(action != null && action.equalsIgnoreCase("logout")){
+			UserController.logout(req);
+			resp.sendRedirect("login");
+			return;
+		}
+		
 		String title = req.getParameter("title");
 		if(title == null || title.equalsIgnoreCase("")){
 			goodPosition = false;

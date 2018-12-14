@@ -400,6 +400,7 @@ public class Database{
 		HashMap<Integer, ArrayList<Integer>> rolePermissions = initData.getRolePermissions();
 		ArrayList<Position> posList = initData.getInitialPositions();
 		ArrayList<User> userList = initData.getInitialUsers();
+		ArrayList<Integer> roles = initData.getRoles();
 		ArrayList<SOP> sopList = initData.getInitialSOPs();
 		HashMap<Integer, ArrayList<Integer>> userSOPs = initData.getUserSOPs();
 		
@@ -432,12 +433,17 @@ public class Database{
 					"values ('" + p.getTitle() + "', '" + p.getDescription() + "', " + p.getPriority() + ")");
 		}
 		
-		for(User u: userList){
+		for(int i = 0; i < userList.size(); i++){
+			User u = userList.get(i);
+			int role = roles.get(i);
 			names.add("Insert User " + u.getFirstName() + " " + u.getLastName());
 			sqls.add("insert into User (email, password, first_name, last_name, locked_out, archive_flag, " +
 					"position_id)  values ('" + u.getEmail() + "', '" + new UserController().hashPassword(u.getPassword()) + 
 					"', '" + u.getFirstName() + "', '" + u.getLastName() + "', " + u.isLockedOut() + ", " + u.isArchived() + ", " + 
 					u.getPosition().getID() + ")");
+			
+			names.add("Update Role of User " + u.getFirstName() + " " + u.getLastName());
+			sqls.add("update User set role_id = " + role + " where email = '" + u.getEmail() + "'");
 		}
 		
 		for(SOP s: sopList){

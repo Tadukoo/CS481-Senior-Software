@@ -54,6 +54,13 @@ public class EditSOPServlet extends HttpServlet{
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		String otherAction = req.getParameter("action");
+		if(otherAction != null && otherAction.equalsIgnoreCase("logout")){
+			UserController.logout(req);
+			resp.sendRedirect("login");
+			return;
+		}
+		
 		int id = Integer.parseInt(req.getParameter("sopID"));
 		
 		SOPController sc = new SOPController();

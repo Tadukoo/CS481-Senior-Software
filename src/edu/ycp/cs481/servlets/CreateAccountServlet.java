@@ -48,7 +48,6 @@ public class CreateAccountServlet extends HttpServlet{
 		boolean goodUser = true;
 		
 		// Get the information
-		int userID = (int) session.getAttribute("user_id");
 		String firstName = req.getParameter("firstName");
 		String lastName = req.getParameter("lastName");
 		String email = req.getParameter("email");
@@ -56,7 +55,7 @@ public class CreateAccountServlet extends HttpServlet{
 		String password = req.getParameter("password");
 		String passwordConfirm = req.getParameter("passwordConfirm");
 		String action = req.getParameter("action");
-		if(action.equalsIgnoreCase("logout")){
+		if(action != null && action.equalsIgnoreCase("logout")){
 			UserController.logout(req);
 			loggedIn = false;
 			resp.sendRedirect(req.getContextPath() + "/login");

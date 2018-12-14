@@ -12,7 +12,6 @@
 
 	<div class="altbg-img">
 		<div class="fluid-container">
-			<form class="form-horizontal" method="post">
 				<header class="header">
 					<h1>Search Positions</h1>
 					<div class="row">
@@ -27,12 +26,15 @@
 								<div id="#loggedinlabel">Currently logged in as:</div>
 								<div id="loggedinEmail">${currentemail}</div>
 							</div>
-							<button type="submit" name="action" class="btn btn-danger"
-								value="logout" id="logoutbtn">Logout</button>
+							<form class="form-horizontal" method="post">
+								<button type="submit" name="action" class="btn btn-danger"
+									value="logout" id="logoutbtn">Logout</button>
+							</form>
 						</div>
 
 					</div>
 				</header>
+				<form class="form-horizontal" method="post">
 				<div style="margin-top: 10px; margin-left: 10%">
 					<div class="form-group row">
 						<div class="col-1"></div>

@@ -40,6 +40,13 @@ public class SearchPositionsServlet extends HttpServlet{
 	
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		String action = req.getParameter("action");
+		if(action != null && action.equalsIgnoreCase("logout")){
+			UserController.logout(req);
+			resp.sendRedirect("login");
+			return;
+		}
+		
 		String changePage = req.getParameter("changePage");
 		String changeDisplaySize = req.getParameter("changeDisplaySize");
 		int currentDisplaySize = Integer.parseInt(req.getParameter("displaySize"));

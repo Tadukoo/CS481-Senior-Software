@@ -13,7 +13,7 @@
 	<div class="fluid-container">
 		<form class="form-horizontal" method="post">
 			<header class="header">
-				<h1>Compliance Monitor</h1>
+				<h1>Compliance Checkers</h1>
 				<div class="row">
 
 					<div class="col-9">
@@ -61,7 +61,7 @@
 						</p>
 					</div>
 					<div class="col-5">Showing results ${(page*displaySize) + 1}
-						- ${fn:length(issues) lt (((page+1)*displaySize) - 1)?fn:length(issues):(((page+1)*displaySize) - 1)}
+						- ${fn:length(issues) lt (((page+1)*displaySize))?fn:length(issues):(((page+1)*displaySize))}
 						of ${fn:length(issues)}</div>
 
 				</div>

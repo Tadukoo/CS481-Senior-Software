@@ -20,7 +20,7 @@
 
 	<div class="bg-img">
 		<header class="header">
-			<h1>Edit Position Details</h1>
+			<h1>Edit Position</h1>
 			<div class="row">
 
 				<div class="col-9">
@@ -32,8 +32,10 @@
 						<div id="#loggedinlabel">Currently logged in as:</div>
 						<div id="loggedinEmail">${currentemail}</div>
 					</div>
+					<form class="form-horizontal" method="post">
 					<button type="submit" name="action" class="btn btn-danger"
 						value="logout" id="logoutbtn">Logout</button>
+					</form>
 				</div>
 
 
