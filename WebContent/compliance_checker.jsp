@@ -8,56 +8,58 @@
 <link rel="stylesheet" href="css/bootstrap.css">
 </head>
 <body>
-	<h1>Compliance Checkers</h1>
-	<p class="note">
-		Want to return to the Homepage? <a href="./user_home">Home</a>
-	</p>
+
 	<div class="fluid-container">
 		<form class="form-horizontal" method="post">
+			<header style="background-color: #667fcc; padding-bottom: 5px;">
+				<h1>Compliance Checker</h1>
+				<div class="row">
+					<div class="col-10"></div>
+					<div class="col-2">
+						<button type="submit" name="action" class="btn btn-danger"
+							value="logout">Logout</button>
+					</div>
+
+				</div>
+			</header>
 			<div class="form-group row">
 				<div class="col-4"></div>
 
-				<div class="fieldset col-2 text-center">
-					<input type="number" class="form-control" id="priority"
-						name="priority" value="${priority}" placeholder="Priority">
-				</div>
-				<div class="fieldset col-1 text-center">
-					<button type="submit" class="btn btn-info">Search</button>
-				</div>
+
+
 			</div>
-			<div class="row">
-				<div class="col-1"></div>
-				<div class="col">Showing results ${(page*displaySize) + 1} -
-					${fn:length(issues) lt (((page+1)*displaySize) - 1)?fn:length(issues):(((page+1)*displaySize) - 1)}
-					of ${fn:length(issues)}</div>
-			</div>
-			<div class="row">
-				<div class="col-1"></div>
-				<div class="col-2 text-center">
-					<p>
-						<b>SOP Title</b>
-					</p>
-				</div>
-				<div class="col-1 text-center">
-					<p>
-						<b>SOP Priority</b>
-					</p>
-				</div>
-				<div class="col-2 text-center">
-					<p>
-						<b>User Email</b>
-					</p>
-				</div>
-			</div>
-			<c:forEach begin="${page*displaySize}"
-				end="${((page+1)*displaySize) - 1}" items="${issues}"
-				var="current">
+			<div style = "background-color:#ccccff; margin-left:5%; margin-right:20%;">
 				<div class="row">
-					<div class="col-1 text-center">
+					<div class="col-1"></div>
+
+
+
+					<div class="col-2 text-center">
 						<p>
-							<input type="checkbox"></input>
+							<b>SOP Title</b>
 						</p>
 					</div>
+					<div class="col-1 text-center">
+						<p>
+							<b>SOP Priority</b>
+						</p>
+					</div>
+					<div class="col-2 text-center">
+						<p>
+							<b>User Email</b>
+						</p>
+					</div>
+					<div class="col-5">Showing results ${(page*displaySize) + 1}
+						- ${fn:length(issues) lt (((page+1)*displaySize) - 1)?fn:length(issues):(((page+1)*displaySize) - 1)}
+						of ${fn:length(issues)}</div>
+
+				</div>
+			</div>
+		<div class="row"></div>
+			<c:forEach begin="${page*displaySize}"
+				end="${((page+1)*displaySize) - 1}" items="${issues}" var="current">
+				<div class="row">
+					<div class="col-1 text-center"></div>
 					<div class="col-2 text-center">
 						<p>${current.title}</p>
 					</div>

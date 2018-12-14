@@ -49,7 +49,14 @@ public class ComplianceCheckerServlet extends HttpServlet{
 		String changePage = req.getParameter("changePage");
 		String changeDisplaySize = req.getParameter("changeDisplaySize");
 		int currentDisplaySize = Integer.parseInt(req.getParameter("displaySize"));
-
+		HttpSession session = req.getSession();
+		String action = req.getParameter("doStuff");
+		boolean loggedIn = true;
+		if(action.equalsIgnoreCase("logout")){
+			UserController.logout(req);
+			loggedIn = false;
+			resp.sendRedirect(req.getContextPath() + "/login");
+		}
 		if(changePage != null && !changePage.equalsIgnoreCase("")){
 			int currentPage = Integer.parseInt(req.getParameter("page"));
 			if(changePage.equalsIgnoreCase("prev")){
