@@ -9,8 +9,9 @@
 <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-
+<div class="altbg-img">
 	<div class="fluid-container">
+	
 		<form class="form-horizontal" method="post">
 			<header class="header">
 				<h1>Compliance Monitor</h1>
@@ -132,6 +133,6 @@
 				</div>
 			</div>
 		</form>
-	</div>
+	</div></div>
 </body>
 </html>
