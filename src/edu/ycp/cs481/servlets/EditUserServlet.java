@@ -42,6 +42,9 @@ public class EditUserServlet extends HttpServlet{
 		}else{
 			int userID = (int) session.getAttribute("user_id");
 			UserController uc = new UserController();
+			User current = uc.searchForUsers(userID, -1, false, "", false, "", false, "", -1, -1).get(0);
+			req.setAttribute("currentemail", current.getEmail());
+			
 			if(uc.hasPermission(userID, EnumPermission.EDIT_USERS) || uc.hasPermission(userID, EnumPermission.ALL)){
 				loadUser(req);
 				req.getRequestDispatcher("/edit_user.jsp").forward(req, resp);

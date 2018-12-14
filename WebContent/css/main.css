@@ -46,19 +46,19 @@ body {
 	padding: 2px;
 }
 .SUtabletop {
-	background-color: #ccccff;
+	background-color: rgba(204, 204, 255,.8);
 	
 	padding: 2px;
 }
 
 .tablecontents {
-	background-color: #858fad;
+	background-color: rgba(133, 143, 173,.8);
 	margin-left: 10%;
 	margin-right: 15%;
 	padding: 2px;
 }
 .SUtablecontents {
-	background-color: #858fad;
+	background-color: rgba(133, 143, 173,.8);
 	
 	padding: 2px;
 	
@@ -124,6 +124,34 @@ input.createAccount {
 	margin: 20px;
 	max-width: 600px;
 	min-height: 180px;
+	padding: 24px;
+	background-color: rgba(255, 255, 255, 0.7);
+}
+
+input.createPosition {
+	width: 300px;
+}
+
+.createPosition {
+	margin: 20px;
+	max-width: 600px;
+	min-height: 300px;
+	padding: 24px;
+	background-color: rgba(255, 255, 255, 0.7);
+}
+
+.editUser {
+	margin: 20px;
+	max-width: 800px;
+	min-height: 300px;
+	padding: 24px;
+	background-color: rgba(255, 255, 255, 0.7);
+}
+
+.editPos {
+	margin: 20px;
+	max-width: 1000px;
+	min-height: 300px;
 	padding: 24px;
 	background-color: rgba(255, 255, 255, 0.7);
 }
