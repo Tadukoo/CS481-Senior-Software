@@ -166,9 +166,19 @@ public class UserController{
 		}
 		return null;
 	}
+	
+	public void changeFirstName(int userID, String newFirstName){
+		db.executeUpdate("Change User First Name", "update User set first_name = '" + newFirstName + "' where user_id = "
+				+ userID);
+	}
+	
+	public void changeLastName(int userID, String newLastName){
+		db.executeUpdate("Change User Last Name", "update User set last_name = '" + newLastName + "' where user_id = "
+				+ userID);
+	}
 
 	public void changeEmail(int userID, String oldEmail, String newEmail){
-		db.executeUpdate("Change User Email", "update User set email = '" + newEmail + "' where " + "email = '"
+		db.executeUpdate("Change User Email", "update User set email = '" + newEmail + "' where email = '"
 				+ oldEmail + "' and user_id = " + userID);
 	}
 
@@ -320,6 +330,10 @@ public class UserController{
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public void lockout(int userID){
+		db.executeUpdate("Lockout User with ID " + userID, "update User set lock_out = true where user_id = " + userID);
 	}
 
 	public void overturnLockout(int userID) {
