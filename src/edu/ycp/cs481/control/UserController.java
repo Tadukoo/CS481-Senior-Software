@@ -88,7 +88,7 @@ public class UserController{
 		String pin = generateString();
 		try {
 			String name = "Get Quarantine User";
-			String sql = "select verification from Quarantine where email = " + email;
+			String sql = "select verification from Quarantine where email = '" + email + "'";
 			pin = db.executeQuery(name, sql, DBFormat.getStringResFormat()).get(0);
 		} catch (SQLException e) {
 			e.printStackTrace();
