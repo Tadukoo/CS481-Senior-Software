@@ -80,6 +80,10 @@ public class UserController{
 		}
 	}
 	
+	public void deleteQuarantineUser(String email) {
+		db.executeUpdate("Deleting Quarantine User", "delete from Quarantine where email = '" + email + "'");
+	}
+	
 	public void retrySendEmail(String email) {
 		String pin = generateString();
 		try {
