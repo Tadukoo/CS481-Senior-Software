@@ -20,7 +20,7 @@ public class EditSOPServlet extends HttpServlet{
 		// TODO: Error checking
 		int sopID = Integer.parseInt(req.getParameter("sopID"));
 		SOPController sc = new SOPController();
-		SOP sop = sc.searchForSOPs(sopID, false, null, false, null, -1, -1, -1, -1, -1).get(0);
+		SOP sop = sc.searchForSOPs(sopID, false, null, false, null, -1, -1, -1, -1, -1, null).get(0);
 		req.setAttribute("sopID", sop.getID());
 		req.setAttribute("title", sop.getTitle());
 		req.setAttribute("priority", sop.getPriority());

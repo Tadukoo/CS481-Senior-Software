@@ -18,7 +18,7 @@ public class SOPController{
 	}
 	
 	public ArrayList<SOP> searchForSOPs(int sopID, boolean titlePartial, String title, boolean descPartial, 
-			String description, int priority, int version, int authorID, int userID, int posID){
+			String description, int priority, int version, int authorID, int userID, int posID, Boolean onlyCompleted){
 		try{
 			ArrayList<String> otherTables = new ArrayList<String>();
 			ArrayList<String> junctions = new ArrayList<String>();
@@ -47,6 +47,21 @@ public class SOPController{
 					return null;
 				}
 			}
+			if(userID != -1){
+				for(SOP s: results){
+					boolean isComplete = db.executeQuery("Is SOP complete?", 
+							"select user_id, sop_id from CompletedSOP where user_id = " + userID + " and sop_id = " + s.getID(), 
+							DBFormat.getCheckResFormat());
+					s.setComplete(isComplete);
+					if(onlyCompleted != null){
+						if(onlyCompleted && !isComplete){
+							results.remove(s);
+						}else if(!onlyCompleted && isComplete){
+							results.remove(s);
+						}
+					}
+				}
+			}
 			return results;
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -63,7 +78,7 @@ public class SOPController{
 	}
 	
 	public void reversionSOP(int sopID, int version){
-		SOP s = searchForSOPs(sopID, false, null, false, null, -1, -1, -1, -1, -1).get(0);
+		SOP s = searchForSOPs(sopID, false, null, false, null, -1, -1, -1, -1, -1, null).get(0);
 		
 		archiveSOP(sopID);
 		insertSOP(s.getTitle(), s.getDescription(), s.getPriority(), version, s.getAuthorID(), false);

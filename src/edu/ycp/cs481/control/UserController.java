@@ -80,11 +80,15 @@ public class UserController{
 		}
 	}
 	
+	public void deleteQuarantineUser(String email) {
+		db.executeUpdate("Deleting Quarantine User", "delete from Quarantine where email = '" + email + "'");
+	}
+	
 	public void retrySendEmail(String email) {
 		String pin = generateString();
 		try {
 			String name = "Get Quarantine User";
-			String sql = "select verification from Quarantine where email = " + email;
+			String sql = "select verification from Quarantine where email = '" + email + "'";
 			pin = db.executeQuery(name, sql, DBFormat.getStringResFormat()).get(0);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -166,9 +170,19 @@ public class UserController{
 		}
 		return null;
 	}
+	
+	public void changeFirstName(int userID, String newFirstName){
+		db.executeUpdate("Change User First Name", "update User set first_name = '" + newFirstName + "' where user_id = "
+				+ userID);
+	}
+	
+	public void changeLastName(int userID, String newLastName){
+		db.executeUpdate("Change User Last Name", "update User set last_name = '" + newLastName + "' where user_id = "
+				+ userID);
+	}
 
 	public void changeEmail(int userID, String oldEmail, String newEmail){
-		db.executeUpdate("Change User Email", "update User set email = '" + newEmail + "' where " + "email = '"
+		db.executeUpdate("Change User Email", "update User set email = '" + newEmail + "' where email = '"
 				+ oldEmail + "' and user_id = " + userID);
 	}
 
@@ -275,7 +289,7 @@ public class UserController{
 		db.executeUpdate("Change user's role", "update User set role_id = " + roleID + " where user_id = " + userID);
 	}
 	
-	public boolean managerHasSubordinate(int managerID, int userID){
+	public boolean hasSubordinate(int managerID, int userID){
 		try{
 			String name = "";
 			String sql = "select * from Subordinate where manager_id = " + managerID + 
@@ -321,9 +335,13 @@ public class UserController{
 		}
 		return null;
 	}
+	
+	public void lockout(int userID){
+		db.executeUpdate("Lockout User with ID " + userID, "update User set locked_out = true where user_id = " + userID);
+	}
 
 	public void overturnLockout(int userID) {
-		db.executeUpdate("Overturn lockout on User with ID " + userID, "update User set lock_out = false where user_id = " + userID);
+		db.executeUpdate("Overturn lockout on User with ID " + userID, "update User set locked_out = false where user_id = " + userID);
 	}
 	
 	public void archiveUser(int userID){

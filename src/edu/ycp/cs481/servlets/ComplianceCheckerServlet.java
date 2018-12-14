@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.ycp.cs481.control.ComplianceController;
-import edu.ycp.cs481.control.SOPController;
 import edu.ycp.cs481.control.UserController;
 import edu.ycp.cs481.model.ComplianceIssue;
 import edu.ycp.cs481.model.EnumPermission;
@@ -29,9 +28,8 @@ public class ComplianceCheckerServlet extends HttpServlet{
 			int userID = (int) session.getAttribute("user_id");
 			if(uc.hasPermission(userID, EnumPermission.ALL)){
 				// Only admins with full permissions can go here ^
-				SOPController sc = new SOPController();
 				ComplianceController cc = new ComplianceController();
-				ArrayList<ComplianceIssue> issues = cc.PullComplianceIssues();
+				ArrayList<ComplianceIssue> issues = cc.pullAllComplianceIssues();
 				req.setAttribute("issues", issues);
 				req.setAttribute("displaySize", 10);
 				req.setAttribute("page", 0);
@@ -58,19 +56,22 @@ public class ComplianceCheckerServlet extends HttpServlet{
 			else if(changePage.equalsIgnoreCase("next")){
 				req.setAttribute("page", currentPage + 1);
 			}
-		}
-		else{
+		}else{
 			req.setAttribute("page", 0);
 		}
 
 		if(changeDisplaySize != null && !changeDisplaySize.equalsIgnoreCase("")){
 			req.setAttribute("displaySize", Integer.parseInt(changeDisplaySize));
-		}
-		else{
+		}else{
 			req.setAttribute("displaySize", currentDisplaySize);
 		}
-
-
+		
+		// Reload issues and page
+		// Seems getting issues back from the jsp (e.g. req.getParameter("issues")) doesn't work right for this
+		ComplianceController cc = new ComplianceController();
+		ArrayList<ComplianceIssue> issues = cc.pullAllComplianceIssues();
+		req.setAttribute("issues", issues);
+		req.getRequestDispatcher("/compliance_checker.jsp").forward(req, resp);	
 	}
 }
 
