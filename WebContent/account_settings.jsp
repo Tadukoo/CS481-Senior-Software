@@ -17,13 +17,14 @@
 				<h1>Account Settings</h1>
 				<div class="row">
 
-					<div class="col-9"></div>
+					<div class="col-9"><a type="button" class="btn" href="./user_home"
+								style="margin: 10px;">Want to return to the Homepage?</a></div>
 					<div class="col-3">
 						
 							<div class="loggedInAs">
 
 								<div id="#loggedinlabel">Currently logged in as:</div>
-								<div id="loggedinEmail">${userEmail}</div>
+								<div id="loggedinEmail">${email}</div>
 							</div>
 
 							<button type="submit" name="action" class="btn btn-danger"

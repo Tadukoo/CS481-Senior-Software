@@ -87,7 +87,4 @@
 		</form>
 		<b>Want to return to the Homepage? <a href="./user_home">Home</a></b>
 		</div>
-	
-
-
 </body></html>	

@@ -40,7 +40,7 @@ body {
 
 /*TABLES*/
 .tabletop {
-	background-color: #ccccff;
+	background-color: rgba(204, 204, 255,.8);
 	margin-left: 10%;
 	margin-right: 15%;
 	padding: 2px;
@@ -57,6 +57,7 @@ body {
 	margin-right: 15%;
 	padding: 2px;
 }
+
 .SUtablecontents {
 	background-color: rgba(133, 143, 173,.8);
 	
