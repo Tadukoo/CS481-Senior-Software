@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import edu.ycp.cs481.model.EnumPermission;
 import edu.ycp.cs481.model.Position;
 import edu.ycp.cs481.model.SOP;
+import edu.ycp.cs481.model.User;
 import edu.ycp.cs481.control.PositionController;
 import edu.ycp.cs481.control.SOPController;
 import edu.ycp.cs481.control.UserController;
@@ -39,6 +40,9 @@ public class EditPositionServlet extends HttpServlet{
 		}else{
 			UserController uc = new UserController();
 			int userID = (int) session.getAttribute("user_id");
+			User current = uc.searchForUsers(userID, -1, false, "", false, "", false, "", -1, -1).get(0);
+			req.setAttribute("currentemail", current.getEmail());
+			
 			if(uc.hasPermission(userID, EnumPermission.ALL) || uc.hasPermission(userID, EnumPermission.EDIT_POSITIONS)){
 				loadPosition(req);
 				req.getRequestDispatcher("/edit_position.jsp").forward(req, resp);
@@ -51,6 +55,13 @@ public class EditPositionServlet extends HttpServlet{
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		String otherAction = req.getParameter("action");
+		if(otherAction != null && otherAction.equalsIgnoreCase("logout")){
+			UserController.logout(req);
+			resp.sendRedirect("login");
+			return;
+		}
+		
 		int id = Integer.parseInt(req.getParameter("posID"));
 		
 		PositionController pc = new PositionController();

@@ -4,10 +4,10 @@
 <head>
 	<title>CTM mkii - Edit SOP</title>
 	<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-<p class="note">Want to return to the Homepage? <a href="./user_home">Home</a></p>
-<div class="fluid-container">
+
 	<div class="row">
 		<div class="col">
 			<c:if test="${! empty successMessage}">
@@ -15,6 +15,30 @@
 			</c:if>
 		</div>
 	</div>
+	<div class="bg-img">
+		<header class="header">
+			<h1>Edit SOP</h1>
+			<div class="row">
+
+				<div class="col-9">
+					<a type="button" class="btn" href="./user_home"
+						style="margin: 10px;">Want to return to the Homepage?</a>
+				</div>
+				<div class="col-3" style="padding-bottom: 4px; padding-left: 15px;">
+					<div class="loggedInAs">
+						<div id="#loggedinlabel">Currently logged in as:</div>
+						<div id="loggedinEmail">${currentemail}</div>
+					</div>
+					<form class="form-horizontal" method="post">
+					<button type="submit" name="action" class="btn btn-danger"
+						value="logout" id="logoutbtn">Logout</button>
+					</form>
+				</div>
+
+
+			</div>
+		</header>
+	<div class=editUser>
 	<div class="row">
 		<div class="col-6">
 			<h1>Current SOP Details</h1>
@@ -49,7 +73,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-2">
+		<div class="col-4">
 			Description: 
 		</div>
 		<div class="col-10">
@@ -80,13 +104,13 @@
 		<div class="row">
 			<div class="col">
 				<div class="form-group row">
-					<label for="newTitle" class="control-label col-2">New Title:</label>
+					<label for="newTitle" class="control-label col-4">New Title:</label>
 					<input type="text" class="form-control col-10" id="newTitle" name="newTitle" value="${newTitle}">
 				</div>
 			</div>
 			<div class="col">
 				<div class="form-group row">
-					<label for="newTitleConfirm" class="control-label col-2">Confirm Title:</label>
+					<label for="newTitleConfirm" class="control-label col-4">Confirm Title:</label>
 					<input type="text" class="form-control col-10" id="newTitleConfirm" name="newTitleConfirm" value="${newTitleConfirm}">
 				</div>
 			</div>
@@ -120,13 +144,13 @@
 		<div class="row">
 			<div class="col">
 				<div class="form-group row">
-					<label for="newPriority" class="control-label col-2">New Priority:</label>
+					<label for="newPriority" class="control-label col-4">New Priority:</label>
 					<input type="number" class="form-control col-10" id="newPriority" name="newPriority" value="${newPriority}">
 				</div>
 			</div>
 			<div class="col">
 				<div class="form-group row">
-					<label for="newTitleConfirm" class="control-label col-2">Confirm Priority :</label>
+					<label for="newTitleConfirm" class="control-label col-4">Confirm Priority :</label>
 					<input type="number" class="form-control col-10" id="newPriorityConfirm" name="newPriorityConfirm" value="${newPriorityConfirm}">
 				</div>
 			</div>
@@ -160,13 +184,13 @@
 		<div class="row">
 			<div class="col">
 				<div class="form-group row">
-					<label for="newVersion" class="control-label col-2">New Version:</label>
+					<label for="newVersion" class="control-label col-4">New Version:</label>
 					<input type="number" class="form-control col-10" id="newVersion" name="newVersion" value="${newVersion}">
 				</div>
 			</div>
 			<div class="col">
 				<div class="form-group row">
-					<label for="newVersionConfirmation" class="control-label col-2">Confirm Version :</label>
+					<label for="newVersionConfirmation" class="control-label col-4">Confirm Version :</label>
 					<input type="number" class="form-control col-10" id="newPriorityConfirm" name="newVersionConfirm" value="${newVersionConfirm}">
 				</div>
 			</div>
@@ -197,8 +221,8 @@
 		<div class="row">
 			<div class="col">
 				<div class="form-group row">
-					<label for="newDescription" class="control-label col-2">New Description: </label>
-					<textarea rows = "4" cols = "50" name = "newDescription"></textarea>
+					<label for="newDescription" class="control-label col-4">New Description: </label>
+					<textarea rows = "5" cols = "50" name = "newDescription"></textarea>
 				</div>
 			</div>
 		</div>
@@ -208,6 +232,7 @@
 			</div>
 		</div>
 	</form>
+</div>
 </div>
 </body>
 </html>

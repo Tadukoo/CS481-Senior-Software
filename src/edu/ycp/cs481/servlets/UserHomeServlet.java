@@ -1,6 +1,8 @@
 package edu.ycp.cs481.servlets;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.ycp.cs481.control.UserController;
+import edu.ycp.cs481.model.User;
 
 @SuppressWarnings("serial")
 public class UserHomeServlet extends HttpServlet{
@@ -32,7 +35,9 @@ public class UserHomeServlet extends HttpServlet{
 			
 			int id = (int) session.getAttribute("user_id");
 			UserController uc = new UserController();
+			User current = uc.searchForUsers(id, -1, false, "", false, "", false, "", -1, -1).get(0);
 			req.setAttribute("clockedIn", uc.isClockedIn(id));
+			req.setAttribute("email", current.getEmail());
 			req.getRequestDispatcher("/user_home.jsp").forward(req, resp);
 		}
 	}

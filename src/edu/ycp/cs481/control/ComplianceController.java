@@ -11,6 +11,7 @@ import edu.ycp.cs481.model.SOP;
 
 public class ComplianceController{
 
+
 	public ArrayList<ComplianceIssue> pullComplianceIssuesOfUser(User u){
 		ArrayList<ComplianceIssue> userIssues = new ArrayList<ComplianceIssue>();
 		SOPController sc = new SOPController(); 
@@ -23,6 +24,7 @@ public class ComplianceController{
 			userIssues.add(i);
 		}
 		return userIssues;
+
 	}
 
 	public ArrayList<ComplianceIssue> pullAllComplianceIssues(){

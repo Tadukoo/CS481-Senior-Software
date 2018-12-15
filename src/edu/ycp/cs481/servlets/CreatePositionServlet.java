@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import edu.ycp.cs481.control.PositionController;
 import edu.ycp.cs481.control.UserController;
 import edu.ycp.cs481.model.EnumPermission;
+import edu.ycp.cs481.model.User;
 
 @SuppressWarnings("serial")
 public class CreatePositionServlet extends HttpServlet{
@@ -26,6 +27,8 @@ public class CreatePositionServlet extends HttpServlet{
 		}else{
 			UserController uc = new UserController();
 			int userID = (int) session.getAttribute("user_id");
+			User current = uc.searchForUsers(userID, -1, false, "", false, "", false, "", -1, -1).get(0);
+			req.setAttribute("currentemail", current.getEmail());
 			if(uc.hasPermission(userID, EnumPermission.ALL) || uc.hasPermission(userID, EnumPermission.CREATE_POSITION)){
 				req.getRequestDispatcher("/create_position.jsp").forward(req, resp);
 			}else{
@@ -43,6 +46,13 @@ public class CreatePositionServlet extends HttpServlet{
 		boolean goodPosition = true;
 		int priority = 0;
 		PositionController pc = new PositionController();
+		
+		String action = req.getParameter("action");
+		if(action != null && action.equalsIgnoreCase("logout")){
+			UserController.logout(req);
+			resp.sendRedirect("login");
+			return;
+		}
 		
 		String title = req.getParameter("title");
 		if(title == null || title.equalsIgnoreCase("")){

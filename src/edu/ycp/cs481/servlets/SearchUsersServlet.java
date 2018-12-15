@@ -26,11 +26,14 @@ public class SearchUsersServlet extends HttpServlet{
 			int userID = (int) session.getAttribute("user_id");
 			if(uc.hasPermission(userID, EnumPermission.ALL) || uc.hasPermission(userID, EnumPermission.SEARCH_USERS)){
 				ArrayList<User> users = uc.searchForUsers(-1, -1, false, null, false, null, false, null, -1, -1);
+				User current = uc.searchForUsers(userID, -1, false, "", false, "", false, "", -1, -1).get(0);
 				req.setAttribute("users", users);
 				// Set default page and display size
 				req.setAttribute("page", 0);
 				req.setAttribute("displaySize", 10);
+				req.setAttribute("currentemail", current.getEmail());
 				req.getRequestDispatcher("/search_users.jsp").forward(req, resp);
+				
 			}else{
 				session.setAttribute("error", "You don't have permission to search Users!");
 				resp.sendRedirect(req.getContextPath() + "/user_home");
@@ -40,6 +43,13 @@ public class SearchUsersServlet extends HttpServlet{
 	
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		String action = req.getParameter("action");
+		if(action != null && action.equalsIgnoreCase("logout")){
+			UserController.logout(req);
+			resp.sendRedirect("login");
+			return;
+		}
+		
 		String changePage = req.getParameter("changePage");
 		String changeDisplaySize = req.getParameter("changeDisplaySize");
 		int currentDisplaySize = Integer.parseInt(req.getParameter("displaySize"));
